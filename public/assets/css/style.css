@@ -1,0 +1,51 @@
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 16px;
+  height: 100vh;
+  font-weight: 400;
+  position: relative;
+}
+
+.video-lofi {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  object-fit: cover;
+  top: 0;
+  border: none;
+  z-index: 1;
+}
+
+.wrapper {
+  position: relative;
+  z-index: 10 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: #f3a952;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+input,
+button {
+  border: none;
+  outline: none;
+}
+
+.error-message {
+  margin-top: 3px;
+  display: block;
+  color: rgb(255, 70, 70);
+}

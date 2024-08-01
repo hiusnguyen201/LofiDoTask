@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="/assets/css/auth/register.css" />
+
+<div class="card">
+  <div class="card-title text-center mb-0">
+    <h1 class="title mb-0">Register</h1>
+  </div>
+  <div class="card-body">
+    <% if(message){%>
+    <div class="alert alert-<%=message.type %> my-3">
+      <%= message.text %>
+    </div>
+    <%}%>
+
+    <form method="post" class="mb-4">
+      <!-- Username -->
+      <div class="mb-3">
+        <div>
+          <i class="fas fa-user"></i>
+          <label class="form-label" for="username">Username *</label>
+          <input
+            class="form-control"
+            type="text"
+            id="username"
+            placeholder="Username..."
+            name="username"
+            value="<%= oldValues.username %>"
+          />
+        </div>
+        <span class="error-message"
+          ><%= getError(errors, "username") %></span
+        >
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <div class="input-block">
+          <i class="fas fa-lock"></i>
+          <label class="form-label" for="password">Password *</label>
+          <input
+            class="form-control"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password..."
+          />
+          <i
+            onclick="togglePassword(this)"
+            class="fa-solid fa-eye btn-toggle-password"
+          ></i>
+        </div>
+        <span class="error-message"
+          ><%= getError(errors, "password") %></span
+        >
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-3">
+        <div class="input-block">
+          <i class="fas fa-lock"></i>
+          <label class="form-label" for="confirmPassword"
+            >Confirm-Password *</label
+          >
+          <input
+            class="form-control"
+            type="password"
+            id="confirmPassword"
+            placeholder="Password..."
+            name="confirmPassword"
+          />
+          <i
+            onclick="togglePassword(this)"
+            class="fa-solid fa-eye btn-toggle-password"
+          ></i>
+        </div>
+        <span class="error-message"
+          ><%= getError(errors, "confirmPassword") %></span
+        >
+      </div>
+
+      <div class="d-grid mt-5">
+        <button class="btn btn-register py-3">
+          Sign Up <i class="fas fa-sign-in"></i>
+        </button>
+      </div>
+    </form>
+
+    <p class="text-center">
+      Already Have an Account?
+      <a href="<%= loginRoute %>">Sign in</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  const togglePassword = (e) => {
+    const input = e.parentNode.querySelector("input");
+    if (input.type === "password") {
+      input.type = "text";
+      e.classList.remove("fa-eye");
+      e.classList.add("fa-eye-slash");
+    } else if (input.type === "text") {
+      input.type = "password";
+      e.classList.remove("fa-eye-slash");
+      e.classList.add("fa-eye");
+    }
+  };
+</script>
