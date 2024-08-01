@@ -10,10 +10,10 @@ const webRouter = require("./routes/web/index");
 const apiRouter = require("./routes/api/v1/index");
 
 var app = express();
-app.use(cors);
+app.use(cors());
 
 // view engine setup
-app.set("resources/views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "resources/views"));
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
@@ -38,7 +38,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render("errors/error");
 });
 
 module.exports = app;
