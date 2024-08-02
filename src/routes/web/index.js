@@ -1,8 +1,14 @@
 var express = require("express");
 var router = express.Router();
 
-const authRouter = require("./auth");
+const AuthMiddleware = require("../../http/middlewares/auth.middleware");
+const GuestMiddleware = require("../../http/middlewares/guest.middleware");
 
-router.use("/auth", authRouter);
+const authRouter = require("./auth");
+const homeRouter = require("./home");
+
+router.use("/auth", GuestMiddleware, authRouter);
+
+router.use("/", AuthMiddleware, homeRouter);
 
 module.exports = router;

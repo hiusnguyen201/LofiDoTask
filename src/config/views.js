@@ -1,4 +1,5 @@
 const authLayoutPath = "layouts/auth.layout.ejs";
+const mainLayoutPath = "layouts/main.layout.ejs";
 
 const viewPaths = {
   loginView: {
@@ -8,6 +9,10 @@ const viewPaths = {
   registerView: {
     path: "auth/register",
     layout: authLayoutPath,
+  },
+  homeView: {
+    path: "clients/home",
+    layout: mainLayoutPath,
   },
 };
 

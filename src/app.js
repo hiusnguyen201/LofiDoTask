@@ -24,6 +24,7 @@ const webRouter = require("./routes/web/index");
 const apiRouter = require("./routes/api/v1/index");
 
 var app = express();
+app.disable("etag");
 app.use(cors());
 app.set("trust proxy", 1);
 app.use(

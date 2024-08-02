@@ -4,18 +4,20 @@ var router = express.Router();
 const LoginController = require("../../http/controllers/web/auth/login.controller");
 const RegisterController = require("../../http/controllers/web/auth/register.controller");
 
-const RegisterRule = require("../../http/rules/auth/register.rule");
+const LoginRequest = require("../../http/requests/auth/login.request");
+const RegisterRequest = require("../../http/requests/auth/register.request");
 
 /**
  * Prefix: /auth
  */
+
 router.get("/login", LoginController.loginPage);
-router.post("/login", LoginController.handleLogin);
+router.post("/login", LoginRequest(), LoginController.handleLogin);
 
 router.get("/register", RegisterController.registerPage);
 router.post(
   "/register",
-  RegisterRule(),
+  RegisterRequest(),
   RegisterController.handleRegister
 );
 

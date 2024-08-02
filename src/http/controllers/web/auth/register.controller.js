@@ -1,13 +1,10 @@
 const { validationResult } = require("express-validator");
 
 const User = require("../../../../models/user.model");
-const { registerView } = require("../../../../configs/views");
-const {
-  loginRoute,
-  registerRoute,
-} = require("../../../../configs/routes");
+const { registerView } = require("../../../../config/views");
+const { loginRoute, registerRoute } = require("../../../../config/routes");
 const { getError } = require("../../../../utils/validate");
-const { makeHash, compareHash } = require("../../../../utils/bcrypt");
+const { makeHash } = require("../../../../utils/bcrypt");
 const { getSession, setSessions } = require("../../../../utils/session");
 
 module.exports = {
@@ -44,6 +41,8 @@ module.exports = {
       await User.create({
         ...req.body,
         password: makeHash(req.body.password),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
 
       setSessions(req, {

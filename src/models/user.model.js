@@ -2,25 +2,31 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = mongoose.Schema({
-  id: {
+  _id: {
     type: Schema.ObjectId,
   },
   username: {
     type: String,
-    require: true,
+    required: true,
     unique: true,
   },
   password: {
     type: String,
-    require: true,
+    required: true,
+  },
+  accessToken: {
+    type: String,
+  },
+  refreshToken: {
+    type: String,
   },
   createdAt: {
     type: Date,
-    require: true,
+    required: true,
   },
   updatedAt: {
     type: Date,
-    require: true,
+    required: true,
   },
 });
 

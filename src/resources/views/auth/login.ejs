@@ -20,30 +20,44 @@
     <form method="post" class="mb-4">
       <!-- Username -->
       <div class="mb-3">
-        <i class="fas fa-user"></i>
-        <label class="form-label" for="username">Username:</label>
-        <input
-          class="form-control"
-          type="text"
-          id="username"
-          placeholder="Username..."
-        />
+        <div>
+          <i class="fas fa-user"></i>
+          <label class="form-label" for="username">Username:</label>
+          <input
+            class="form-control"
+            type="text"
+            id="username"
+            placeholder="Username..."
+            name="username"
+            value="<%= oldValues.username %>"
+          />
+        </div>
+        <span class="error-message">
+          <%= getError(errors, "username") %>
+        </span>
       </div>
 
       <!-- Password -->
       <div class="mb-3 input-block">
-        <i class="fas fa-lock"></i>
-        <label class="form-label" for="password">Password:</label>
-        <input
-          class="form-control"
-          type="password"
-          id="password"
-          placeholder="Password..."
-        />
-        <i
-          onclick="togglePassword(this)"
-          class="fa-solid fa-eye btn-toggle-password"
-        ></i>
+        <div>
+          <i class="fas fa-lock"></i>
+          <label class="form-label" for="password">Password:</label>
+          <input
+            class="form-control"
+            type="password"
+            id="password"
+            placeholder="Password..."
+            name="password"
+          />
+          <i
+            onclick="togglePassword(this)"
+            class="fa-solid fa-eye btn-toggle-password"
+          ></i>
+        </div>
+
+        <span class="error-message">
+          <%= getError(errors, "password") %>
+        </span>
       </div>
 
       <div class="text-end mb-3">
