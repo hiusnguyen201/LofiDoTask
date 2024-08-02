@@ -12,7 +12,7 @@ module.exports = {
   loginPage: (req, res) => {
     return res.render(loginView.path, {
       layout: loginView.layout,
-      title: "Sign In",
+      title: process.env.PROJECT_NAME + " | Sign In",
       registerRoute,
       message: getSession(req, "message"),
       oldValues: getSession(req, "oldValues") || {},

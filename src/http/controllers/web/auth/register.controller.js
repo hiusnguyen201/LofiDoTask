@@ -12,7 +12,7 @@ module.exports = {
     return res.render(registerView.path, {
       layout: registerView.layout,
       loginRoute,
-      title: "Sign Up",
+      title: process.env.PROJECT_NAME + " | Sign Up",
       getError,
       errors: getSession(req, "errors") || [],
       message: getSession(req, "message"),

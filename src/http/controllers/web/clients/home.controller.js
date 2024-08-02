@@ -13,7 +13,7 @@ module.exports = {
 
     return res.render(homeView.path, {
       layout: homeView.layout,
-      title: "Home",
+      title: process.env.PROJECT_NAME + " | Home",
       routePaths,
       message: getSession(req, "message"),
       jobs,
