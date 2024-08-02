@@ -1,5 +1,10 @@
 <footer class="footer-wrapper">
-  <audio id="audio" src="/lofi-music/lofi/chill1.mp3"></audio>
+  <audio
+    loop
+    ontimeupdate="handleAudioChange()"
+    id="audio"
+    src="/lofi-music/lofi/chill1.mp3"
+  ></audio>
   <p class="desc">Song name: Secrets</p>
   <button onclick="togglePlayAudio()" class="play-btn">
     <img id="playBtn" src="/lofi-music/icons/play.svg" alt="playBtn" />
@@ -9,7 +14,9 @@
   </button>
   <div id="modal" class="card">
     <div class="card-body">
-      <h1 class="card-title text-center mb-3">Todoist</h1>
+      <h1 class="card-title text-center mb-3" style="color: #ffbc70">
+        Todoist
+      </h1>
 
       <% if(message){%>
       <div class="alert alert-<%= message.type %>">
@@ -37,7 +44,7 @@
       <% if(jobs && jobs?.length) { jobs.map((item) => {%>
       <div class="job-item">
         <form
-          class="card-form mb-3"
+          class="card-form"
           action="<%= routePaths.editJobRoute  %>"
           method="post"
         >
@@ -53,27 +60,33 @@
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
         </form>
-        <form
-          class="mb-3"
-          action="<%= routePaths.deleteJobRoute  %>"
-          method="post"
-        >
+        <form action="<%= routePaths.deleteJobRoute  %>" method="post">
           <input type="hidden" name="jobId" value="<%= item._id %>" />
           <button class="btn btn-danger">
             <i class="fa-solid fa-trash"></i>
           </button>
         </form>
       </div>
-      <% })} %>
+      <% })} else {%>
+      <div
+        class="w-100 py-2 px-3 text-center"
+        style="background-color: #fff; color: black; border-radius: 4px"
+      >
+        Nothing to do yet
+      </div>
+      <% } %>
     </div>
   </div>
 </footer>
 
 <script>
-  const togglePlayAudio = () => {
-    const audio = document.getElementById("audio");
-    const playBtn = document.getElementById("playBtn");
+  const audio = document.getElementById("audio");
+  const handleAudioChange = () => {
+    localStorage.setItem("audioCurrentTime", audio.currentTime);
+  };
 
+  const playBtn = document.getElementById("playBtn");
+  const togglePlayAudio = () => {
     if (audio.paused) {
       audio.play();
       playBtn.src = src = "/lofi-music/icons/pause.svg";
@@ -83,20 +96,30 @@
     }
   };
 
+  const modal = document.getElementById("modal");
+  const openMenuBtn = document.getElementById("open-menu-btn");
+
   const toggleModal = () => {
-    const modal = document.getElementById("modal");
-    const openMenuBtn = document.getElementById("open-menu-btn");
-
-    console.log(modal.style.opacity);
-
     if (!modal.style.opacity || modal.style.opacity == 0) {
+      localStorage.setItem("openModal", true);
       modal.style.opacity = 1;
       openMenuBtn.style.borderTopRightRadius = 0;
       openMenuBtn.style.borderTopLeftRadius = 0;
     } else {
+      localStorage.setItem("openModal", false);
       modal.style.opacity = 0;
       openMenuBtn.style.borderTopRightRadius = "100%";
       openMenuBtn.style.borderTopLeftRadius = "100%";
     }
   };
+
+  if (localStorage.getItem("openModal") == "true") {
+    setTimeout(() => {
+      modal.style.opacity = 1;
+      openMenuBtn.style.borderTopRightRadius = 0;
+      openMenuBtn.style.borderTopLeftRadius = 0;
+    }, 100);
+  }
+
+  audio.currentTime = +localStorage.getItem("audioCurrentTime");
 </script>
