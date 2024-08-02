@@ -1,6 +1,6 @@
 <svg
         id='play-btn'
-        fill='none'
+        fill='currentColor'
         height='68'
         viewBox='0 0 72 68'
         width='72'
