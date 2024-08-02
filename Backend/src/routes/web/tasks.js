@@ -1,10 +1,10 @@
 var express = require("express");
 var router = express.Router();
 
-const TaskController = require("../../http/controllers/web/clients/task.controller");
+const TaskController = require("@controllers/web/clients/task.controller");
 
 /**
- * Prefix: /jobs
+ * Prefix: /tasks
  */
 router.post("/add", TaskController.handleAdd);
 router.post("/edit", TaskController.handleEdit);

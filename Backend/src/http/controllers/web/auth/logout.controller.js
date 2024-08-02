@@ -1,4 +1,4 @@
-const { loginRoute } = require("@root/config/routes");
+const { loginRoute } = require("@config/routes");
 
 module.exports = {
   handleLogout: (req, res) => {

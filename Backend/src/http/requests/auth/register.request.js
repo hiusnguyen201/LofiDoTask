@@ -1,6 +1,6 @@
 const { check } = require("express-validator");
 
-const User = require("../../../models/user.model");
+const User = require("@models/user.model");
 
 module.exports = () => [
   check("username", "Username is empty").notEmpty(),

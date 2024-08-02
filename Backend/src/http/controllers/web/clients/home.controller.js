@@ -1,8 +1,10 @@
-const Task = require("@root/models/task.model");
-const routePaths = require("@root/config/routes");
-const { homeView } = require("@root/config/views");
-const { getSession } = require("@root/utils/session");
-const { getDateToken } = require("@root/utils/jwt");
+const Task = require("@models/task.model");
+
+const routePaths = require("@config/routes");
+const { homeView } = require("@config/views");
+
+const { getSession } = require("@utils/session");
+const { getDateToken } = require("@utils/jwt");
 
 module.exports = {
   homePage: async (req, res) => {

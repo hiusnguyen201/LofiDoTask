@@ -3,7 +3,7 @@ var router = express.Router();
 
 const taskRouter = require("./tasks");
 
-const HomeController = require("../../http/controllers/web/clients/home.controller");
+const HomeController = require("@controllers/web/clients/home.controller");
 
 /**
  * Prefix: /

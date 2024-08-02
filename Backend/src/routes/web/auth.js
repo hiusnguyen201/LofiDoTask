@@ -1,15 +1,15 @@
 var express = require("express");
 var router = express.Router();
 
-const LoginController = require("../../http/controllers/web/auth/login.controller");
-const RegisterController = require("../../http/controllers/web/auth/register.controller");
-const LogoutController = require("../../http/controllers/web/auth/logout.controller");
+const LoginController = require("@controllers/web/auth/login.controller");
+const RegisterController = require("@controllers/web/auth/register.controller");
+const LogoutController = require("@controllers/web/auth/logout.controller");
 
-const LoginRequest = require("../../http/requests/auth/login.request");
-const RegisterRequest = require("../../http/requests/auth/register.request");
+const LoginRequest = require("@requests/auth/login.request");
+const RegisterRequest = require("@requests/auth/register.request");
 
-const GuestMiddleware = require("../../http/middlewares/guest.middleware");
-const AuthMiddleware = require("../../http/middlewares/auth.middleware");
+const GuestMiddleware = require("@middlewares/guest.middleware");
+const AuthMiddleware = require("@middlewares/auth.middleware");
 
 /**
  * Prefix: /auth

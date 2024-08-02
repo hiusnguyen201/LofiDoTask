@@ -1,7 +1,9 @@
-const Task = require("@root/models/task.model");
-const { homeRoute } = require("@root/config/routes");
-const { setSessions } = require("@root/utils/session");
-const { getDateToken } = require("@root/utils/jwt");
+const Task = require("@models/task.model");
+
+const { homeRoute } = require("@config/routes");
+
+const { setSessions } = require("@utils/session");
+const { getDateToken } = require("@utils/jwt");
 
 module.exports = {
   handleAdd: async (req, res) => {

@@ -1,6 +1,8 @@
-const User = require("../../models/user.model");
-const { getDateToken } = require("../../utils/jwt");
-const { loginRoute } = require("../../config/routes");
+const User = require("@models/user.model");
+
+const { getDateToken } = require("@utils/jwt");
+
+const { loginRoute } = require("@config/routes");
 
 module.exports = async (req, res, next) => {
   if (!req.cookies?.token) {

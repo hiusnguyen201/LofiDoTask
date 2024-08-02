@@ -3,7 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "_moduleAliases": {
-    "@root": "./src"
+    "@": "./src",
+    "@models": "./src/models",
+    "@utils": "./src/utils",
+    "@config": "./src/config",
+    "@routes": "./src/routes",
+    "@controllers": "./src/http/controllers",
+    "@middlewares": "./src/http/middlewares",
+    "@requests": "./src/http/requests"
   },
   "scripts": {
     "start": "nodemon ./bin/www"
