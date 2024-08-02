@@ -28,10 +28,16 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<%= routePaths.logoutPath %>">
+        <form
+          class="nav-link"
+          style="cursor: pointer"
+          onclick="this.submit()"
+          action="<%= routePaths.logoutPath %>"
+          method="post"
+        >
           <i class="fa-solid fa-right-from-bracket"></i>
           <span>Logout</span>
-        </a>
+        </form>
       </li>
     </ul>
   </nav>
