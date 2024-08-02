@@ -1,26 +1,26 @@
-const Job = require("../../../../models/job.model");
-const { homeRoute } = require("../../../../config/routes");
-const { setSessions } = require("../../../../utils/session");
-const { verifyToken } = require("../../../../utils/jwt");
+const Task = require("@root/models/task.model");
+const { homeRoute } = require("@root/config/routes");
+const { setSessions } = require("@root/utils/session");
+const { getDateToken } = require("@root/utils/jwt");
 
 module.exports = {
   handleAdd: async (req, res) => {
-    const job = req.body?.job;
+    const task = req.body?.task;
 
-    if (!job) {
+    if (!task) {
       setSessions(req, {
         message: {
           type: "danger",
-          text: "Job is required",
+          text: "Task is required",
         },
       });
       return res.redirect(homeRoute);
     }
 
     try {
-      const { data } = verifyToken(req.cookies?.token);
-      await Job.create({
-        title: job,
+      const { data } = getDateToken(req.cookies?.token);
+      await Task.create({
+        title: task,
         userId: data.id,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -28,7 +28,7 @@ module.exports = {
       setSessions(req, {
         message: {
           type: "success",
-          text: "Add job successful!",
+          text: "Add task successful!",
         },
       });
 
@@ -37,7 +37,7 @@ module.exports = {
       setSessions(req, {
         message: {
           type: "danger",
-          text: "Add job failed!",
+          text: "Add task failed!",
         },
       });
       return res.redirect(homeRoute);
@@ -45,35 +45,35 @@ module.exports = {
   },
 
   handleEdit: async (req, res) => {
-    const { job = null, jobId = null } = req.body;
+    const { task = null, taskId = null } = req.body;
 
-    if (!jobId) {
+    if (!taskId) {
       setSessions(req, {
         message: {
           type: "danger",
-          text: "Job not found",
+          text: "Task not found",
         },
       });
       return res.redirect(homeRoute);
     }
 
-    if (!job) {
+    if (!task) {
       setSessions(req, {
         message: {
           type: "danger",
-          text: "Job is required",
+          text: "Task is required",
         },
       });
       return res.redirect(homeRoute);
     }
 
     try {
-      await Job.findOneAndUpdate(
+      await Task.findOneAndUpdate(
         {
-          _id: jobId,
+          _id: taskId,
         },
         {
-          title: job,
+          title: task,
           updatedAt: new Date(),
         }
       );
@@ -81,7 +81,7 @@ module.exports = {
       setSessions(req, {
         message: {
           type: "success",
-          text: "Edit job successful!",
+          text: "Edit task successful!",
         },
       });
 
@@ -90,7 +90,7 @@ module.exports = {
       setSessions(req, {
         message: {
           type: "danger",
-          text: "Edit job failed!",
+          text: "Edit task failed!",
         },
       });
       return res.redirect(homeRoute);
@@ -98,27 +98,27 @@ module.exports = {
   },
 
   handleDelete: async (req, res) => {
-    const { jobId = null } = req.body;
+    const { taskId = null } = req.body;
 
-    if (!jobId) {
+    if (!taskId) {
       setSessions(req, {
         message: {
           type: "danger",
-          text: "Job not found",
+          text: "Task not found",
         },
       });
       return res.redirect(homeRoute);
     }
 
     try {
-      await Job.findOneAndDelete({
-        _id: jobId,
+      await Task.findOneAndDelete({
+        _id: taskId,
       });
 
       setSessions(req, {
         message: {
           type: "success",
-          text: "Delete job successful!",
+          text: "Delete task successful!",
         },
       });
 
@@ -127,7 +127,7 @@ module.exports = {
       setSessions(req, {
         message: {
           type: "danger",
-          text: "Delete job failed!",
+          text: "Delete task failed!",
         },
       });
       return res.redirect(homeRoute);

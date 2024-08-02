@@ -2,9 +2,9 @@ const routePaths = {
   loginRoute: "/auth/login",
   registerRoute: "/auth/register",
   logoutPath: "/auth/logout",
-  addJobRoute: "/jobs/add",
-  editJobRoute: "/jobs/edit",
-  deleteJobRoute: "/jobs/delete",
+  addTaskRoute: "/tasks/add",
+  editTaskRoute: "/tasks/edit",
+  deleteTaskRoute: "/tasks/delete",
   homeRoute: "/",
 };
 

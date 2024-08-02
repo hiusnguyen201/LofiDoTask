@@ -1,4 +1,4 @@
-const { verifyToken } = require("../../utils/jwt");
+const { getDateToken } = require("../../utils/jwt");
 const User = require("../../models/user.model");
 const { homeRoute } = require("../../config/routes");
 
@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     return next();
   }
 
-  const result = verifyToken(req.cookies?.token);
+  const result = getDateToken(req.cookies?.token);
   if (!result || !result?.data) {
     res.clearCookie("token");
     return next();

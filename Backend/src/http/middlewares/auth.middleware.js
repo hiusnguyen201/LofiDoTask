@@ -1,5 +1,5 @@
 const User = require("../../models/user.model");
-const { verifyToken } = require("../../utils/jwt");
+const { getDateToken } = require("../../utils/jwt");
 const { loginRoute } = require("../../config/routes");
 
 module.exports = async (req, res, next) => {
@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     return res.redirect(loginRoute);
   }
 
-  const result = verifyToken(req.cookies?.token);
+  const result = getDateToken(req.cookies?.token);
   if (!result || !result?.data) {
     res.clearCookie("token");
     return res.redirect(loginRoute);

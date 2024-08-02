@@ -1,13 +1,13 @@
-const Job = require("../../../../models/job.model");
-const routePaths = require("../../../../config/routes");
-const { homeView } = require("../../../../config/views");
-const { getSession } = require("../../../../utils/session");
-const { verifyToken } = require("../../../../utils/jwt");
+const Task = require("@root/models/task.model");
+const routePaths = require("@root/config/routes");
+const { homeView } = require("@root/config/views");
+const { getSession } = require("@root/utils/session");
+const { getDateToken } = require("@root/utils/jwt");
 
 module.exports = {
   homePage: async (req, res) => {
-    const { data } = verifyToken(req.cookies?.token);
-    const jobs = await Job.find({
+    const { data } = getDateToken(req.cookies?.token);
+    const tasks = await Task.find({
       userId: data.id,
     });
 
@@ -16,7 +16,7 @@ module.exports = {
       title: process.env.PROJECT_NAME + " | Home",
       routePaths,
       message: getSession(req, "message"),
-      jobs,
+      tasks,
     });
   },
 };

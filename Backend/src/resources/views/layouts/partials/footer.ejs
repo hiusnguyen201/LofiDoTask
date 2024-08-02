@@ -15,7 +15,7 @@
   <div id="modal" class="card">
     <div class="card-body">
       <h1 class="card-title text-center mb-3" style="color: #ffbc70">
-        Todoist
+        Task List
       </h1>
 
       <% if(message){%>
@@ -27,41 +27,41 @@
       <form
         class="card-form mb-3"
         method="post"
-        action="<%= routePaths.addJobRoute  %>"
+        action="<%= routePaths.addTaskRoute  %>"
       >
         <input
           type="text"
-          name="job"
-          placeholder="Add your new job"
+          name="task"
+          placeholder="Add your new task"
           class="form-control"
         />
-        <button type="submit" class="btn btnAddTodo">Add</button>
+        <button type="submit" class="btn btnAddTask">Add</button>
       </form>
-      <div class="seperate"><span>List Jobs</span></div>
+      <div class="seperate"></div>
     </div>
 
     <div class="card-footer">
-      <% if(jobs && jobs?.length) { jobs.map((item) => {%>
-      <div class="job-item">
+      <% if(tasks && tasks?.length) { tasks.map((item) => {%>
+      <div class="task-item">
         <form
           class="card-form"
-          action="<%= routePaths.editJobRoute  %>"
+          action="<%= routePaths.editTaskRoute  %>"
           method="post"
         >
           <input
             type="text"
-            name="job"
-            placeholder="Job..."
+            name="task"
+            placeholder="Task..."
             class="form-control"
             value="<%= item.title %>"
           />
-          <input type="hidden" name="jobId" value="<%= item._id %>" />
+          <input type="hidden" name="taskId" value="<%= item._id %>" />
           <button class="btn btn-primary">
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
         </form>
-        <form action="<%= routePaths.deleteJobRoute  %>" method="post">
-          <input type="hidden" name="jobId" value="<%= item._id %>" />
+        <form action="<%= routePaths.deleteTaskRoute  %>" method="post">
+          <input type="hidden" name="taskId" value="<%= item._id %>" />
           <button class="btn btn-danger">
             <i class="fa-solid fa-trash"></i>
           </button>

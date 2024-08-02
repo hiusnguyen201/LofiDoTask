@@ -16,7 +16,11 @@ module.exports = {
     return { token, exp };
   },
 
-  verifyToken: (token) => {
-    return jwt.verify(token, process.env.SECRET_ACCESS_TOKEN);
+  getDateToken: (token) => {
+    try {
+      return jwt.verify(token, process.env.SECRET_ACCESS_TOKEN);
+    } catch (e) {
+      return null;
+    }
   },
 };

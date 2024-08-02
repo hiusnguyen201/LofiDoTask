@@ -1,4 +1,6 @@
 require("dotenv").config();
+require("module-alias/register");
+
 var express = require("express");
 var createError = require("http-errors");
 var path = require("path");

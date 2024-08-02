@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-const jobRouter = require("./jobs");
+const taskRouter = require("./tasks");
 
 const HomeController = require("../../http/controllers/web/clients/home.controller");
 
@@ -9,6 +9,6 @@ const HomeController = require("../../http/controllers/web/clients/home.controll
  * Prefix: /
  */
 router.get("/", HomeController.homePage);
-router.use("/jobs", jobRouter);
+router.use("/tasks", taskRouter);
 
 module.exports = router;

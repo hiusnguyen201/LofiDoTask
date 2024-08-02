@@ -1,11 +1,11 @@
 const { validationResult } = require("express-validator");
 
-const User = require("../../../../models/user.model");
-const { registerView } = require("../../../../config/views");
-const { loginRoute, registerRoute } = require("../../../../config/routes");
-const { getError } = require("../../../../utils/validate");
-const { makeHash } = require("../../../../utils/bcrypt");
-const { getSession, setSessions } = require("../../../../utils/session");
+const User = require("@root/models/user.model");
+const { registerView } = require("@root/config/views");
+const { loginRoute, registerRoute } = require("@root/config/routes");
+const { getError } = require("@root/utils/validate");
+const { makeHash } = require("@root/utils/bcrypt");
+const { getSession, setSessions } = require("@root/utils/session");
 
 module.exports = {
   registerPage: (req, res) => {
