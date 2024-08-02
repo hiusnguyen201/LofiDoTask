@@ -1,21 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const userSchema = mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
+const jobSchema = mongoose.Schema({
+  userId: {
+    type: Schema.ObjectId,
+    ref: "User",
     required: true,
   },
-  accessToken: {
+  title: {
     type: String,
-  },
-  refreshToken: {
-    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,
@@ -27,4 +21,4 @@ const userSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Job", jobSchema);

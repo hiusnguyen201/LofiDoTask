@@ -1,0 +1,102 @@
+<footer class="footer-wrapper">
+  <audio id="audio" src="/lofi-music/lofi/chill1.mp3"></audio>
+  <p class="desc">Song name: Secrets</p>
+  <button onclick="togglePlayAudio()" class="play-btn">
+    <img id="playBtn" src="/lofi-music/icons/play.svg" alt="playBtn" />
+  </button>
+  <button onclick="toggleModal()" id="open-menu-btn" class="open-menu-btn">
+    <i class="fas fa-book-reader fa-2x"></i>
+  </button>
+  <div id="modal" class="card">
+    <div class="card-body">
+      <h1 class="card-title text-center mb-3">Todoist</h1>
+
+      <% if(message){%>
+      <div class="alert alert-<%= message.type %>">
+        <%= message.text %>
+      </div>
+      <% } %>
+
+      <form
+        class="card-form mb-3"
+        method="post"
+        action="<%= routePaths.addJobRoute  %>"
+      >
+        <input
+          type="text"
+          name="job"
+          placeholder="Add your new job"
+          class="form-control"
+        />
+        <button type="submit" class="btn btnAddTodo">Add</button>
+      </form>
+      <div class="seperate"><span>List Jobs</span></div>
+    </div>
+
+    <div class="card-footer">
+      <% if(jobs && jobs?.length) { jobs.map((item) => {%>
+      <div class="job-item">
+        <form
+          class="card-form mb-3"
+          action="<%= routePaths.editJobRoute  %>"
+          method="post"
+        >
+          <input
+            type="text"
+            name="job"
+            placeholder="Job..."
+            class="form-control"
+            value="<%= item.title %>"
+          />
+          <input type="hidden" name="jobId" value="<%= item._id %>" />
+          <button class="btn btn-primary">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+        </form>
+        <form
+          class="mb-3"
+          action="<%= routePaths.deleteJobRoute  %>"
+          method="post"
+        >
+          <input type="hidden" name="jobId" value="<%= item._id %>" />
+          <button class="btn btn-danger">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </form>
+      </div>
+      <% })} %>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const togglePlayAudio = () => {
+    const audio = document.getElementById("audio");
+    const playBtn = document.getElementById("playBtn");
+
+    if (audio.paused) {
+      audio.play();
+      playBtn.src = src = "/lofi-music/icons/pause.svg";
+    } else {
+      audio.pause();
+      playBtn.src = src = "/lofi-music/icons/play.svg";
+    }
+  };
+
+  const toggleModal = () => {
+    const modal = document.getElementById("modal");
+    const openMenuBtn = document.getElementById("open-menu-btn");
+
+    console.log(modal.style.opacity);
+
+    if (!modal.style.opacity || modal.style.opacity == 0) {
+      modal.style.opacity = 1;
+      openMenuBtn.style.borderTopRightRadius = 0;
+      openMenuBtn.style.borderTopLeftRadius = 0;
+    } else {
+      modal.style.opacity = 0;
+      openMenuBtn.style.borderTopRightRadius = "100%";
+      openMenuBtn.style.borderTopLeftRadius = "100%";
+    }
+  };
+</script>
