@@ -2,10 +2,6 @@ var express = require("express");
 var router = express.Router();
 
 /**
- * Controllers
- */
-
-/**
  * Routes
  */
 const authRouter = require("./auth");

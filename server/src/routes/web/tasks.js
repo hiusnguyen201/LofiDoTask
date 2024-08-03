@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-const TaskController = require("@controllers/web/clients/task.controller");
+const TaskController = require("@webControllers/clients/task.controller");
 
 /**
  * Prefix: /tasks

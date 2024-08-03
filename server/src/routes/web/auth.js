@@ -1,9 +1,9 @@
 var express = require("express");
 var router = express.Router();
 
-const LoginController = require("@controllers/web/auth/login.controller");
-const RegisterController = require("@controllers/web/auth/register.controller");
-const LogoutController = require("@controllers/web/auth/logout.controller");
+const LoginController = require("@webControllers/auth/login.controller");
+const RegisterController = require("@webControllers/auth/register.controller");
+const LogoutController = require("@webControllers/auth/logout.controller");
 
 const LoginRequest = require("@requests/auth/login.request");
 const RegisterRequest = require("@requests/auth/register.request");
