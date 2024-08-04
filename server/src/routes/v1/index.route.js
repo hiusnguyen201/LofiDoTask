@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
 
-import AuthRouter from "./auth.js";
-import TaskRouter from "./tasks.js";
+import AuthRouter from "./auth.route.js";
+import TaskRouter from "./tasks.route.js";
 
 router.use("/auth", AuthRouter);
 router.use("/tasks", TaskRouter);

@@ -5,19 +5,16 @@ import logger from "morgan";
 import cors from "cors";
 import * as dotenv from "dotenv";
 
+import error from "#src/http/middlewares/error.js";
+import apiRouter from "#src/routes/v1/index.route.js";
+
 // var createError = require("http-errors");
 // var cookieParser = require("cookie-parser");
-
-import apiRouter from "#src/routes/v1/index";
 
 dotenv.config();
 const app = express();
 const __dirname = process.cwd();
 app.use(cors());
-
-// view engine setup
-// app.set("view engine", "ejs");
-// app.set("views", path.join(__dirname, "resources/views"));
 
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
@@ -34,17 +31,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
-  console.log(3);
-
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("errors/error");
-});
+app.use(error.handler);
 
 mongoose
   .connect(process.env.DB_URI)

@@ -1,22 +1,22 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const taskSchema = new Schema(
+const refreshTokenSchema = new Schema(
   {
     userId: {
       type: Schema.ObjectId,
       ref: "User",
       required: true,
     },
-    title: {
+    token: {
       type: String,
       required: true,
     },
-    createdAt: {
+    expiresAt: {
       type: Date,
       required: true,
     },
-    updatedAt: {
+    createdAt: {
       type: Date,
       required: true,
     },
@@ -24,5 +24,5 @@ const taskSchema = new Schema(
   { versionKey: false, timestamps: true, _id: true, id: false }
 );
 
-const Task = mongoose.model("Task", taskSchema);
-export default Task;
+const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema);
+export default RefreshToken;
