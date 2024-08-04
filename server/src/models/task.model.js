@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const taskSchema = mongoose.Schema({
+const taskSchema = new Schema({
   userId: {
     type: Schema.ObjectId,
     ref: "User",

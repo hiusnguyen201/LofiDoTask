@@ -1,59 +1,32 @@
-require("dotenv").config();
-require("module-alias/register");
+import express from "express";
+import mongoose from "mongoose";
+import path from "path";
+import logger from "morgan";
+import cors from "cors";
+import * as dotenv from "dotenv";
 
-var express = require("express");
-var createError = require("http-errors");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-const expressLayouts = require("express-ejs-layouts");
-const cors = require("cors");
-const session = require("express-session");
-const mongoose = require("mongoose");
+// var createError = require("http-errors");
+// var cookieParser = require("cookie-parser");
 
-// Connect db
-async function connectDB() {
-  try {
-    await mongoose.connect(process.env.DB_URL);
-  } catch (err) {
-    console.log(err);
-  }
-}
+import apiRouter from "#src/routes/v1/index";
 
-connectDB();
-
-const webRouter = require("./routes/web/index");
-const apiRouter = require("./routes/api/v1/index");
-
-var app = express();
-app.disable("etag");
+dotenv.config();
+const app = express();
+const __dirname = process.cwd();
 app.use(cors());
-app.set("trust proxy", 1);
-app.use(
-  session({
-    secret: "todoist",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
 
 // view engine setup
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "resources/views"));
-app.set("layout", false);
-app.use(expressLayouts);
+// app.set("view engine", "ejs");
+// app.set("views", path.join(__dirname, "resources/views"));
 
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
+app.use(logger("dev"));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Api version 1
 app.use("/api/v1", apiRouter);
-
-// Web
-app.use("/", webRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -62,6 +35,8 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
+  console.log(3);
+
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -71,4 +46,14 @@ app.use(function (err, req, res, next) {
   res.render("errors/error");
 });
 
-module.exports = app;
+mongoose
+  .connect(process.env.DB_URI)
+  .then(() => {
+    console.log("Connected successfully to MongoDB");
+  })
+  .catch((err) => {
+    console.log("Connect to MongoDB failed");
+    console.log(err);
+  });
+
+export default app;

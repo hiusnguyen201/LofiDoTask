@@ -1,4 +1,4 @@
-module.exports = {
+const responseUtils = {
   /**
    * Send response in JSON format
    * @param {*} res - Express response object
@@ -14,15 +14,8 @@ module.exports = {
 
     res.set("Content-Type", "application/json");
 
-    if (data) {
-      responseData.data = data;
-    }
-
-    res.json({
-      ...responseData,
-      ...extras,
-    });
-
+    Object.assign(responseData, data && { data });
+    res.json({ ...responseData, ...extras });
     res.end();
   },
 
@@ -38,6 +31,13 @@ module.exports = {
    */
   status201: function (res, message = null, data = null, extras = {}) {
     this.sendJson(res, 201, message, data, extras);
+  },
+
+  /**
+   * Send **204 No Content** success status response
+   */
+  status204: function (res, message = null) {
+    this.sendJson(res, 204, message);
   },
 
   /**
@@ -75,3 +75,5 @@ module.exports = {
     this.sendJson(res, 500, err.message, { detail: err });
   },
 };
+
+module.exports = responseUtils;

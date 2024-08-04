@@ -1,9 +1,10 @@
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
 
 module.exports = {
   makeHash: (value) => {
-    return bcrypt.hashSync(value, saltRounds);
+    const saltRounds = 10;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    return bcrypt.hashSync(value, salt);
   },
 
   compareHash: (value, hash) => {
