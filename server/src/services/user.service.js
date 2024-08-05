@@ -5,9 +5,10 @@ import CypherUtils from "#src/utils/CypherUtils.js";
 export default {
   create,
   getOne,
+  getOneById,
 };
 
-const selectFields = "_id username createdAt updatedAt";
+const SELECTED_FIELDS = "_id username createdAt updatedAt";
 
 /**
  * Create user
@@ -23,7 +24,7 @@ async function create(data) {
   return user;
 }
 
-async function getOne(identify) {
+async function getOne(identify, selectFields = null) {
   const filter = {};
 
   if (uuid.validate(identify)) {
@@ -32,5 +33,13 @@ async function getOne(identify) {
     filter.username = identify;
   }
 
-  return await User.findOne(filter);
+  return await User.findOne(filter).select(selectFields);
+}
+
+async function getOneById(id, selectFields = null) {
+  if (!selectFields) {
+    selectFields = SELECTED_FIELDS;
+  }
+
+  return await User.findById(id).select(selectFields);
 }

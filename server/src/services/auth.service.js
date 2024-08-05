@@ -14,24 +14,24 @@ async function authenticate(username, password) {
   const user = await userService.getOne(username);
 
   if (!user) {
-    throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);
+    throw ApiErrorUtils.simple2(responseCode.AUTH.USER_NOT_FOUND);
   }
 
   const isMatch = CypherUtils.compareHash(password, user.password);
   if (!isMatch) {
-    throw ApiErrorUtils.simple(responseCode.AUTH.INVALID_PASSWORD);
+    throw ApiErrorUtils.simple2(responseCode.AUTH.INVALID_PASSWORD);
   }
 
   const userData = user._doc;
   delete userData.password;
 
   const accessToken = JwtUtils.generateToken({ _id: user._id });
-  const refreshToken = generateRefreshToken(user._id);
+  const refreshToken = await generateRefreshToken(user._id);
 
   return {
     user,
     accessToken,
-    refreshToken,
+    refreshToken: refreshToken.token,
   };
 }
 

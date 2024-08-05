@@ -32,7 +32,7 @@ export const login = async (req, res, next) => {
     ResponseUtils.status200(res, "Login successful !", {
       user: userData,
       accessToken: data.accessToken,
-      refreshToken: userData.refreshToken,
+      refreshToken: data.refreshToken,
     });
   } catch (err) {
     next(err);

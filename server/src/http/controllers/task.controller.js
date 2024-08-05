@@ -1,4 +1,6 @@
-export const getTasks = async (req, res, next) => {};
+export const getTasks = async (req, res, next) => {
+  res.json("Hel;o");
+};
 
 export const getTask = async (req, res, next) => {};
 
