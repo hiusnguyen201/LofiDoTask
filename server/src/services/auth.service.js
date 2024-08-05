@@ -3,18 +3,22 @@ import RefreshToken from "#src/models/refreshToken.model.js";
 import responseCode from "#src/constants/responseCode.constant.js";
 import ApiErrorUtils from "#src/utils/ApiErrorUtils.js";
 import JwtUtils from "#src/utils/JwtUtils.js";
+import CypherUtils from "#src/utils/CypherUtils.js";
 
 export default {
   authenticate,
 };
 
 async function authenticate(username, password) {
-  const user = await userService.getOne({
-    username,
-  });
+  const user = await userService.getOne(username);
 
   if (!user) {
     throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);
+  }
+
+  const isMatch = CypherUtils.compareHash(password, user.password);
+  if (!isMatch) {
+    throw ApiErrorUtils.simple(responseCode.AUTH.INVALID_PASSWORD);
   }
 
   const accessToken = JwtUtils.generateToken({ _id: user._id });

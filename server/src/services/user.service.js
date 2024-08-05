@@ -32,5 +32,5 @@ async function getOne(identify) {
     filter.username = identify;
   }
 
-  return await User.findOne(filter).select(selectFields);
+  return await User.findOne(filter);
 }

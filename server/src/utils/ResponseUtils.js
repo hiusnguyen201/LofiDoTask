@@ -12,11 +12,13 @@ class ResponseUtils {
       message,
     };
 
+    if (data) {
+      responseData.data = data;
+    }
+
     res.set("Content-Type", "application/json");
 
-    Object.assign(responseData, data && { data });
-    res.json({ ...responseData, ...extras });
-    res.end();
+    return res.json({ ...responseData, ...extras });
   }
 
   /**
@@ -43,8 +45,13 @@ class ResponseUtils {
   /**
    * Send **400 Bad Request** response(validation Error Response)
    */
-  static status400(res, message = "Bad Request!") {
-    this.sendJson(res, 400, message);
+  static status400(
+    res,
+    message = "Bad Request!",
+    data = null,
+    errors = []
+  ) {
+    this.sendJson(res, 400, message, data, errors.length && { errors });
   }
 
   /**
@@ -72,7 +79,7 @@ class ResponseUtils {
    * Send **500 Internal Server Error** server error response
    */
   static status500(res, err) {
-    this.sendJson(res, 500, err.message, { detail: err });
+    this.sendJson(res, 500, err.message, { details: err });
   }
 }
 
