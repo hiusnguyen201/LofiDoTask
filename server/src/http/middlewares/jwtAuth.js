@@ -6,7 +6,7 @@ function authorized() {
   return [
     // Authenticate JWT token and attach user to req.user
     JwtUtils.jwtMiddleware,
-    async (req, res, next) => {
+    async (req, _, next) => {
       const user = await userService.getOneById(req.user._id, "_id");
       if (!user) {
         return next(

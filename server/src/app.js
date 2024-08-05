@@ -6,7 +6,7 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 
 import error from "#src/http/middlewares/error.js";
-import apiRouter from "#src/routes/v1/index.route.js";
+import routerV1 from "#src/routes/v1/index.route.js";
 
 // var createError = require("http-errors");
 // var cookieParser = require("cookie-parser");
@@ -23,23 +23,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Api version 1
-app.use("/api/v1", apiRouter);
+app.use("/api/v1", routerV1);
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// Converts errors to ApiErrorUtils
+app.use(error.converter);
 
-// error handler
+// Catch 404 and forward to error handler
+app.use(error.notFound);
+
+// Error handler and send stacktrace during development
 app.use(error.handler);
 
 mongoose
   .connect(process.env.DB_URI)
   .then(() => {
-    console.log("Connected successfully to MongoDB");
+    console.log("Connected successfully to MongoDB !");
   })
   .catch((err) => {
-    console.log("Connect to MongoDB failed");
+    console.log("Connect to MongoDB failed !");
     console.log(err);
   });
 
