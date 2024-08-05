@@ -12,14 +12,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
-    updatedAt: {
-      type: Date,
-      required: true,
-    },
   },
   { versionKey: false, timestamps: true, _id: true, id: false }
 );

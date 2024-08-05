@@ -6,17 +6,17 @@ import JwtUtils from "#src/utils/JwtUtils.js";
 export const register = async (req, res, next) => {
   try {
     const newUser = await userService.create(req.body);
-    if (newUser && newUser._doc) {
-      const userData = newUser._doc;
-      delete userData.password;
-
-      ResponseUtils.status201(res, "Register successful !", {
-        token: JwtUtils.generateToken({ _id: user._id }),
-        user: userData,
-      });
+    if (!newUser || !newUser._doc) {
+      throw new Error("Register failed !");
     }
 
-    throw new Error("Register failed !");
+    const userData = newUser._doc;
+    delete userData.password;
+
+    ResponseUtils.status201(res, "Register successful !", {
+      token: JwtUtils.generateToken({ _id: userData._id }),
+      user: userData,
+    });
   } catch (err) {
     next(err);
   }

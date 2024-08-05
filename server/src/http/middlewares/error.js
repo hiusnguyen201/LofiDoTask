@@ -19,5 +19,6 @@ function handler(err, req, res, _) {
   }
 
   res.set("Content-Type", "application/json");
-  return res.status(response.code).json(response);
+  res.status(response.code).json(response);
+  res.end();
 }

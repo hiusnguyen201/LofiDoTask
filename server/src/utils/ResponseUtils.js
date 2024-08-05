@@ -17,8 +17,8 @@ class ResponseUtils {
     }
 
     res.set("Content-Type", "application/json");
-
-    return res.json({ ...responseData, ...extras });
+    res.json({ ...responseData, ...extras });
+    res.end();
   }
 
   /**

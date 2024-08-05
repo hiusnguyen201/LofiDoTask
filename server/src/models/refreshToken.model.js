@@ -16,10 +16,6 @@ const refreshTokenSchema = new Schema(
       type: Date,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
   },
   { versionKey: false, timestamps: true, _id: true, id: false }
 );
