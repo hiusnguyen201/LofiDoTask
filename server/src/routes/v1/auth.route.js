@@ -8,14 +8,22 @@ import {
   logout,
   refreshToken,
 } from "#src/http/controllers/auth.controller.js";
-import { LOGIN_RULES, REGISTER_RULES } from "#src/http/rules/auth.rule.js";
+import {
+  LOGIN_RULES,
+  REGISTER_RULES,
+  REFRESH_TOKEN_RULES,
+} from "#src/http/rules/auth.rule.js";
 import { isAuthorized } from "#src/http/middlewares/jwtAuth.js";
 
 router.post("/login", validateRequest(LOGIN_RULES), login);
 
 router.post("/register", validateRequest(REGISTER_RULES), register);
 
-router.post("/refresh-token", refreshToken);
+router.post(
+  "/refresh-token",
+  validateRequest(REFRESH_TOKEN_RULES),
+  refreshToken
+);
 
 router.post("/logout", isAuthorized, logout);
 

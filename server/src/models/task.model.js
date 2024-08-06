@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const taskSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.ObjectId,
       ref: "User",
       required: true,

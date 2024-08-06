@@ -39,7 +39,7 @@ async function authenticate(username, password, ipAddress) {
 
 async function generateRefreshToken(userId, ipAddress) {
   const refreshToken = await RefreshToken.create({
-    userId,
+    user: userId,
     token: CryptoUtils.randomCrypto(),
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     createdByIp: ipAddress,
@@ -55,7 +55,22 @@ async function refreshToken(token, ipAddress) {
     );
   }
 
-  console.log(currentRefreshToken);
+  const { user } = currentRefreshToken;
+
+  const newRefreshToken = await generateRefreshToken(user._id, ipAddress);
+  currentRefreshToken.revokedAt = Date.now();
+  currentRefreshToken.revokedByIp = ipAddress;
+  currentRefreshToken.replacedByToken = newRefreshToken.token;
+  await currentRefreshToken.save();
+  await newRefreshToken.save();
+
+  const accessToken = JwtUtils.generateToken({ _id: user._id });
+
+  return {
+    user,
+    accessToken,
+    refreshToken: newRefreshToken.token,
+  };
 }
 
 async function revokeToken(token, ipAddress) {
@@ -69,7 +84,7 @@ async function getRefreshToken(token) {
   const refreshToken = await RefreshToken.findOne({
     token,
   }).populate({
-    path: "User",
+    path: "user",
     select: "-password",
   });
 

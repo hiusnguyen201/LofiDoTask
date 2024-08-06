@@ -1,9 +1,10 @@
 class ApiErrorUtils extends Error {
-  constructor({ message, errors, status = 500 }) {
+  constructor({ message, errors, status = 500, stack }) {
     super(message);
     this.status = status;
     this.message = message;
     this.errors = errors;
+    this.stack = stack;
   }
 
   static simple(message, status = 500) {

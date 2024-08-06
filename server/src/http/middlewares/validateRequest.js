@@ -9,6 +9,7 @@ const options = {
 function validateRequest(schema) {
   return (req, res, next) => {
     const { error, value } = schema.validate(req.body, options);
+
     if (error) {
       const errors = error.details.map((item) => {
         return {

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const refreshTokenSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.ObjectId,
       ref: "User",
       required: true,
@@ -24,6 +24,9 @@ const refreshTokenSchema = new Schema(
       type: Date,
     },
     revokedByIp: {
+      type: String,
+    },
+    replacedByToken: {
       type: String,
     },
   },

@@ -23,3 +23,7 @@ export const REGISTER_RULES = Joi.object({
     .required()
     .valid(Joi.ref("password")),
 });
+
+export const REFRESH_TOKEN_RULES = Joi.object({
+  refreshToken: Joi.string().required(),
+});

@@ -46,6 +46,12 @@ export const refreshToken = async (req, res, next) => {
     const ipAddress = req.ipv4;
     const refreshToken = req.body.refreshToken;
     const data = await authService.refreshToken(refreshToken, ipAddress);
+
+    ResponseUtils.status200(res, "Refresh Token successful !", {
+      user: FormatUtils.formatOneUser(data.user),
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+    });
   } catch (err) {
     next(err);
   }
