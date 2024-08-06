@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-class CypherUtils {
+class BcryptUtils {
   static makeHash(value) {
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
@@ -12,4 +12,4 @@ class CypherUtils {
   }
 }
 
-export default CypherUtils;
+export default BcryptUtils;

@@ -1,22 +1,21 @@
-import * as uuid from "uuid";
 import User from "#src/models/user.model.js";
-import CypherUtils from "#src/utils/CypherUtils.js";
+import StringUtils from "#src/utils/StringUtils.js";
+import BcryptUtils from "#src/utils/BcryptUtils.js";
 
 export default {
   create,
   getOne,
-  getOneById,
 };
 
 const SELECTED_FIELDS = "_id username createdAt updatedAt";
 
 /**
  * Create user
- * @param {Object} data
+ * @param {*} data - object data
  * @returns
  */
 async function create(data) {
-  const hash = CypherUtils.makeHash(data.password);
+  const hash = BcryptUtils.makeHash(data.password);
   const user = await User.create({
     ...data,
     password: hash,
@@ -24,22 +23,28 @@ async function create(data) {
   return user;
 }
 
+/**
+ * Get user
+ * @param {*} identify - find by _id or username
+ * @param {*} selectFields
+ * @returns
+ */
 async function getOne(identify, selectFields = null) {
   const filter = {};
 
-  if (uuid.validate(identify)) {
+  if (!selectFields) {
+    selectFields = SELECTED_FIELDS;
+  }
+
+  if (selectFields.includes("*")) {
+    selectFields = selectFields.replace("*", SELECTED_FIELDS);
+  }
+
+  if (StringUtils.isUUID(identify)) {
     filter._id = identify;
   } else {
     filter.username = identify;
   }
 
   return await User.findOne(filter).select(selectFields);
-}
-
-async function getOneById(id, selectFields = null) {
-  if (!selectFields) {
-    selectFields = SELECTED_FIELDS;
-  }
-
-  return await User.findById(id).select(selectFields);
 }

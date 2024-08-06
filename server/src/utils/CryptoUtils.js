@@ -1,9 +1,10 @@
 import CryptoJS from "crypto-js";
-import { v4 as uuidv4 } from "uuid";
+import StringUtils from "./StringUtils.js";
 
 class CryptoUtils {
   static randomCrypto() {
-    return CryptoJS.SHA256(uuidv4() + Math.random());
+    const str = StringUtils.generateUUID();
+    return CryptoJS.SHA256(str + Math.random());
   }
 }
 

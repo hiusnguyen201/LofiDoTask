@@ -11,7 +11,7 @@ export const register = async (req, res, next) => {
       throw new Error("Register failed !");
     }
 
-    ResponseUtils.status201(res, "Register successful !", {
+    ResponseUtils.status201(res, "Register successfully !", {
       token: JwtUtils.generateToken({ _id: newUser._id }),
       user: FormatUtils.formatOneUser(newUser),
     });
@@ -31,7 +31,7 @@ export const login = async (req, res, next) => {
       ipAddress
     );
 
-    ResponseUtils.status200(res, "Login successful !", {
+    ResponseUtils.status200(res, "Login successfully !", {
       user: FormatUtils.formatOneUser(data.user),
       accessToken: data.accessToken,
       refreshToken: data.refreshToken,
@@ -47,7 +47,7 @@ export const refreshToken = async (req, res, next) => {
     const refreshToken = req.body.refreshToken;
     const data = await authService.refreshToken(refreshToken, ipAddress);
 
-    ResponseUtils.status200(res, "Refresh Token successful !", {
+    ResponseUtils.status200(res, "Refresh token successfully !", {
       user: FormatUtils.formatOneUser(data.user),
       accessToken: data.accessToken,
       refreshToken: data.refreshToken,
@@ -61,7 +61,7 @@ export const logout = async (req, res, next) => {
   try {
     const refreshToken = req.body.refreshToken;
     await authService.revokeToken(refreshToken);
-    ResponseUtils.status204(res, "Logout successful !");
+    ResponseUtils.status204(res, "Logout successfully !");
   } catch (err) {
     next(err);
   }

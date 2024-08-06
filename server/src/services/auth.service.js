@@ -1,9 +1,9 @@
-import userService from "./user.service.js";
-import RefreshToken from "#src/models/refreshToken.model.js";
 import responseCode from "#src/constants/responseCode.constant.js";
+import RefreshToken from "#src/models/refreshToken.model.js";
+import userService from "./user.service.js";
 import ApiErrorUtils from "#src/utils/ApiErrorUtils.js";
 import JwtUtils from "#src/utils/JwtUtils.js";
-import CypherUtils from "#src/utils/CypherUtils.js";
+import BcryptUtils from "#src/utils/BcryptUtils.js";
 import CryptoUtils from "#src/utils/CryptoUtils.js";
 
 export default {
@@ -13,15 +13,15 @@ export default {
 };
 
 async function authenticate(username, password, ipAddress) {
-  const user = await userService.getOne(username);
+  const user = await userService.getOne(username, "* password");
 
   if (!user) {
-    throw ApiErrorUtils.simple2(responseCode.AUTH.USER_NOT_FOUND);
+    throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);
   }
 
-  const isMatch = CypherUtils.compareHash(password, user.password);
+  const isMatch = BcryptUtils.compareHash(password, user.password);
   if (!isMatch) {
-    throw ApiErrorUtils.simple2(responseCode.AUTH.INVALID_PASSWORD);
+    throw ApiErrorUtils.simple(responseCode.AUTH.INVALID_PASSWORD);
   }
 
   const userData = user._doc;
@@ -50,7 +50,7 @@ async function generateRefreshToken(userId, ipAddress) {
 async function refreshToken(token, ipAddress) {
   const currentRefreshToken = await getRefreshToken(token);
   if (currentRefreshToken.createdByIp !== ipAddress) {
-    throw ApiErrorUtils.simple2(
+    throw ApiErrorUtils.simple(
       responseCode.AUTH.REVOKE_TOKEN_FROM_UNAUTHORIZED_IP
     );
   }
@@ -89,7 +89,7 @@ async function getRefreshToken(token) {
   });
 
   if (!refreshToken || !refreshToken.isActive) {
-    throw ApiErrorUtils.simple2(responseCode.AUTH.INVALID_TOKEN);
+    throw ApiErrorUtils.simple(responseCode.AUTH.INVALID_TOKEN);
   }
 
   return refreshToken;
