@@ -8,6 +8,7 @@ import CryptoUtils from "#src/utils/CryptoUtils.js";
 
 export default {
   authenticate,
+  revokeToken,
 };
 
 async function authenticate(username, password) {
@@ -41,5 +42,27 @@ async function generateRefreshToken(userId) {
     token: CryptoUtils.randomCrypto(),
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   });
+  return refreshToken;
+}
+
+async function revokeToken(token) {
+  const refreshToken = await getRefreshToken(token);
+  console.log(refreshToken);
+  refreshToken.revokedAt = Date.now();
+  await refreshToken.save();
+}
+
+async function getRefreshToken(token) {
+  const refreshToken = await RefreshToken.findOne({
+    token,
+  }).populate({
+    path: "User",
+    select: "-password",
+  });
+
+  if (!refreshToken) {
+    throw ApiErrorUtils.simple2(responseCode.AUTH.INVALID_TOKEN);
+  }
+
   return refreshToken;
 }

@@ -16,6 +16,9 @@ const refreshTokenSchema = new Schema(
       type: Date,
       required: true,
     },
+    revokedAt: {
+      type: Date,
+    },
   },
   { versionKey: false, timestamps: true, _id: true, id: false }
 );

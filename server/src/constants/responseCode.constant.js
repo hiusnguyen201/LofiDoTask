@@ -14,6 +14,13 @@ const responseCode = {
         vi: "Mật khẩu không hợp lệ",
       },
     },
+    INVALID_TOKEN: {
+      status: 401,
+      message: {
+        en: "Invalid token",
+        vi: "Token không hợp lệ",
+      },
+    },
   },
 };
 

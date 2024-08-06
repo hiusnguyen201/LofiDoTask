@@ -39,4 +39,12 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const logout = (req, res) => {};
+export const logout = async (req, res) => {
+  try {
+    const refreshToken = req.body.refreshToken;
+    await authService.revokeToken(refreshToken);
+    ResponseUtils.status204(res, "Logout successful !");
+  } catch (err) {
+    next(err);
+  }
+};

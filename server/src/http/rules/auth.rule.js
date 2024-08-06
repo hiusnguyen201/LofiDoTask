@@ -7,6 +7,7 @@ export const LOGIN_RULES = Joi.object({
 
 export const REGISTER_RULES = Joi.object({
   username: Joi.string().required(),
+  email: Joi.string().required().email(),
   password: Joi.string().required(),
   confirmPassword: Joi.string().required().valid(Joi.ref("password")),
 });
