@@ -7,7 +7,7 @@ const boardSchema = new Schema({
     ref: "User",
     required: true,
   },
-  slug: {
+  code: {
     type: String,
     required: true,
   },

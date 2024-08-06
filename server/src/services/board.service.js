@@ -12,7 +12,7 @@ export default {
 };
 
 const SELECTED_FIELDS =
-  "_id name slug isClosed visibilityStatus prioritizedAt createdAt updatedAt";
+  "_id name code isClosed visibilityStatus prioritizedAt createdAt updatedAt";
 
 /**
  * Get all boards
@@ -26,13 +26,13 @@ async function getAll(filter) {
 
 /**
  * Get board
- * @param {*} identify - find by _id or slug
+ * @param {*} identify - find by _id or code
  * @returns
  */
 async function getOne(userId, identify, selectFields = null) {
   const filter = StringUtils.isUUID(identify)
     ? { _id: identify }
-    : { slug: identify };
+    : { code: identify };
 
   if (selectFields) {
     selectFields = SELECTED_FIELDS;
@@ -50,12 +50,12 @@ async function getOne(userId, identify, selectFields = null) {
  * @returns
  */
 async function create(userId, data) {
-  const slug = StringUtils.generateNanoID();
+  const code = StringUtils.generateNanoID();
 
   const board = await Board.create({
     user: userId,
     ...data,
-    slug,
+    code,
   });
   return board;
 }
@@ -63,7 +63,7 @@ async function create(userId, data) {
 /**
  * Update board
  * @param {*} userId
- * @param {*} identify - find by _id or slug
+ * @param {*} identify - find by _id or code
  * @param {*} updateData
  * @returns
  */
@@ -88,7 +88,7 @@ async function update(userId, identify, updateData) {
 /**
  * Delete board
  * @param {*} userId
- * @param {*} identify - find by _id or slug
+ * @param {*} identify - find by _id or code
  * @returns
  */
 async function remove(userId, identify) {

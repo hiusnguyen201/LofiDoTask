@@ -1,4 +1,3 @@
-import * as uuid from "uuid";
 import { customAlphabet } from "nanoid";
 import REGEX from "#src/constants/regex.constant.js";
 
@@ -17,10 +16,6 @@ class StringUtils {
 
   static isPhoneNumber(str) {
     return REGEX.PHONE.test(str);
-  }
-
-  static generateUUID() {
-    return uuid.v4();
   }
 
   static generateNanoID() {
