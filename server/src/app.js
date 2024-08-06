@@ -16,6 +16,11 @@ const app = express();
 const __dirname = process.cwd();
 app.use(cors());
 
+app.use((req, res, next) => {
+  req.ipv4 = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  next();
+});
+
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(logger("dev"));

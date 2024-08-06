@@ -9,9 +9,10 @@ import CryptoUtils from "#src/utils/CryptoUtils.js";
 export default {
   authenticate,
   revokeToken,
+  refreshToken,
 };
 
-async function authenticate(username, password) {
+async function authenticate(username, password, ipAddress) {
   const user = await userService.getOne(username);
 
   if (!user) {
@@ -27,7 +28,7 @@ async function authenticate(username, password) {
   delete userData.password;
 
   const accessToken = JwtUtils.generateToken({ _id: user._id });
-  const refreshToken = await generateRefreshToken(user._id);
+  const refreshToken = await generateRefreshToken(user._id, ipAddress);
 
   return {
     user,
@@ -36,19 +37,31 @@ async function authenticate(username, password) {
   };
 }
 
-async function generateRefreshToken(userId) {
+async function generateRefreshToken(userId, ipAddress) {
   const refreshToken = await RefreshToken.create({
     userId,
     token: CryptoUtils.randomCrypto(),
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    createdByIp: ipAddress,
   });
   return refreshToken;
 }
 
-async function revokeToken(token) {
+async function refreshToken(token, ipAddress) {
+  const currentRefreshToken = await getRefreshToken(token);
+  if (currentRefreshToken.createdByIp !== ipAddress) {
+    throw ApiErrorUtils.simple2(
+      responseCode.AUTH.REVOKE_TOKEN_FROM_UNAUTHORIZED_IP
+    );
+  }
+
+  console.log(currentRefreshToken);
+}
+
+async function revokeToken(token, ipAddress) {
   const refreshToken = await getRefreshToken(token);
-  console.log(refreshToken);
   refreshToken.revokedAt = Date.now();
+  refreshToken.revokedByIp = ipAddress;
   await refreshToken.save();
 }
 
@@ -60,7 +73,7 @@ async function getRefreshToken(token) {
     select: "-password",
   });
 
-  if (!refreshToken) {
+  if (!refreshToken || !refreshToken.isActive) {
     throw ApiErrorUtils.simple2(responseCode.AUTH.INVALID_TOKEN);
   }
 

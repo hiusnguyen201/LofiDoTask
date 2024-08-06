@@ -2,6 +2,7 @@ import userService from "#src/services/user.service.js";
 import authService from "#src/services/auth.service.js";
 import ResponseUtils from "#src/utils/ResponseUtils.js";
 import JwtUtils from "#src/utils/JwtUtils.js";
+import FormatUtils from "#src/utils/FormatUtils.js";
 
 export const register = async (req, res, next) => {
   try {
@@ -10,12 +11,9 @@ export const register = async (req, res, next) => {
       throw new Error("Register failed !");
     }
 
-    const userData = newUser._doc;
-    delete userData.password;
-
     ResponseUtils.status201(res, "Register successful !", {
-      token: JwtUtils.generateToken({ _id: userData._id }),
-      user: userData,
+      token: JwtUtils.generateToken({ _id: newUser._id }),
+      user: FormatUtils.formatOneUser(newUser),
     });
   } catch (err) {
     next(err);
@@ -25,12 +23,16 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    const data = await authService.authenticate(username, password);
-    const userData = data.user;
-    delete userData.password;
+    const ipAddress = req.ipv4;
+
+    const data = await authService.authenticate(
+      username,
+      password,
+      ipAddress
+    );
 
     ResponseUtils.status200(res, "Login successful !", {
-      user: userData,
+      user: FormatUtils.formatOneUser(data.user),
       accessToken: data.accessToken,
       refreshToken: data.refreshToken,
     });
@@ -39,7 +41,17 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const logout = async (req, res) => {
+export const refreshToken = async (req, res, next) => {
+  try {
+    const ipAddress = req.ipv4;
+    const refreshToken = req.body.refreshToken;
+    const data = await authService.refreshToken(refreshToken, ipAddress);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const logout = async (req, res, next) => {
   try {
     const refreshToken = req.body.refreshToken;
     await authService.revokeToken(refreshToken);

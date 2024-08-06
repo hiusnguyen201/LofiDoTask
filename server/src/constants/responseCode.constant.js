@@ -21,6 +21,13 @@ const responseCode = {
         vi: "Token không hợp lệ",
       },
     },
+    REVOKE_TOKEN_FROM_UNAUTHORIZED_IP: {
+      status: 401,
+      message: {
+        en: "Can't refresh token from other ip address",
+        vi: "Không thể thu hồi refresh token từ địa chỉ ip khác",
+      },
+    },
   },
 };
 

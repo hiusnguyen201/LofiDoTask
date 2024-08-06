@@ -16,12 +16,27 @@ const refreshTokenSchema = new Schema(
       type: Date,
       required: true,
     },
+    createdByIp: {
+      type: String,
+      required: true,
+    },
     revokedAt: {
       type: Date,
+    },
+    revokedByIp: {
+      type: String,
     },
   },
   { versionKey: false, timestamps: true, _id: true, id: false }
 );
+
+refreshTokenSchema.virtual("isExpired").get(function () {
+  return Date.now() >= this.expiresAt;
+});
+
+refreshTokenSchema.virtual("isActive").get(function () {
+  return !this.revokedAt && !this.isExpired;
+});
 
 const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema);
 export default RefreshToken;

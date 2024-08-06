@@ -18,6 +18,8 @@ export default {
 function converter(err, req, res, _) {
   let convertedErr = err;
 
+  console.log(err);
+
   if (err instanceof ValidationError) {
     convertedErr = new ApiErrorUtils({
       message: "Validation Error",
@@ -69,7 +71,7 @@ function handler(err, req, res, _) {
   if (req.app.get("env") === "production") {
     delete response.stack;
   } else {
-    console.log(response);
+    // console.log(response);
   }
 
   res.set("Content-Type", "application/json");
