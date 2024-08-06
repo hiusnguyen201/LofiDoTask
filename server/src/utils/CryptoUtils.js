@@ -1,5 +1,4 @@
 import CryptoJS from "crypto-js";
-import StringUtils from "./StringUtils.js";
 
 class CryptoUtils {
   static randomCrypto() {

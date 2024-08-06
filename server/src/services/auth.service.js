@@ -77,7 +77,8 @@ async function revokeToken(token, ipAddress) {
   const refreshToken = await getRefreshToken(token);
   refreshToken.revokedAt = Date.now();
   refreshToken.revokedByIp = ipAddress;
-  await refreshToken.save();
+  const status = await refreshToken.save();
+  return !!status;
 }
 
 async function getRefreshToken(token) {

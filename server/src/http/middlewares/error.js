@@ -63,6 +63,7 @@ function handler(err, req, res, _) {
     errors: err.errors,
     stack: err.stack,
     timestamp: new Date().toISOString(),
+    ip: req.ipv4,
     url: req.originalUrl,
   };
 

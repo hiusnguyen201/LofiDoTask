@@ -31,6 +31,10 @@ export const login = async (req, res, next) => {
       ipAddress
     );
 
+    if (!data.user || !data.accessToken || !data.refreshToken) {
+      throw new Error("Authenticate failed !");
+    }
+
     ResponseUtils.status200(res, "Login successfully !", {
       user: FormatUtils.formatOneUser(data.user),
       accessToken: data.accessToken,
@@ -47,6 +51,10 @@ export const refreshToken = async (req, res, next) => {
     const refreshToken = req.body.refreshToken;
     const data = await authService.refreshToken(refreshToken, ipAddress);
 
+    if (!data.user || !data.accessToken || !data.refreshToken) {
+      throw new Error("Refresh token failed !");
+    }
+
     ResponseUtils.status200(res, "Refresh token successfully !", {
       user: FormatUtils.formatOneUser(data.user),
       accessToken: data.accessToken,
@@ -60,7 +68,12 @@ export const refreshToken = async (req, res, next) => {
 export const logout = async (req, res, next) => {
   try {
     const refreshToken = req.body.refreshToken;
-    await authService.revokeToken(refreshToken);
+    const status = await authService.revokeToken(refreshToken);
+
+    if (!status) {
+      throw new Error("Logout failed !");
+    }
+
     ResponseUtils.status204(res, "Logout successfully !");
   } catch (err) {
     next(err);

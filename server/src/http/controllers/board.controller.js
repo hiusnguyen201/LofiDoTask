@@ -38,6 +38,10 @@ export const createBoard = async (req, res, next) => {
   try {
     const board = await boardService.create(req.user._id, req.body);
 
+    if (!board) {
+      throw new Error("Create board failed");
+    }
+
     ResponseUtils.status201(res, "Create board successfully !", board);
   } catch (err) {
     next(err);
