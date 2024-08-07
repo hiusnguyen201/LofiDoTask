@@ -1,26 +1,28 @@
 import mongoose from "mongoose";
-const Schema = mongoose.Schema;
 
-const listSchema = new Schema({
-  board: {
-    type: Schema.ObjectId,
-    ref: "Board",
-    required: true,
+const listSchema = new mongoose.Schema(
+  {
+    board: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Board",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    isWatched: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    position: {
+      type: Number,
+      required: true,
+    },
   },
-  name: {
-    type: String,
-    required: true,
-  },
-  isWatched: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-  position: {
-    type: Number,
-    required: true,
-  },
-});
+  { versionKey: false, timestamps: true, _id: true, id: false }
+);
 
 const List = mongoose.model("List", listSchema);
 export default List;

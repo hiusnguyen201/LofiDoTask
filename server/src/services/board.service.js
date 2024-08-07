@@ -4,23 +4,30 @@ import ApiErrorUtils from "#src/utils/ApiErrorUtils.js";
 import StringUtils from "#src/utils/StringUtils.js";
 
 export default {
+  getAllWithSort,
   getAll,
   getOne,
   create,
   update,
   remove,
+  pin,
+  unpin,
 };
 
 const SELECTED_FIELDS =
-  "_id name code isClosed visibilityStatus prioritizedAt createdAt updatedAt";
+  "_id name code isClosed visibilityStatus pinnedAt createdAt updatedAt";
 
 /**
  * Get all boards
  * @param {*} filter
  * @returns
  */
-async function getAll(filter) {
-  const boards = await Board.find(filter);
+async function getAll(filter, selectedFields = null) {
+  if (!selectedFields) {
+    selectedFields = SELECTED_FIELDS;
+  }
+
+  const boards = await Board.find(filter).select(selectedFields);
   return boards;
 }
 
@@ -63,7 +70,7 @@ async function create(userId, data) {
 /**
  * Update board
  * @param {*} userId
- * @param {*} identify - find by _id or code
+ * @param {*} identify
  * @param {*} updateData
  * @returns
  */
@@ -88,7 +95,7 @@ async function update(userId, identify, updateData) {
 /**
  * Delete board
  * @param {*} userId
- * @param {*} identify - find by _id or code
+ * @param {*} identify
  * @returns
  */
 async function remove(userId, identify) {
@@ -99,4 +106,89 @@ async function remove(userId, identify) {
 
   const status = await Board.findByIdAndDelete(board._id);
   return !!status;
+}
+
+/**
+ * Pin board
+ * @param {*} userId
+ * @param {*} identify
+ * @returns
+ */
+async function pin(userId, identify) {
+  const board = await getOne(userId, identify);
+
+  if (!board) {
+    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
+  }
+
+  board.pinnedAt = Date.now();
+
+  return await board.save();
+}
+
+/**
+ * Unpin board
+ * @param {*} userId
+ * @param {*} identify
+ * @returns
+ */
+async function unpin(userId, identify) {
+  const board = await getOne(userId, identify);
+
+  if (!board) {
+    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
+  }
+
+  board.pinnedAt = null;
+
+  return await board.save();
+}
+
+/**
+ * Get all boards with sort,
+ * More fields to sort: isPinned
+ * @param {*} sorts - Object, Sort value: asc | desc | ascending | descending
+ * @param {*} filter
+ * @param {*} selectedFields
+ * @returns
+ */
+async function getAllWithSort(
+  sorts = {},
+  filter = {},
+  selectedFields = null
+) {
+  if (!selectedFields) {
+    const fieldsArr = SELECTED_FIELDS.split(" ");
+    selectedFields = fieldsArr.reduce((curr, field) => {
+      curr[field] = 1;
+      return curr;
+    }, {});
+  }
+
+  if (!Object.keys(sorts).length) {
+    sorts.createdAt = "asc";
+  }
+
+  const boards = await Board.aggregate([
+    {
+      $match: filter,
+    },
+    {
+      $addFields: {
+        isPinned: {
+          $cond: {
+            if: {
+              $gt: ["$pinnedAt", null],
+            },
+            then: 1,
+            else: 0,
+          },
+        },
+      },
+    },
+  ])
+    .sort(sorts)
+    .project(selectedFields);
+
+  return boards;
 }

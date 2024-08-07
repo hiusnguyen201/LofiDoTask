@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-const Schema = mongoose.Schema;
 
-const refreshTokenSchema = new Schema(
+const refreshTokenSchema = new mongoose.Schema(
   {
     user: {
-      type: Schema.ObjectId,
+      type: mongoose.Schema.ObjectId,
       ref: "User",
       required: true,
     },

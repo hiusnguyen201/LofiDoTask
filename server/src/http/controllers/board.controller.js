@@ -3,7 +3,11 @@ import ResponseUtils from "#src/utils/ResponseUtils.js";
 
 export const getBoards = async (req, res, next) => {
   try {
-    const boards = await boardService.getAll();
+    const boards = await boardService.getAllWithSort({
+      isPinned: "desc",
+      pinnedAt: "asc",
+      createdAt: "asc",
+    });
 
     if (boards && boards.length > 0) {
       ResponseUtils.status200(
@@ -63,6 +67,40 @@ export const updateBoard = async (req, res, next) => {
         "Update board successfully !",
         updatedBoard
       );
+    } else {
+      ResponseUtils.status404(res, "Board not found !");
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const pinBoard = async (req, res, next) => {
+  try {
+    const identify = req.params.identify;
+    const updatedBoard = await boardService.pin(req.user._id, identify);
+
+    if (updatedBoard) {
+      ResponseUtils.status200(res, "Pin board successfully !", {
+        board: updatedBoard,
+      });
+    } else {
+      ResponseUtils.status404(res, "Board not found !");
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const unpinBoard = async (req, res, next) => {
+  try {
+    const identify = req.params.identify;
+    const updatedBoard = await boardService.unpin(req.user._id, identify);
+
+    if (updatedBoard) {
+      ResponseUtils.status200(res, "Unpin board successfully !", {
+        board: updatedBoard,
+      });
     } else {
       ResponseUtils.status404(res, "Board not found !");
     }

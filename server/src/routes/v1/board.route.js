@@ -6,6 +6,8 @@ import {
   getBoard,
   updateBoard,
   deleteBoard,
+  pinBoard,
+  unpinBoard,
 } from "#src/http/controllers/board.controller.js";
 import { CREATE_RULES, UPDATE_RULES } from "#src/http/rules/board.rule.js";
 import validateRequest from "#src/http/middlewares/validateRequest.js";
@@ -22,5 +24,7 @@ router
   .get(getBoard)
   .patch(validateRequest(UPDATE_RULES), updateBoard)
   .delete(deleteBoard);
+
+router.route("/:identify/pin").patch(pinBoard).delete(unpinBoard);
 
 export default router;

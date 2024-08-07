@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-const Schema = mongoose.Schema;
 
-const taskSchema = new Schema(
+const taskSchema = new mongoose.Schema(
   {
     user: {
-      type: Schema.ObjectId,
+      type: mongoose.Schema.ObjectId,
       ref: "User",
       required: true,
     },
