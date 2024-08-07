@@ -1,6 +1,6 @@
 import { ValidationError } from "express-validation";
+import httpStatus from "http-status";
 import ApiErrorUtils from "#src/utils/ApiErrorUtils.js";
-import httpStatus from "#src/constants/httpStatus.constant.js";
 
 export default {
   handler,
@@ -22,13 +22,13 @@ function converter(err, req, res, _) {
     convertedErr = new ApiErrorUtils({
       message: "Validation Error",
       errors: err.errors,
-      status: err.status || 500,
+      status: err.status || httpStatus.BAD_REQUEST,
       stack: err.stack,
     });
   } else if (!(err instanceof ApiErrorUtils)) {
     convertedErr = new ApiErrorUtils({
       message: err.message,
-      status: err.status || 500,
+      status: err.status || httpStatus.INTERNAL_SERVER_ERROR,
       stack: err.stack,
     });
   }
@@ -44,7 +44,7 @@ function converter(err, req, res, _) {
 function notFound(req, res) {
   const err = new ApiErrorUtils({
     message: "Not found",
-    status: 400,
+    status: httpStatus.NOT_FOUND,
   });
   handler(err, req, res);
 }
@@ -58,7 +58,7 @@ function notFound(req, res) {
  */
 function handler(err, req, res, _) {
   const response = {
-    code: err.status || 500,
+    code: err.status || httpStatus.INTERNAL_SERVER_ERROR,
     message: err.message || httpStatus[err.status],
     errors: err.errors,
     stack: err.stack,

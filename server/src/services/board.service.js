@@ -17,7 +17,7 @@ export default {
 };
 
 const SELECTED_FIELDS =
-  "_id name code isClosed visibilityStatus pinnedAt createdAt updatedAt";
+  "_id name code isClosed visibilityStatus starredAt createdAt updatedAt";
 
 /**
  * Get all boards
