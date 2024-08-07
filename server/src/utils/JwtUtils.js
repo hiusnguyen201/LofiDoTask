@@ -11,12 +11,15 @@ class JwtUtils {
   }
 
   static verifyToken(token) {
-    return jwt.verify(token, process.env.SECRET_JWT_TOKEN);
+    try {
+      return jwt.verify(token, process.env.SECRET_JWT_TOKEN);
+    } catch (err) {
+      throw ApiErrorUtils.simple(responseCode.AUTH.INVALID_TOKEN);
+    }
   }
 
   static async jwtMiddleware(req, res, next) {
-    let token =
-      req.headers["x-access-token"] || req.headers["authorization"];
+    let token = req.headers["x-access-token"] || req.headers["authorization"];
 
     console.log(token);
 

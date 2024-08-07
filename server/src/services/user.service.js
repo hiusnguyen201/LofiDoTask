@@ -42,6 +42,8 @@ async function getOne(identify, selectFields = null) {
 
   if (StringUtils.isUUID(identify)) {
     filter._id = identify;
+  } else if (StringUtils.isEmailAddress(identify)) {
+    filter.email = identify;
   } else {
     filter.username = identify;
   }

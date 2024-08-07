@@ -25,11 +25,7 @@ export const login = async (req, res, next) => {
     const { username, password } = req.body;
     const ipAddress = req.ipv4;
 
-    const data = await authService.authenticate(
-      username,
-      password,
-      ipAddress
-    );
+    const data = await authService.authenticate(username, password, ipAddress);
 
     if (!data.user || !data.accessToken || !data.refreshToken) {
       throw new Error("Authenticate failed !");
@@ -75,6 +71,37 @@ export const logout = async (req, res, next) => {
     }
 
     ResponseUtils.status204(res, "Logout successfully !");
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const sendOtpResetPassword = async (req, res, next) => {
+  try {
+    const email = req.body.email;
+    const result = await authService.sendOtpResetPasswordViaEmail(email);
+
+    if (!result) {
+      throw new Error("Send otp token to reset password failed !");
+    }
+
+    ResponseUtils.status204(res, "Send otp token successfully !");
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    const token = req.params.token;
+    const password = req.body.password;
+    const status = await authService.resetPassword(token, password);
+
+    if (!status) {
+      throw new Error("Reset password failed !");
+    }
+
+    ResponseUtils.status204(res, "Reset password successfully !");
   } catch (err) {
     next(err);
   }

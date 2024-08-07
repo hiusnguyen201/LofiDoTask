@@ -42,11 +42,7 @@ async function getAll(filter, selectedFields = null) {
  * @param {*} selectedFields
  * @returns
  */
-async function getAllWithSort(
-  sorts = {},
-  filter = {},
-  selectedFields = null
-) {
+async function getAllWithSort(sorts = {}, filter = {}, selectedFields = null) {
   if (!selectedFields) {
     const fieldsArr = SELECTED_FIELDS.split(" ");
     selectedFields = fieldsArr.reduce((curr, field) => {
@@ -99,6 +95,7 @@ async function getOne(userId, identify, selectFields = null) {
 
   filter.user = userId;
   const board = await Board.findOne(filter).select(selectFields);
+
   return board;
 }
 
@@ -128,18 +125,13 @@ async function create(userId, data) {
  */
 async function update(userId, identify, updateData) {
   const board = await getOne(userId, identify);
-
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
 
-  const updatedBoard = await Board.findByIdAndUpdate(
-    board?._id,
-    updateData,
-    {
-      new: true,
-    }
-  );
+  const updatedBoard = await Board.findByIdAndUpdate(board?._id, updateData, {
+    new: true,
+  });
 
   return updatedBoard;
 }
@@ -168,7 +160,6 @@ async function remove(userId, identify) {
  */
 async function star(userId, identify) {
   const board = await getOne(userId, identify);
-
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
@@ -190,7 +181,6 @@ async function star(userId, identify) {
  */
 async function unStar(userId, identify) {
   const board = await getOne(userId, identify);
-
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
@@ -212,7 +202,6 @@ async function unStar(userId, identify) {
  */
 async function close(userId, identify) {
   const board = await getOne(userId, identify);
-
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
@@ -234,7 +223,6 @@ async function close(userId, identify) {
  */
 async function open(userId, identify) {
   const board = await getOne(userId, identify);
-
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }

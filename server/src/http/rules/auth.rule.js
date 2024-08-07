@@ -16,14 +16,28 @@ export const REGISTER_RULES = Joi.object({
       }
       return val;
     }),
-  email: Joi.string().label("email").required().email(),
-  password: Joi.string().label("password").required(),
-  confirmPassword: Joi.string()
-    .label("confirmPassword")
+  email: Joi.string()
     .required()
-    .valid(Joi.ref("password")),
+    .email()
+    .custom((val) => {
+      if (!isExist("email", val, User)) {
+        throw new Error(`"email" is already taken`);
+      }
+      return val;
+    }),
+  password: Joi.string().required(),
+  confirmPassword: Joi.string().required().valid(Joi.ref("password")),
 });
 
 export const REFRESH_TOKEN_RULES = Joi.object({
   refreshToken: Joi.string().required(),
+});
+
+export const EMAIL_RESET_PASSWORD_RULES = Joi.object({
+  email: Joi.string().required().email(),
+});
+
+export const RESET_PASSWORD_RULES = Joi.object({
+  password: Joi.string().required(),
+  confirmPassword: Joi.string().required().valid(Joi.ref("password")),
 });

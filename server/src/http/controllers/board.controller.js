@@ -87,13 +87,13 @@ export const updateBoard = async (req, res, next) => {
       req.body
     );
 
-    if (updatedBoard) {
-      ResponseUtils.status200(res, "Update board successfully !", {
-        updatedBoard,
-      });
-    } else {
-      ResponseUtils.status404(res, "Board not found !");
+    if (!updatedBoard) {
+      throw new Error("Update board failed !");
     }
+
+    ResponseUtils.status200(res, "Update board successfully !", {
+      updatedBoard,
+    });
   } catch (err) {
     next(err);
   }
@@ -103,13 +103,14 @@ export const deleteBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
     const status = await boardService.remove(req.user._id, identify);
-    if (status) {
-      ResponseUtils.status200(res, "Delete board successfully !", {
-        status,
-      });
-    } else {
-      ResponseUtils.status404(res, "Board not found !");
+
+    if (!status) {
+      throw new Error("Delete board failed !");
     }
+
+    ResponseUtils.status200(res, "Delete board successfully !", {
+      status,
+    });
   } catch (err) {
     next(err);
   }
@@ -120,13 +121,13 @@ export const starBoard = async (req, res, next) => {
     const identify = req.params.identify;
     const updatedBoard = await boardService.star(req.user._id, identify);
 
-    if (updatedBoard) {
-      ResponseUtils.status200(res, "Star board successfully !", {
-        board: updatedBoard,
-      });
-    } else {
-      ResponseUtils.status404(res, "Board not found !");
+    if (!updatedBoard) {
+      throw new Error("Star board failed !");
     }
+
+    ResponseUtils.status200(res, "Star board successfully !", {
+      board: updatedBoard,
+    });
   } catch (err) {
     next(err);
   }
@@ -137,13 +138,13 @@ export const removeStarBoard = async (req, res, next) => {
     const identify = req.params.identify;
     const updatedBoard = await boardService.unStar(req.user._id, identify);
 
-    if (updatedBoard) {
-      ResponseUtils.status200(res, "Remove star board successfully !", {
-        board: updatedBoard,
-      });
-    } else {
-      ResponseUtils.status404(res, "Board not found !");
+    if (!updatedBoard) {
+      throw new Error("Remove star board failed !");
     }
+
+    ResponseUtils.status200(res, "Remove star board successfully !", {
+      board: updatedBoard,
+    });
   } catch (err) {
     next(err);
   }
@@ -154,13 +155,13 @@ export const closeBoard = async (req, res, next) => {
     const identify = req.params.identify;
     const updatedBoard = await boardService.close(req.user._id, identify);
 
-    if (updatedBoard) {
-      ResponseUtils.status200(res, "Close board successfully !", {
-        board: updatedBoard,
-      });
-    } else {
-      ResponseUtils.status404(res, "Board not found !");
+    if (!updatedBoard) {
+      throw new Error("Close board failed !");
     }
+
+    ResponseUtils.status200(res, "Close board successfully !", {
+      board: updatedBoard,
+    });
   } catch (err) {
     next(err);
   }
@@ -171,13 +172,13 @@ export const openBoard = async (req, res, next) => {
     const identify = req.params.identify;
     const updatedBoard = await boardService.open(req.user._id, identify);
 
-    if (updatedBoard) {
-      ResponseUtils.status200(res, "Open board successfully !", {
-        board: updatedBoard,
-      });
-    } else {
-      ResponseUtils.status404(res, "Board not found !");
+    if (!updatedBoard) {
+      throw new Error("Open board failed !");
     }
+
+    ResponseUtils.status200(res, "Open board successfully !", {
+      board: updatedBoard,
+    });
   } catch (err) {
     next(err);
   }

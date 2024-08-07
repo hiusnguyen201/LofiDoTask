@@ -26,6 +26,8 @@
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.2",
     "morgan": "~1.9.1",
-    "nanoid": "^5.0.7"
+    "nanoid": "^5.0.7",
+    "nodemailer": "^6.9.14",
+    "otp-generator": "^4.0.1"
   }
 }
