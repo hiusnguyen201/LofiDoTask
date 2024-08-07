@@ -25,7 +25,7 @@ const boardSchema = new mongoose.Schema(
       type: Number,
       default: visibilityStatus.PUBLIC,
     },
-    pinnedAt: {
+    starredAt: {
       type: Date,
     },
   },

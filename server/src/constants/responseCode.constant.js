@@ -44,6 +44,20 @@ const responseCode = {
     },
   },
   BOARD: {
+    BOARD_STARRED: {
+      status: 400,
+      message: {
+        en: "Board already starred",
+        vi: "Bảng đã được sao",
+      },
+    },
+    BOARD_UNSTARRED: {
+      status: 400,
+      message: {
+        en: "Board doesn't have starred",
+        vi: "Bảng không có sao",
+      },
+    },
     BOARD_NOT_FOUND: {
       status: 404,
       message: {

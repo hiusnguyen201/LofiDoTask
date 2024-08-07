@@ -10,8 +10,8 @@ export default {
   create,
   update,
   remove,
-  pin,
-  unpin,
+  star,
+  unStar,
 };
 
 const SELECTED_FIELDS =
@@ -114,14 +114,18 @@ async function remove(userId, identify) {
  * @param {*} identify
  * @returns
  */
-async function pin(userId, identify) {
+async function star(userId, identify) {
   const board = await getOne(userId, identify);
 
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
 
-  board.pinnedAt = Date.now();
+  if (board.starredAt) {
+    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_STARRED);
+  }
+
+  board.starredAt = Date.now();
 
   return await board.save();
 }
@@ -132,21 +136,26 @@ async function pin(userId, identify) {
  * @param {*} identify
  * @returns
  */
-async function unpin(userId, identify) {
+async function unStar(userId, identify) {
   const board = await getOne(userId, identify);
 
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
 
-  board.pinnedAt = null;
+  if (!board.starredAt) {
+    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_UNSTARRED);
+  }
+
+  board.starredAt = null;
 
   return await board.save();
 }
 
 /**
- * Get all boards with sort,
- * More fields to sort: isPinned
+ * Get all boards with sort
+ * More fields to sort: isStarred
+ * Get more details in https://mongoosejs.com/docs/api/aggregate.html
  * @param {*} sorts - Object, Sort value: asc | desc | ascending | descending
  * @param {*} filter
  * @param {*} selectedFields
@@ -175,10 +184,10 @@ async function getAllWithSort(
     },
     {
       $addFields: {
-        isPinned: {
+        isStarred: {
           $cond: {
             if: {
-              $gt: ["$pinnedAt", null],
+              $gt: ["$starredAt", null],
             },
             then: 1,
             else: 0,

@@ -3,18 +3,18 @@ import ResponseUtils from "#src/utils/ResponseUtils.js";
 
 export const getBoards = async (req, res, next) => {
   try {
-    const boards = await boardService.getAllWithSort({
-      isPinned: "desc",
-      pinnedAt: "asc",
-      createdAt: "asc",
-    });
+    const { status = null, sortBy = null } = req.query;
+
+    const dataFilter = getDataFilter(status);
+    const dataSort = getDataSort(sortBy);
+
+    const boards = await boardService.getAllWithSort(dataSort, dataFilter);
 
     if (boards && boards.length > 0) {
-      ResponseUtils.status200(
-        res,
-        "Get all boards successfully !",
-        boards
-      );
+      ResponseUtils.status200(res, "Get all boards successfully !", {
+        count: boards.length,
+        boards,
+      });
     } else {
       ResponseUtils.status200(res, "No boards found !", []);
     }
@@ -23,13 +23,39 @@ export const getBoards = async (req, res, next) => {
   }
 };
 
+function getDataFilter(status) {
+  switch (status) {
+    case "close":
+      return { isClosed: { $eq: true } };
+    case "all":
+      return {};
+    default:
+      return { isClosed: { $eq: false } };
+  }
+}
+
+function getDataSort(sort) {
+  switch (sort) {
+    case "starred":
+      return {
+        isStarred: "desc",
+        starredAt: "asc",
+        createdAt: "asc",
+      };
+    default:
+      return {
+        createdAt: "asc",
+      };
+  }
+}
+
 export const getBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
     const board = await boardService.getOne(req.user._id, identify);
 
     if (board) {
-      ResponseUtils.status200(res, "Get board successfully !", board);
+      ResponseUtils.status200(res, "Get board successfully !", { board });
     } else {
       ResponseUtils.status404(res, `Board with "${identify}" not found !`);
     }
@@ -46,7 +72,7 @@ export const createBoard = async (req, res, next) => {
       throw new Error("Create board failed");
     }
 
-    ResponseUtils.status201(res, "Create board successfully !", board);
+    ResponseUtils.status201(res, "Create board successfully !", { board });
   } catch (err) {
     next(err);
   }
@@ -62,11 +88,9 @@ export const updateBoard = async (req, res, next) => {
     );
 
     if (updatedBoard) {
-      ResponseUtils.status200(
-        res,
-        "Update board successfully !",
-        updatedBoard
-      );
+      ResponseUtils.status200(res, "Update board successfully !", {
+        updatedBoard,
+      });
     } else {
       ResponseUtils.status404(res, "Board not found !");
     }
@@ -75,10 +99,10 @@ export const updateBoard = async (req, res, next) => {
   }
 };
 
-export const pinBoard = async (req, res, next) => {
+export const starBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
-    const updatedBoard = await boardService.pin(req.user._id, identify);
+    const updatedBoard = await boardService.star(req.user._id, identify);
 
     if (updatedBoard) {
       ResponseUtils.status200(res, "Pin board successfully !", {
@@ -92,13 +116,13 @@ export const pinBoard = async (req, res, next) => {
   }
 };
 
-export const unpinBoard = async (req, res, next) => {
+export const unStarBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
-    const updatedBoard = await boardService.unpin(req.user._id, identify);
+    const updatedBoard = await boardService.unStar(req.user._id, identify);
 
     if (updatedBoard) {
-      ResponseUtils.status200(res, "Unpin board successfully !", {
+      ResponseUtils.status200(res, "Remove star board successfully !", {
         board: updatedBoard,
       });
     } else {
