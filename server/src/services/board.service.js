@@ -12,6 +12,8 @@ export default {
   remove,
   star,
   unStar,
+  close,
+  open,
 };
 
 const SELECTED_FIELDS =
@@ -28,6 +30,56 @@ async function getAll(filter, selectedFields = null) {
   }
 
   const boards = await Board.find(filter).select(selectedFields);
+  return boards;
+}
+
+/**
+ * Get all boards with sort
+ * More fields to sort: isStarred
+ * Get more details in https://mongoosejs.com/docs/api/aggregate.html
+ * @param {*} sorts - Object, Sort value: asc | desc | ascending | descending
+ * @param {*} filter
+ * @param {*} selectedFields
+ * @returns
+ */
+async function getAllWithSort(
+  sorts = {},
+  filter = {},
+  selectedFields = null
+) {
+  if (!selectedFields) {
+    const fieldsArr = SELECTED_FIELDS.split(" ");
+    selectedFields = fieldsArr.reduce((curr, field) => {
+      curr[field] = 1;
+      return curr;
+    }, {});
+  }
+
+  if (!Object.keys(sorts).length) {
+    sorts.createdAt = "asc";
+  }
+
+  const boards = await Board.aggregate([
+    {
+      $match: filter,
+    },
+    {
+      $addFields: {
+        isStarred: {
+          $cond: {
+            if: {
+              $gt: ["$starredAt", null],
+            },
+            then: 1,
+            else: 0,
+          },
+        },
+      },
+    },
+  ])
+    .sort(sorts)
+    .project(selectedFields);
+
   return boards;
 }
 
@@ -109,7 +161,7 @@ async function remove(userId, identify) {
 }
 
 /**
- * Pin board
+ * Star board
  * @param {*} userId
  * @param {*} identify
  * @returns
@@ -131,7 +183,7 @@ async function star(userId, identify) {
 }
 
 /**
- * Unpin board
+ * Remove board
  * @param {*} userId
  * @param {*} identify
  * @returns
@@ -153,51 +205,45 @@ async function unStar(userId, identify) {
 }
 
 /**
- * Get all boards with sort
- * More fields to sort: isStarred
- * Get more details in https://mongoosejs.com/docs/api/aggregate.html
- * @param {*} sorts - Object, Sort value: asc | desc | ascending | descending
- * @param {*} filter
- * @param {*} selectedFields
+ * Close board
+ * @param {*} userId
+ * @param {*} identify
  * @returns
  */
-async function getAllWithSort(
-  sorts = {},
-  filter = {},
-  selectedFields = null
-) {
-  if (!selectedFields) {
-    const fieldsArr = SELECTED_FIELDS.split(" ");
-    selectedFields = fieldsArr.reduce((curr, field) => {
-      curr[field] = 1;
-      return curr;
-    }, {});
+async function close(userId, identify) {
+  const board = await getOne(userId, identify);
+
+  if (!board) {
+    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
 
-  if (!Object.keys(sorts).length) {
-    sorts.createdAt = "asc";
+  if (board.isClosed) {
+    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_CLOSED);
   }
 
-  const boards = await Board.aggregate([
-    {
-      $match: filter,
-    },
-    {
-      $addFields: {
-        isStarred: {
-          $cond: {
-            if: {
-              $gt: ["$starredAt", null],
-            },
-            then: 1,
-            else: 0,
-          },
-        },
-      },
-    },
-  ])
-    .sort(sorts)
-    .project(selectedFields);
+  board.isClosed = true;
 
-  return boards;
+  return await board.save();
+}
+
+/**
+ * Open board
+ * @param {*} userId
+ * @param {*} identify
+ * @returns
+ */
+async function open(userId, identify) {
+  const board = await getOne(userId, identify);
+
+  if (!board) {
+    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
+  }
+
+  if (!board.isClosed) {
+    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_OPENED);
+  }
+
+  board.isClosed = false;
+
+  return await board.save();
 }

@@ -54,8 +54,22 @@ const responseCode = {
     BOARD_UNSTARRED: {
       status: 400,
       message: {
-        en: "Board doesn't have starred",
-        vi: "Bảng không có sao",
+        en: "Board already unstarred",
+        vi: "Bảng đã không có sao",
+      },
+    },
+    BOARD_CLOSED: {
+      status: 400,
+      message: {
+        en: "Board already closed",
+        vi: "Bảng đã đóng",
+      },
+    },
+    BOARD_OPENED: {
+      status: 400,
+      message: {
+        en: "Board already opened",
+        vi: "Bảng đã mở",
       },
     },
     BOARD_NOT_FOUND: {

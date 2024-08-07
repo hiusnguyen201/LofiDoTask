@@ -99,13 +99,29 @@ export const updateBoard = async (req, res, next) => {
   }
 };
 
+export const deleteBoard = async (req, res, next) => {
+  try {
+    const identify = req.params.identify;
+    const status = await boardService.remove(req.user._id, identify);
+    if (status) {
+      ResponseUtils.status200(res, "Delete board successfully !", {
+        status,
+      });
+    } else {
+      ResponseUtils.status404(res, "Board not found !");
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const starBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
     const updatedBoard = await boardService.star(req.user._id, identify);
 
     if (updatedBoard) {
-      ResponseUtils.status200(res, "Pin board successfully !", {
+      ResponseUtils.status200(res, "Star board successfully !", {
         board: updatedBoard,
       });
     } else {
@@ -116,7 +132,7 @@ export const starBoard = async (req, res, next) => {
   }
 };
 
-export const unStarBoard = async (req, res, next) => {
+export const removeStarBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
     const updatedBoard = await boardService.unStar(req.user._id, identify);
@@ -133,13 +149,31 @@ export const unStarBoard = async (req, res, next) => {
   }
 };
 
-export const deleteBoard = async (req, res, next) => {
+export const closeBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
-    const status = await boardService.remove(req.user._id, identify);
-    if (status) {
-      ResponseUtils.status200(res, "Delete board successfully !", {
-        status,
+    const updatedBoard = await boardService.close(req.user._id, identify);
+
+    if (updatedBoard) {
+      ResponseUtils.status200(res, "Close board successfully !", {
+        board: updatedBoard,
+      });
+    } else {
+      ResponseUtils.status404(res, "Board not found !");
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const openBoard = async (req, res, next) => {
+  try {
+    const identify = req.params.identify;
+    const updatedBoard = await boardService.open(req.user._id, identify);
+
+    if (updatedBoard) {
+      ResponseUtils.status200(res, "Open board successfully !", {
+        board: updatedBoard,
       });
     } else {
       ResponseUtils.status404(res, "Board not found !");
