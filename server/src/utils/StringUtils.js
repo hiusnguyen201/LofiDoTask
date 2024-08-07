@@ -1,21 +1,21 @@
 import { customAlphabet } from "nanoid";
-import REGEX from "#src/constants/regex.constant.js";
+import regexPattern from "#src/constants/regexPattern.constant.js";
 
 class StringUtils {
   static isUUID(str) {
-    return REGEX.UUID.test(str);
+    return regexPattern.UUID.test(str);
   }
 
   static isBearerToken(str) {
-    return REGEX.BEARER_TOKEN.test(str);
+    return regexPattern.BEARER_TOKEN.test(str);
   }
 
   static isEmailAddress(str) {
-    return REGEX.EMAIL.test(str);
+    return regexPattern.EMAIL.test(str);
   }
 
   static isPhoneNumber(str) {
-    return REGEX.PHONE.test(str);
+    return regexPattern.PHONE.test(str);
   }
 
   static generateNanoID() {

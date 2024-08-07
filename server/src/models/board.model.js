@@ -8,7 +8,7 @@ const boardSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    code: {
+    sku: {
       type: String,
       required: true,
     },

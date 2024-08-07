@@ -1,6 +1,7 @@
 import RefreshToken from "#src/models/refreshToken.model.js";
-import mailService from "./mail.service.js";
+import mailerService from "./mailer.service.js";
 import userService from "./user.service.js";
+import otpService from "./otp.service.js";
 import responseCode from "#src/constants/responseCode.constant.js";
 import ApiErrorUtils from "#src/utils/ApiErrorUtils.js";
 import JwtUtils from "#src/utils/JwtUtils.js";
@@ -11,7 +12,7 @@ export default {
   authenticate,
   revokeToken,
   refreshToken,
-  sendOtpResetPasswordViaEmail,
+  sendOtpViaMail,
   resetPassword,
 };
 
@@ -117,10 +118,14 @@ async function revokeToken(token, ipAddress) {
 async function getRefreshToken(token) {
   const refreshToken = await RefreshToken.findOne({
     token,
-  }).populate({
-    path: "user",
-    select: "-password",
-  });
+  })
+    .populate({
+      path: "user",
+      select: "-password",
+    })
+    .sort({
+      createdAt: "desc",
+    });
 
   if (!refreshToken || !refreshToken.isActive) {
     throw ApiErrorUtils.simple(responseCode.AUTH.INVALID_TOKEN);
@@ -130,30 +135,19 @@ async function getRefreshToken(token) {
 }
 
 /**
- * Send otp token reset password
+ * Send otp via mail
  * @param {*} email
  * @returns
  */
-async function sendOtpResetPasswordViaEmail(email) {
+async function sendOtpViaMail(email) {
   const user = await userService.getOne(email);
   if (!user) {
     throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);
   }
 
-  const token = JwtUtils.generateToken(
-    {
-      _id: user._id,
-    },
-    "5m"
-  );
+  const otp = await otpService.generateOtp(email);
 
-  return await mailService.sendMail(
-    email,
-    "Reset password",
-    "Here is your link to reset password: " +
-      process.env.SERVER_URL +
-      `/${token}`
-  );
+  return await mailerService.sendWithOtpTemplate(email, otp);
 }
 
 async function resetPassword(token, password) {

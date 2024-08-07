@@ -44,36 +44,22 @@ const responseCode = {
         vi: "Token sai định dạng. Định dạng là Authorization: Bearer [token]",
       },
     },
+    EXIST_USERNAME: {
+      status: httpStatus.BAD_REQUEST,
+      message: {
+        en: "Username already exist",
+        vi: "Username đã tồn tại",
+      },
+    },
+    EXIST_EMAIL: {
+      status: httpStatus.BAD_REQUEST,
+      message: {
+        en: "Email already exist",
+        vi: "Email đã tồn tại",
+      },
+    },
   },
   BOARD: {
-    BOARD_STARRED: {
-      status: httpStatus.BAD_REQUEST,
-      message: {
-        en: "Board already starred",
-        vi: "Bảng đã được sao",
-      },
-    },
-    BOARD_UNSTARRED: {
-      status: httpStatus.BAD_REQUEST,
-      message: {
-        en: "Board already unstarred",
-        vi: "Bảng đã không có sao",
-      },
-    },
-    BOARD_CLOSED: {
-      status: httpStatus.BAD_REQUEST,
-      message: {
-        en: "Board already closed",
-        vi: "Bảng đã đóng",
-      },
-    },
-    BOARD_OPENED: {
-      status: httpStatus.BAD_REQUEST,
-      message: {
-        en: "Board already opened",
-        vi: "Bảng đã mở",
-      },
-    },
     BOARD_NOT_FOUND: {
       status: httpStatus.NOT_FOUND,
       message: {

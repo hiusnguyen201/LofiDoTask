@@ -102,83 +102,65 @@ export const updateBoard = async (req, res, next) => {
 export const deleteBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
-    const status = await boardService.remove(req.user._id, identify);
+    const result = await boardService.remove(req.user._id, identify);
 
-    if (!status) {
+    if (!result) {
       throw new Error("Delete board failed !");
     }
 
     ResponseUtils.status200(res, "Delete board successfully !", {
-      status,
+      status: !!result,
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const starBoard = async (req, res, next) => {
+export const toggleStarBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
-    const updatedBoard = await boardService.star(req.user._id, identify);
+    const updatedBoard = await boardService.toggleStar(
+      req.user._id,
+      identify
+    );
 
     if (!updatedBoard) {
-      throw new Error("Star board failed !");
+      throw new Error("Interact with star board failed !");
     }
 
-    ResponseUtils.status200(res, "Star board successfully !", {
-      board: updatedBoard,
-    });
+    ResponseUtils.status200(
+      res,
+      `${
+        updatedBoard.starredAt ? "Star" : "Remove star"
+      } board successfully !`,
+      {
+        board: updatedBoard,
+      }
+    );
   } catch (err) {
     next(err);
   }
 };
 
-export const removeStarBoard = async (req, res, next) => {
+export const toggleCloseBoard = async (req, res, next) => {
   try {
     const identify = req.params.identify;
-    const updatedBoard = await boardService.unStar(req.user._id, identify);
+    const updatedBoard = await boardService.toggleClose(
+      req.user._id,
+      identify
+    );
 
     if (!updatedBoard) {
-      throw new Error("Remove star board failed !");
+      throw new Error("Interact close board failed !");
     }
 
-    ResponseUtils.status200(res, "Remove star board successfully !", {
-      board: updatedBoard,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const closeBoard = async (req, res, next) => {
-  try {
-    const identify = req.params.identify;
-    const updatedBoard = await boardService.close(req.user._id, identify);
-
-    if (!updatedBoard) {
-      throw new Error("Close board failed !");
-    }
-
-    ResponseUtils.status200(res, "Close board successfully !", {
-      board: updatedBoard,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const openBoard = async (req, res, next) => {
-  try {
-    const identify = req.params.identify;
-    const updatedBoard = await boardService.open(req.user._id, identify);
-
-    if (!updatedBoard) {
-      throw new Error("Open board failed !");
-    }
-
-    ResponseUtils.status200(res, "Open board successfully !", {
-      board: updatedBoard,
-    });
+    ResponseUtils.status200(
+      res,
+      `${updatedBoard.isClosed ? "Close" : "Open"} board successfully !`,
+      {
+        board: updatedBoard,
+      }
+    );
   } catch (err) {
     next(err);
   }

@@ -10,14 +10,12 @@ export default {
   create,
   update,
   remove,
-  star,
-  unStar,
-  close,
-  open,
+  toggleStar,
+  toggleClose,
 };
 
 const SELECTED_FIELDS =
-  "_id name code isClosed visibilityStatus starredAt createdAt updatedAt";
+  "_id name sku isClosed visibilityStatus starredAt createdAt updatedAt";
 
 /**
  * Get all boards
@@ -29,8 +27,7 @@ async function getAll(filter, selectedFields = null) {
     selectedFields = SELECTED_FIELDS;
   }
 
-  const boards = await Board.find(filter).select(selectedFields);
-  return boards;
+  return Board.find(filter).select(selectedFields).exec();
 }
 
 /**
@@ -42,7 +39,11 @@ async function getAll(filter, selectedFields = null) {
  * @param {*} selectedFields
  * @returns
  */
-async function getAllWithSort(sorts = {}, filter = {}, selectedFields = null) {
+async function getAllWithSort(
+  sorts = {},
+  filter = {},
+  selectedFields = null
+) {
   if (!selectedFields) {
     const fieldsArr = SELECTED_FIELDS.split(" ");
     selectedFields = fieldsArr.reduce((curr, field) => {
@@ -55,7 +56,7 @@ async function getAllWithSort(sorts = {}, filter = {}, selectedFields = null) {
     sorts.createdAt = "asc";
   }
 
-  const boards = await Board.aggregate([
+  return Board.aggregate([
     {
       $match: filter,
     },
@@ -74,29 +75,27 @@ async function getAllWithSort(sorts = {}, filter = {}, selectedFields = null) {
     },
   ])
     .sort(sorts)
-    .project(selectedFields);
-
-  return boards;
+    .project(selectedFields)
+    .exec();
 }
 
 /**
  * Get board
- * @param {*} identify - find by _id or code
+ * @param {*} identify - find by _id or sku
  * @returns
  */
 async function getOne(userId, identify, selectFields = null) {
   const filter = StringUtils.isUUID(identify)
     ? { _id: identify }
-    : { code: identify };
+    : { sku: identify };
 
   if (selectFields) {
     selectFields = SELECTED_FIELDS;
   }
 
   filter.user = userId;
-  const board = await Board.findOne(filter).select(selectFields);
 
-  return board;
+  return Board.findOne(filter).select(selectFields).exec();
 }
 
 /**
@@ -106,14 +105,13 @@ async function getOne(userId, identify, selectFields = null) {
  * @returns
  */
 async function create(userId, data) {
-  const code = StringUtils.generateNanoID();
+  const sku = StringUtils.generateNanoID();
 
-  const board = await Board.create({
+  return await Board.create({
     user: userId,
     ...data,
-    code,
+    sku,
   });
-  return board;
 }
 
 /**
@@ -129,11 +127,9 @@ async function update(userId, identify, updateData) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
 
-  const updatedBoard = await Board.findByIdAndUpdate(board?._id, updateData, {
+  return Board.findByIdAndUpdate(board?._id, updateData, {
     new: true,
   });
-
-  return updatedBoard;
 }
 
 /**
@@ -148,90 +144,47 @@ async function remove(userId, identify) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
 
-  const status = await Board.findByIdAndDelete(board._id);
-  return !!status;
+  return Board.findByIdAndDelete(board._id);
 }
 
 /**
- * Star board
+ * Star / UnStar board
  * @param {*} userId
  * @param {*} identify
  * @returns
  */
-async function star(userId, identify) {
+async function toggleStar(userId, identify) {
   const board = await getOne(userId, identify);
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
 
-  if (board.starredAt) {
-    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_STARRED);
-  }
-
-  board.starredAt = Date.now();
-
-  return await board.save();
+  return Board.findByIdAndUpdate(
+    board._id,
+    {
+      isStarred: board.isStarred ? null : Date.now(),
+    },
+    { new: true }
+  );
 }
 
 /**
- * Remove board
+ * Close / Open board
  * @param {*} userId
  * @param {*} identify
  * @returns
  */
-async function unStar(userId, identify) {
+async function toggleClose(userId, identify) {
   const board = await getOne(userId, identify);
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
 
-  if (!board.starredAt) {
-    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_UNSTARRED);
-  }
-
-  board.starredAt = null;
-
-  return await board.save();
-}
-
-/**
- * Close board
- * @param {*} userId
- * @param {*} identify
- * @returns
- */
-async function close(userId, identify) {
-  const board = await getOne(userId, identify);
-  if (!board) {
-    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
-  }
-
-  if (board.isClosed) {
-    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_CLOSED);
-  }
-
-  board.isClosed = true;
-
-  return await board.save();
-}
-
-/**
- * Open board
- * @param {*} userId
- * @param {*} identify
- * @returns
- */
-async function open(userId, identify) {
-  const board = await getOne(userId, identify);
-  if (!board) {
-    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
-  }
-
-  if (!board.isClosed) {
-    throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_OPENED);
-  }
-
-  board.isClosed = false;
-
-  return await board.save();
+  return Board.findByIdAndUpdate(
+    board._id,
+    {
+      isClosed: !board.isClosed,
+    },
+    { new: true }
+  );
 }

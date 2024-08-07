@@ -25,7 +25,11 @@ export const login = async (req, res, next) => {
     const { username, password } = req.body;
     const ipAddress = req.ipv4;
 
-    const data = await authService.authenticate(username, password, ipAddress);
+    const data = await authService.authenticate(
+      username,
+      password,
+      ipAddress
+    );
 
     if (!data.user || !data.accessToken || !data.refreshToken) {
       throw new Error("Authenticate failed !");
@@ -79,7 +83,7 @@ export const logout = async (req, res, next) => {
 export const sendOtpResetPassword = async (req, res, next) => {
   try {
     const email = req.body.email;
-    const result = await authService.sendOtpResetPasswordViaEmail(email);
+    const result = await authService.sendOtpViaMail(email);
 
     if (!result) {
       throw new Error("Send otp token to reset password failed !");

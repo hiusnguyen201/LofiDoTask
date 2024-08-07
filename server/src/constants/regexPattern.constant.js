@@ -1,4 +1,4 @@
-const REGEX = {
+const regexPattern = {
   USERNAME: /^(?=.{5,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
   PHONE: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
   EMAIL:
@@ -7,4 +7,4 @@ const REGEX = {
   UUID: /^[0-9a-fA-F]{24}$/,
 };
 
-export default REGEX;
+export default regexPattern;

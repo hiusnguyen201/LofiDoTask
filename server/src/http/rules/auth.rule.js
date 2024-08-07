@@ -1,6 +1,4 @@
 import Joi from "joi";
-import User from "#src/models/user.model.js";
-import { isExist } from "./custom.rule.js";
 
 export const LOGIN_RULES = Joi.object({
   username: Joi.string().required(),
@@ -8,26 +6,13 @@ export const LOGIN_RULES = Joi.object({
 });
 
 export const REGISTER_RULES = Joi.object({
-  username: Joi.string()
-    .required()
-    .custom((val) => {
-      if (!isExist("username", val, User)) {
-        throw new Error(`"username" is already taken`);
-      }
-      return val;
-    }),
-  email: Joi.string()
-    .required()
-    .email()
-    .custom((val) => {
-      if (!isExist("email", val, User)) {
-        throw new Error(`"email" is already taken`);
-      }
-      return val;
-    }),
+  username: Joi.string().required(),
+  email: Joi.string().required().email(),
   password: Joi.string().required(),
   confirmPassword: Joi.string().required().valid(Joi.ref("password")),
 });
+
+REGISTER_RULES.va;
 
 export const REFRESH_TOKEN_RULES = Joi.object({
   refreshToken: Joi.string().required(),
