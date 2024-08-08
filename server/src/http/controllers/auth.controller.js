@@ -22,11 +22,11 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const { account, password } = req.body;
     const ipAddress = req.ipv4;
 
     const data = await authService.authenticate(
-      username,
+      account,
       password,
       ipAddress
     );
@@ -80,16 +80,31 @@ export const logout = async (req, res, next) => {
   }
 };
 
-export const sendOtpResetPassword = async (req, res, next) => {
+export const requestPasswordReset = async (req, res, next) => {
   try {
     const email = req.body.email;
     const result = await authService.sendOtpViaMail(email);
 
     if (!result) {
-      throw new Error("Send otp token to reset password failed !");
+      throw new Error("Request password reset failed !");
     }
 
-    ResponseUtils.status204(res, "Send otp token successfully !");
+    ResponseUtils.status200(res, "Send otp reset successfully !");
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const validatePasswordReset = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body.email;
+    const token = await authService.validateOtpReset(email, otp);
+
+    if (!token) {
+      throw new Error("Validate otp failed !");
+    }
+
+    ResponseUtils.status200(res, "Validate otp successfully !", { token });
   } catch (err) {
     next(err);
   }

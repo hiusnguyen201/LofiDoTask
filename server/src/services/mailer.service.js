@@ -27,8 +27,6 @@ const handlebarOptions = {
   viewPath: templateDir,
 };
 
-transporter.use("compile", hbs(handlebarOptions));
-
 const sendMailSync = async (
   receiver,
   subject,
@@ -40,6 +38,7 @@ const sendMailSync = async (
     receiver = [receiver];
   }
 
+  transporter.use("compile", hbs(handlebarOptions));
   return transporter.sendMail({
     from: "hiusnguyen201@gmail.com",
     to: receiver,
@@ -51,10 +50,15 @@ const sendMailSync = async (
 };
 
 async function sendMail(receiver, subject, text) {
+  if (typeof receiver === "string") {
+    receiver = [receiver];
+  }
+
   return transporter.sendMail({
     from: "hiusnguyen201@gmail.com",
     to: receiver,
     subject,
+    template: null,
     text,
   });
 }

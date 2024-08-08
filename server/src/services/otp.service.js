@@ -2,9 +2,9 @@ import otpGenerator from "otp-generator";
 import Otp from "#src/models/otp.model.js";
 import BcryptUtils from "#src/utils/BcryptUtils.js";
 
-export default { generateOtp, validateOtp };
+export default { createOtp, validateOtp };
 
-async function generateOtp(email) {
+async function createOtp(email) {
   const otpCode = otpGenerator.generate(6, {
     digits: true,
     lowerCaseAlphabets: false,
@@ -14,12 +14,10 @@ async function generateOtp(email) {
 
   const otpHash = BcryptUtils.makeHash(otpCode);
 
-  await Otp.create({
+  return await Otp.create({
     email,
     otp: otpHash,
   });
-
-  return otpCode;
 }
 
 async function validateOtp(email, otpCode) {

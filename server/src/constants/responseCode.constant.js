@@ -58,6 +58,13 @@ const responseCode = {
         vi: "Email đã tồn tại",
       },
     },
+    INVALID_OTP: {
+      status: httpStatus.UNAUTHORIZED,
+      message: {
+        en: "Invalid otp",
+        vi: "Otp không hợp lệ",
+      },
+    },
   },
   BOARD: {
     BOARD_NOT_FOUND: {

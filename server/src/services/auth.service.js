@@ -13,6 +13,7 @@ export default {
   revokeToken,
   refreshToken,
   sendOtpViaMail,
+  validateOtpReset,
   resetPassword,
 };
 
@@ -23,8 +24,8 @@ export default {
  * @param {*} ipAddress
  * @returns
  */
-async function authenticate(username, password, ipAddress) {
-  const user = await userService.getOne(username, "* password");
+async function authenticate(account, password, ipAddress) {
+  const user = await userService.getOne(account, "* password");
 
   if (!user) {
     throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);
@@ -135,7 +136,7 @@ async function getRefreshToken(token) {
 }
 
 /**
- * Send otp via mail
+ * Send otp to mail
  * @param {*} email
  * @returns
  */
@@ -145,18 +146,38 @@ async function sendOtpViaMail(email) {
     throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);
   }
 
-  const otp = await otpService.generateOtp(email);
+  const otp = await otpService.createOtp(email);
 
-  return await mailerService.sendWithOtpTemplate(email, otp);
+  return await mailerService.sendWithOtpTemplate(email, otp.otp);
 }
 
+/**
+ * Validate otp reset
+ * @param {*} email
+ * @returns
+ */
+async function validateOtpReset(email, otp) {
+  const isValidOtp = await otpService.validateOtp(email, otp);
+  if (!isValidOtp) {
+    throw ApiErrorUtils.simple(responseCode.AUTH.INVALID_OTP);
+  }
+  const otpToken = JwtUtils.generateToken({ email }, "15m");
+  return otpToken;
+}
+
+/**
+ * Reset password
+ * @param {*} token
+ * @param {*} password
+ * @returns
+ */
 async function resetPassword(token, password) {
   const decoded = JwtUtils.verifyToken(token);
   if (!decoded) {
     throw ApiErrorUtils.simple(responseCode.AUTH.INVALID_TOKEN);
   }
 
-  const user = await userService.getOne(decoded._id);
+  const user = await userService.getOne(decoded.email);
   if (!user) {
     throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);
   }

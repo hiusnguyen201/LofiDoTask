@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 export const LOGIN_RULES = Joi.object({
-  username: Joi.string().required(),
+  account: Joi.string().required(),
   password: Joi.string().required(),
 });
 
@@ -12,14 +12,17 @@ export const REGISTER_RULES = Joi.object({
   confirmPassword: Joi.string().required().valid(Joi.ref("password")),
 });
 
-REGISTER_RULES.va;
-
 export const REFRESH_TOKEN_RULES = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
-export const EMAIL_RESET_PASSWORD_RULES = Joi.object({
+export const REQUEST_PASSWORD_RESET_RULES = Joi.object({
   email: Joi.string().required().email(),
+});
+
+export const VALIDATE_PASSWORD_RESET_RULES = Joi.object({
+  email: Joi.string().required().email(),
+  otp: Joi.string().required(),
 });
 
 export const RESET_PASSWORD_RULES = Joi.object({
