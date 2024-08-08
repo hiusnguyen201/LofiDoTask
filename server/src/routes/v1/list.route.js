@@ -5,6 +5,7 @@ import {
   updateList,
   deleteList,
   toggleWatchList,
+  getAllCards,
 } from "#src/http/controllers/list.controller.js";
 import { CREATE_RULES, UPDATE_RULES } from "#src/http/rules/list.rule.js";
 import validateRequest from "#src/http/middlewares/validateRequest.js";
@@ -19,5 +20,7 @@ router
   .delete(deleteList);
 
 router.route("/:identify/watch").patch(toggleWatchList);
+
+router.route("/:identify/cards").get(getAllCards);
 
 export default router;

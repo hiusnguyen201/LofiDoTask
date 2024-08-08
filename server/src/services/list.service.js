@@ -16,8 +16,8 @@ const SELECTED_FIELDS =
   "_id board name isWatched position createdAt updatedAt";
 
 /**
- * Get all list
- * @param {*} identify
+ * Get all lists
+ * @param {*} boardId
  * @param {*} selectFields
  * @returns
  */
@@ -34,7 +34,6 @@ async function getAll(boardId, selectFields = null) {
 }
 /**
  * Get List
- * @param {*} boardId
  * @param {*} identify
  * @param {*} selectFields
  * @returns
@@ -67,12 +66,10 @@ async function countInBoard(boardId) {
  * @returns
  */
 async function create(boardId, data) {
-  const sku = StringUtils.generateNanoID();
   const count = await countInBoard(boardId);
   return await List.create({
     board: boardId,
     ...data,
-    sku,
     position: count + 1,
   });
 }

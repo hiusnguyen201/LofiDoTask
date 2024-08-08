@@ -3,7 +3,7 @@ import regexPattern from "#src/constants/regexPattern.constant.js";
 
 export const CREATE_RULES = Joi.object({
   name: Joi.string().required(),
-  boardId: Joi.string().required().regex(regexPattern.UUID),
+  listId: Joi.string().required().regex(regexPattern.UUID),
 });
 
 export const UPDATE_RULES = Joi.object({

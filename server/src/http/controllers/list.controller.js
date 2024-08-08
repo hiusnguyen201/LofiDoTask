@@ -1,4 +1,5 @@
 import listService from "#src/services/list.service.js";
+import cardService from "#src/services/card.service.js";
 import ResponseUtils from "#src/utils/ResponseUtils.js";
 
 export const getList = async (req, res, next) => {
@@ -81,6 +82,24 @@ export const toggleWatchList = async (req, res, next) => {
         list: updatedList,
       }
     );
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getAllCards = async (req, res, next) => {
+  try {
+    const listId = req.params.identify;
+    const cards = await cardService.getAll(listId);
+
+    if (cards && cards.length > 0) {
+      ResponseUtils.status200(res, "Get all cards successfully !", {
+        count: cards.length,
+        cards,
+      });
+    } else {
+      ResponseUtils.status200(res, "No cards found !", []);
+    }
   } catch (err) {
     next(err);
   }

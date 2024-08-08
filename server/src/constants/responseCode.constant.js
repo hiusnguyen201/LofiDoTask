@@ -84,6 +84,15 @@ const responseCode = {
       },
     },
   },
+  CARD: {
+    CARD_NOT_FOUND: {
+      status: httpStatus.NOT_FOUND,
+      message: {
+        en: "Card not found",
+        vi: "Thẻ không tồn tại",
+      },
+    },
+  },
 };
 
 export default responseCode;
