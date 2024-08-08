@@ -12,7 +12,7 @@ export const register = async (req, res, next) => {
     }
 
     ResponseUtils.status201(res, "Register successfully !", {
-      token: JwtUtils.generateToken({ _id: newUser._id }),
+      accessToken: JwtUtils.generateToken({ _id: newUser._id }),
       user: FormatUtils.formatOneUser(newUser),
     });
   } catch (err) {
@@ -45,6 +45,21 @@ export const login = async (req, res, next) => {
   }
 };
 
+export const logout = async (req, res, next) => {
+  try {
+    const refreshToken = req.body.refreshToken;
+    const status = await authService.revokeToken(refreshToken);
+
+    if (!status) {
+      throw new Error("Logout failed !");
+    }
+
+    ResponseUtils.status204(res, "Logout successfully !");
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const refreshToken = async (req, res, next) => {
   try {
     const ipAddress = req.ipv4;
@@ -65,21 +80,6 @@ export const refreshToken = async (req, res, next) => {
   }
 };
 
-export const logout = async (req, res, next) => {
-  try {
-    const refreshToken = req.body.refreshToken;
-    const status = await authService.revokeToken(refreshToken);
-
-    if (!status) {
-      throw new Error("Logout failed !");
-    }
-
-    ResponseUtils.status204(res, "Logout successfully !");
-  } catch (err) {
-    next(err);
-  }
-};
-
 export const requestPasswordReset = async (req, res, next) => {
   try {
     const email = req.body.email;
@@ -89,7 +89,7 @@ export const requestPasswordReset = async (req, res, next) => {
       throw new Error("Request password reset failed !");
     }
 
-    ResponseUtils.status200(res, "Send otp reset successfully !");
+    ResponseUtils.status200(res, "Send otp code successfully !");
   } catch (err) {
     next(err);
   }
@@ -112,8 +112,7 @@ export const validatePasswordReset = async (req, res, next) => {
 
 export const resetPassword = async (req, res, next) => {
   try {
-    const token = req.params.token;
-    const password = req.body.password;
+    const { token, password } = req.body.password;
     const status = await authService.resetPassword(token, password);
 
     if (!status) {

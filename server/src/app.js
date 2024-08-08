@@ -16,16 +16,27 @@ const app = express();
 const __dirname = process.cwd();
 app.use(cors());
 
+console.log(path.join(__dirname, "../public"));
+
 app.use((req, res, next) => {
   req.ipv4 = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   next();
 });
 
-// app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "../public")));
+// view engine setup
+app.set("views", path.join(__dirname, "src/views"));
+app.set("view engine", "ejs");
+
 app.use(logger("dev"));
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "/public")));
+
+// Docs
+app.use("/docs", (req, res) => {
+  return res.render("docs");
+});
 
 // Api version 1
 app.use("/api/v1", routerV1);

@@ -26,6 +26,7 @@ export const VALIDATE_PASSWORD_RESET_RULES = Joi.object({
 });
 
 export const RESET_PASSWORD_RULES = Joi.object({
+  token: Joi.string().required(),
   password: Joi.string().required(),
   confirmPassword: Joi.string().required().valid(Joi.ref("password")),
 });

@@ -26,6 +26,14 @@ router.route("/login").post(validateRequest(LOGIN_RULES), login);
 router.route("/register").post(validateRequest(REGISTER_RULES), register);
 
 router
+  .route("/logout")
+  .post(isAuthorized, validateRequest(REFRESH_TOKEN_RULES), logout);
+
+router
+  .route("/refresh-token")
+  .post(validateRequest(REFRESH_TOKEN_RULES), refreshToken);
+
+router
   .route("/password-reset/request")
   .post(
     validateRequest(REQUEST_PASSWORD_RESET_RULES),
@@ -39,13 +47,7 @@ router
   );
 
 router
-  .route("/password-reset/:token")
+  .route("/password-reset/reset")
   .patch(validateRequest(RESET_PASSWORD_RULES), resetPassword);
-
-router
-  .route("/refresh-token")
-  .post(validateRequest(REFRESH_TOKEN_RULES), refreshToken);
-
-router.route("/logout").post(isAuthorized, logout);
 
 export default router;

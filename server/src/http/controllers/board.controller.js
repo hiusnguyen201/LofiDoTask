@@ -29,6 +29,8 @@ function getDataFilter(status) {
       return { isClosed: { $eq: true } };
     case "all":
       return {};
+    case "open":
+      return { isClosed: { $eq: false } };
     default:
       return { isClosed: { $eq: false } };
   }
@@ -40,6 +42,10 @@ function getDataSort(sort) {
       return {
         isStarred: "desc",
         starredAt: "asc",
+        createdAt: "asc",
+      };
+    case "created":
+      return {
         createdAt: "asc",
       };
     default:
