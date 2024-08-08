@@ -1,11 +1,13 @@
 import express from "express";
 const router = express.Router();
 
-import AuthRouter from "./auth.route.js";
-import BoardRouter from "./board.route.js";
+import authRouter from "./auth.route.js";
+import boardRouter from "./board.route.js";
+import listRouter from "./list.route.js";
 import { isAuthorized } from "#src/http/middlewares/jwtAuth.js";
 
-router.use("/auth", AuthRouter);
-router.use("/boards", isAuthorized, BoardRouter);
+router.use("/auth", authRouter);
+router.use("/boards", isAuthorized, boardRouter);
+router.use("/lists", isAuthorized, listRouter);
 
 export default router;

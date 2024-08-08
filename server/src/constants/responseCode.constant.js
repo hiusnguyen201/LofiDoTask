@@ -75,6 +75,15 @@ const responseCode = {
       },
     },
   },
+  LIST: {
+    LIST_NOT_FOUND: {
+      status: httpStatus.NOT_FOUND,
+      message: {
+        en: "List not found",
+        vi: "Danh sách không tồn tại",
+      },
+    },
+  },
 };
 
 export default responseCode;

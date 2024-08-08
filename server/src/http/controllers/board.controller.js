@@ -1,4 +1,5 @@
 import boardService from "#src/services/board.service.js";
+import listService from "#src/services/list.service.js";
 import ResponseUtils from "#src/utils/ResponseUtils.js";
 
 export const getBoards = async (req, res, next) => {
@@ -98,7 +99,7 @@ export const updateBoard = async (req, res, next) => {
     }
 
     ResponseUtils.status200(res, "Update board successfully !", {
-      updatedBoard,
+      board: updatedBoard,
     });
   } catch (err) {
     next(err);
@@ -167,6 +168,24 @@ export const toggleCloseBoard = async (req, res, next) => {
         board: updatedBoard,
       }
     );
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getAllLists = async (req, res, next) => {
+  try {
+    const boardId = req.params.identify;
+    const lists = await listService.getAll(boardId);
+
+    if (lists && lists.length > 0) {
+      ResponseUtils.status200(res, "Get all lists successfully !", {
+        count: lists.length,
+        lists,
+      });
+    } else {
+      ResponseUtils.status200(res, "No lists found !", []);
+    }
   } catch (err) {
     next(err);
   }
