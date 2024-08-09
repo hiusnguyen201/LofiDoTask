@@ -1,7 +1,7 @@
 import responseCode from "#src/constants/responseCode.constant.js";
+import boardService from "./board.service.js";
 import List from "#src/models/list.model.js";
 import ApiErrorUtils from "#src/utils/ApiErrorUtils.js";
-import StringUtils from "#src/utils/StringUtils.js";
 
 export default {
   getAll,
@@ -30,7 +30,12 @@ async function getAll(boardId, selectFields = null) {
     board: boardId,
   };
 
-  return List.find(filter).select(selectFields).exec();
+  return List.find(filter)
+    .select(selectFields)
+    .sort({
+      position: "asc",
+    })
+    .exec();
 }
 /**
  * Get List

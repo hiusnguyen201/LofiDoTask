@@ -93,7 +93,7 @@ async function update(identify, updateData) {
 }
 
 /**
- * Delete list
+ * Delete card
  * @param {*} identify
  * @returns
  */
@@ -107,7 +107,7 @@ async function remove(identify) {
 }
 
 /**
- * Watch / Unwatch list
+ * Watch / Unwatch card
  * @param {*} identify
  * @returns
  */
