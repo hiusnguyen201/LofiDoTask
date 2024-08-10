@@ -17,153 +17,98 @@ import {
   GoogleNoColorIcon,
 } from "~/assets/icons";
 
-const CardStyle = styled(Card)({
+const CardStyle = styled(Card)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: 16,
+  fontSize: 16,
   padding: "24px 36px",
-  backgroundColor: "rgba(10, 16, 27, 0.9)",
+  backgroundColor: theme.palette.backgroundColor,
   position: "relative",
   borderRadius: 4,
-  textAlign: "center",
   width: 400,
-});
+}));
+
+const InputStyle = styled(TextField)(({ theme }) => ({
+  width: "100%",
+  backgroundColor: theme.palette.inputBgColor,
+  border: 0,
+  borderRadius: "inherit",
+  "& label.Mui-focused": {
+    color: theme.palette.text.primary,
+  },
+}));
+
+const TypographyStyle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.primary,
+}));
+
+const ButtonStyle = styled(Button)(({ theme }) => ({
+  display: "block",
+  fontSize: "inherit",
+  width: "100%",
+  textTransform: "capitalize",
+  backgroundColor: theme.palette.primary,
+  backgroundColor: theme.palette.primary.darker,
+  "&:hover": {
+    backgroundColor: theme.palette.primary.main,
+  },
+}));
 
 export default function Login() {
   return (
     <AuthLayout>
       <CardStyle>
         <CardMedia
-          sx={{ width: "100px", margin: "0 auto", marginBottom: "8px" }}
           component={"img"}
+          sx={{ width: 100 }}
           image={images.logo}
           alt={"lofi-logo"}
         />
-        <Typography
-          sx={{
-            color: "#eeeeee",
-            fontSize: 18,
-            marginBottom: "24px",
-          }}
+
+        <TypographyStyle
           component="h1"
+          sx={{
+            fontSize: 20,
+          }}
         >
           Log in to continue
-        </Typography>
-        <TextField
-          variant="outlined"
-          InputProps={{
-            type: "email",
-            sx: {
-              color: "#f5f5f5",
-            },
-          }}
-          sx={{
-            width: "100%",
-            marginBottom: "16px",
-            backgroundColor: "#222222",
-            borderRadius: "inherit",
-            border: "none",
-            "& label": {
-              color: "#f5f5f5",
-            },
-            "& label.Mui-focused": {
-              color: "#f5f5f5",
-            },
-            "& .MuiOutlinedInput-root": {
-              "&.Mui-focused fieldset": {
-                borderColor: "#474747",
-              },
-            },
-          }}
-          label="Email"
-        />
-        <TextField
-          variant="outlined"
-          InputProps={{
-            type: "password",
-            sx: {
-              color: "#f5f5f5",
-            },
-          }}
-          sx={{
-            width: "100%",
-            backgroundColor: "#222222",
-            marginBottom: "24px",
-            borderRadius: "inherit",
-            border: "none",
-            "& label": {
-              color: "#f5f5f5",
-            },
-            "& label.Mui-focused": {
-              color: "#f5f5f5",
-            },
-            "& .MuiOutlinedInput-root": {
-              "&.Mui-focused fieldset": {
-                borderColor: "#474747",
-              },
-            },
-          }}
-          label="Password"
-        />
-        <Button
-          sx={{
-            width: "100%",
-            textTransform: "capitalize",
-            fontSize: "16px",
-            marginBottom: "16px",
-            backgroundColor: "#8E3150",
-            "&:hover": {
-              backgroundColor: "#B03860",
-            },
-          }}
-          variant="contained"
-        >
-          Continue
-        </Button>
-        <Typography
-          component={"p"}
-          sx={{
-            color: "#f5f5f5",
-            marginBottom: "16px",
-          }}
-        >
+        </TypographyStyle>
+
+        <InputStyle variant="outlined" type="email" label="Email" />
+
+        <InputStyle variant="outlined" type="password" label="Password" />
+
+        <ButtonStyle variant="contained">Continue</ButtonStyle>
+
+        <TypographyStyle component={"p"}>
           Or continue with:
-        </Typography>
+        </TypographyStyle>
+
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "18px",
+            gap: 2,
           }}
         >
-          <Link
-            href={"#"}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <FacebookNoColorIcon width="24px" height="24px" />
-          </Link>
-          <Link
-            href={"#"}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <GoogleNoColorIcon width="24px" height="24px" />
-          </Link>
-          <Link
-            href={"#"}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <GithubNoColorIcon width="24px" height="24px" />
-          </Link>
+          {[FacebookNoColorIcon, GoogleNoColorIcon, GithubNoColorIcon].map(
+            (Icon, index) => (
+              <Link
+                key={index}
+                href={"#"}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Icon width="24px" height="24px" />
+              </Link>
+            )
+          )}
         </Box>
       </CardStyle>
     </AuthLayout>
