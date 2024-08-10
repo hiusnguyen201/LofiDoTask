@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
 import {
   Card,
@@ -6,7 +8,6 @@ import {
   TextField,
   Button,
   Box,
-  Link,
 } from "@mui/material";
 
 import AuthLayout from "~/layouts/AuthLayout";
@@ -32,16 +33,21 @@ const CardStyle = styled(Card)(({ theme }) => ({
 
 const InputStyle = styled(TextField)(({ theme }) => ({
   width: "100%",
+  fontSize: "inherit",
   backgroundColor: theme.palette.inputBgColor,
   border: 0,
   borderRadius: "inherit",
   "& label.Mui-focused": {
     color: theme.palette.text.primary,
   },
+  "& fieldset": {
+    borderColor: "transparent",
+  },
 }));
 
 const TypographyStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
+  fontSize: "inherit",
 }));
 
 const ButtonStyle = styled(Button)(({ theme }) => ({
@@ -56,7 +62,40 @@ const ButtonStyle = styled(Button)(({ theme }) => ({
   },
 }));
 
+const LinkStyle = styled(Link)({
+  height: "100%",
+  color: "inherit",
+  textDecoration: "none",
+  "&:hover": {
+    textDecoration: "underline",
+  },
+});
+
 export default function Login() {
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  const handleUpdateData = (e) => {
+    const field = e.target.name;
+    setData((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleUpdateSubmit = (e) => {
+    setIsSubmit(true);
+  };
+
+  useEffect(() => {
+    if (!isSubmit) return;
+
+    // Fetch Api
+    const fetch = () => {};
+
+    fetch();
+  }, [isSubmit]);
+
   return (
     <AuthLayout>
       <CardStyle>
@@ -76,11 +115,25 @@ export default function Login() {
           Log in to continue
         </TypographyStyle>
 
-        <InputStyle variant="outlined" type="email" label="Email" />
+        <InputStyle
+          variant="outlined"
+          type="email"
+          name="email"
+          label="Email"
+          onChange={handleUpdateData}
+        />
 
-        <InputStyle variant="outlined" type="password" label="Password" />
+        <InputStyle
+          variant="outlined"
+          type="password"
+          name="password"
+          label="Password"
+          onChange={handleUpdateData}
+        />
 
-        <ButtonStyle variant="contained">Continue</ButtonStyle>
+        <ButtonStyle onClick={handleUpdateSubmit} variant="contained">
+          Continue
+        </ButtonStyle>
 
         <TypographyStyle component={"p"}>
           Or continue with:
@@ -92,23 +145,29 @@ export default function Login() {
             alignItems: "center",
             justifyContent: "center",
             gap: 2,
+            height: 24,
           }}
         >
           {[FacebookNoColorIcon, GoogleNoColorIcon, GithubNoColorIcon].map(
             (Icon, index) => (
-              <Link
-                key={index}
-                href={"#"}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+              <LinkStyle key={index} to={"#"}>
                 <Icon width="24px" height="24px" />
-              </Link>
+              </LinkStyle>
             )
           )}
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1,
+          }}
+        >
+          <LinkStyle to={"#"}>Can't log in?</LinkStyle>
+          <span>•</span>
+          <LinkStyle to={"#"}>Create an account</LinkStyle>
         </Box>
       </CardStyle>
     </AuthLayout>
