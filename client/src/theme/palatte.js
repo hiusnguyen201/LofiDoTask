@@ -29,16 +29,19 @@ const palette = {
     text: {
       primary: "#0A101B",
     },
+    backgroundColor: {
+      ...BLACK,
+    },
   },
   dark: {
     ...COMMON,
+    primary: PRIMARY,
     text: {
       primary: "#f5f5f5",
     },
-    primary: PRIMARY,
-    backgroundColor: BLACK[400_95],
-    inputBgColor: BLACK[200],
-    borderColor: BLACK[300],
+    backgroundColor: {
+      ...BLACK,
+    },
   },
 };
 

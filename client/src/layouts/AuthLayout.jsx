@@ -1,15 +1,19 @@
-import { styled } from "@mui/system";
 import images from "~/assets/images";
-
-const RootStyle = styled("div")({
-  height: "100vh",
-  width: "100%",
-  background: `url(${images.authBackGround}) center / cover no-repeat`,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});
+import { Box } from "@mui/material";
 
 export default function AuthLayout({ children }) {
-  return <RootStyle className="wrapper">{children}</RootStyle>;
+  return (
+    <Box
+      sx={{
+        background: `url(${images.authBackGround}) center / cover no-repeat`,
+      }}
+      height={"100vh"}
+      width={"100%"}
+      display={"flex"}
+      alignItems={"center"}
+      justifyContent={"center"}
+    >
+      {children}
+    </Box>
+  );
 }
