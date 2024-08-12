@@ -1,5 +1,10 @@
-export const FacebookNoColorIcon = ({ width, height }) => (
-  <svg
+import { SvgIcon } from "@mui/material";
+
+export const FacebookNoColorIcon = ({
+  width = "24px",
+  height = "24px",
+}) => (
+  <SvgIcon
     width={width}
     height={height}
     viewBox="0 0 48 48"
@@ -17,11 +22,11 @@ export const FacebookNoColorIcon = ({ width, height }) => (
         <rect width="48" height="48" fill="white" />
       </clipPath>
     </defs>
-  </svg>
+  </SvgIcon>
 );
 
-export const GithubNoColorIcon = ({ width, height }) => (
-  <svg
+export const GithubNoColorIcon = ({ width = "24px", height = "24px" }) => (
+  <SvgIcon
     width={width}
     height={height}
     viewBox="0 0 48 48"
@@ -41,11 +46,11 @@ export const GithubNoColorIcon = ({ width, height }) => (
         <rect width="48" height="48" fill="white" />
       </clipPath>
     </defs>
-  </svg>
+  </SvgIcon>
 );
 
-export const GoogleNoColorIcon = ({ width, height }) => (
-  <svg
+export const GoogleNoColorIcon = ({ width = "24px", height = "24px" }) => (
+  <SvgIcon
     width={width}
     height={height}
     viewBox="0 0 48 48"
@@ -75,5 +80,31 @@ export const GoogleNoColorIcon = ({ width, height }) => (
         <rect width="48" height="48" fill="white" />
       </clipPath>
     </defs>
-  </svg>
+  </SvgIcon>
+);
+
+export const EyeFill = ({ width = "24px", height = "24px" }) => (
+  <SvgIcon
+    width={width}
+    height={height}
+    viewBox="0 0 16 16"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    class="bi bi-eye-fill"
+  >
+    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+  </SvgIcon>
+);
+
+export const EyeOffFill = ({ width, height }) => (
+  <SvgIcon
+    fill="currentColor"
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M19.293,3.293,16.367,6.219A8.521,8.521,0,0,0,12,5C7.973,5,4.516,7.881,3,12a11.634,11.634,0,0,0,3.015,4.571L3.293,19.293a1,1,0,1,0,1.414,1.414l16-16a1,1,0,1,0-1.414-1.414ZM9.3,13.283A2.934,2.934,0,0,1,9,12a3,3,0,0,1,3-3,2.934,2.934,0,0,1,1.283.3ZM19.808,9.606A12.322,12.322,0,0,1,21,12c-1.516,4.119-4.973,7-9,7a8.363,8.363,0,0,1-1.457-.129Z" />
+  </SvgIcon>
 );

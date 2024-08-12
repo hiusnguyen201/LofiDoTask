@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik, Form, FormikProvider } from "formik";
+import * as Yup from "yup";
 import {
   Box,
   Typography,
@@ -9,6 +9,8 @@ import {
   Stack,
   Container,
   useTheme,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
@@ -18,17 +20,31 @@ import {
   FacebookNoColorIcon,
   GithubNoColorIcon,
   GoogleNoColorIcon,
+  EyeFill,
+  EyeOffFill,
 } from "~/assets/icons";
 import * as api from "~/api";
+import { useState } from "react";
+
+const loginSchema = Yup.object().shape({
+  account: Yup.string("Account must be string").required(
+    "Account is required"
+  ),
+  password: Yup.string("Password must be string").required(
+    "Password is required"
+  ),
+});
 
 export default function Login() {
   const themeStyle = useTheme();
+  const [showPassword, setShowPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       account: "",
       password: "",
     },
+    validationSchema: loginSchema,
     onSubmit: async (values, { resetForm, setErrors }) => {
       try {
         const { data } = await api.login(values);
@@ -51,7 +67,7 @@ export default function Login() {
             message = "Invalid account or password";
 
             break;
-          case 500:
+          default:
             message = "Server error";
             break;
         }
@@ -65,8 +81,18 @@ export default function Login() {
     },
   });
 
-  const { handleSubmit, getFieldProps, errors, touched, isSubmitting } =
-    formik;
+  const {
+    handleSubmit,
+    getFieldProps,
+    errors,
+    touched,
+    isSubmitting,
+    values,
+  } = formik;
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <AuthLayout>
@@ -95,40 +121,51 @@ export default function Login() {
 
           <FormikProvider value={formik} sx={{ mt: 1 }}>
             <Form
-              style={{ width: "100%" }}
+              noValidate
               autoComplete="off"
+              style={{ width: "100%" }}
               onSubmit={handleSubmit}
             >
-              <Box
+              <TextField
                 sx={{
                   mb: 2,
                 }}
-              >
-                <TextField
-                  fullWidth
-                  id="account"
-                  label="Account"
-                  type="text"
-                  name="account"
-                  error={!!(errors.account && touched.account)}
-                  helperText={errors.account}
-                  {...getFieldProps("account")}
-                  autoFocus
-                />
-              </Box>
+                fullWidth
+                {...getFieldProps("account")}
+                label="Account"
+                name="account"
+                type="text"
+                error={Boolean(errors.account && touched.account)}
+                helperText={
+                  errors.account && touched.account && errors.account
+                }
+              />
 
-              <Box>
-                <TextField
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  error={!!errors.password}
-                  helperText={errors.password}
-                  {...getFieldProps("password")}
-                />
-              </Box>
+              <TextField
+                fullWidth
+                {...getFieldProps("password")}
+                label="Password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                error={Boolean(errors.password && touched.password)}
+                helperText={
+                  errors.password && touched.password && errors.password
+                }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {values.password.length > 0 && (
+                        <IconButton
+                          onClick={handleShowPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <EyeFill /> : <EyeOffFill />}
+                        </IconButton>
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
               <LoadingButton
                 type="submit"
@@ -159,7 +196,7 @@ export default function Login() {
               GithubNoColorIcon,
             ].map((Icon, index) => (
               <Link key={index} to={"#"}>
-                <Icon width="24px" height="24px" />
+                <Icon />
               </Link>
             ))}
           </Stack>
