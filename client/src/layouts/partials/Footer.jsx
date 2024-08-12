@@ -54,7 +54,12 @@ function Footer() {
       }}
       position="fixed"
     >
-      <audio ref={audioRef} autoPlay loop src={musics[musicIndex].path} />
+      <audio
+        ref={audioRef}
+        autoPlay={playing}
+        loop
+        src={musics[musicIndex].path}
+      />
       <Container maxWidth="xl">
         <Stack
           sx={{

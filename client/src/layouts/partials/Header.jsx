@@ -10,11 +10,13 @@ import {
   MenuItem,
   Menu,
   Stack,
+  Link,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link as LinkRouter, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import images from "~/assets/images";
 import useAuth from "~/hooks/useAuth";
+import { GithubNoColorIcon } from "~/assets/icons";
 
 function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -32,10 +34,6 @@ function Header() {
   const settings = [
     {
       name: "Profile",
-      handleClick: () => {},
-    },
-    {
-      name: "Account",
       handleClick: () => {},
     },
     {
@@ -65,7 +63,7 @@ function Header() {
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <Link
+          <LinkRouter
             style={{
               display: "flex",
               alignItems: "center",
@@ -74,9 +72,49 @@ function Header() {
             to={"/"}
           >
             <img width={60} src={images.logo} />
-          </Link>
+          </LinkRouter>
 
-          <Box>
+          <Box display={"flex"} alignItems={"center"} gap={5}>
+            <Link
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                textDecoration: "none",
+                position: "relative",
+                "&:hover": {
+                  textDecoration: "none",
+                },
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  width: "0%",
+                  height: "2px",
+                  backgroundColor: "#fff",
+                  bottom: "-4px",
+                  left: 0,
+                },
+                "&:hover::after": {
+                  width: "100%",
+                  transition: "width .3s",
+                },
+                "&:not(:hover)::after": {
+                  width: "0%",
+                  transition: "width .3s",
+                },
+              }}
+              href={"https://github.com/hiusnguyen201"}
+            >
+              <GithubNoColorIcon width={"36px"} height={"36px"} />
+              <Typography
+                sx={{
+                  ml: 1,
+                  color: "#fff",
+                }}
+              >
+                Github
+              </Typography>
+            </Link>
+
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
@@ -103,7 +141,11 @@ function Header() {
               onClose={handleCloseUserMenu}
             >
               {settings.map(({ name, handleClick }) => (
-                <MenuItem key={name} onClick={handleClick}>
+                <MenuItem
+                  sx={{ minWidth: 150 }}
+                  key={name}
+                  onClick={handleClick}
+                >
                   <Typography textAlign="center">{name}</Typography>
                 </MenuItem>
               ))}

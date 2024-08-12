@@ -1,7 +1,7 @@
 const globalStyles = {
   a: {
     textDecoration: "none",
-    color: "inherit",
+    color: "#fff",
   },
   "a:hover": {
     textDecoration: "underline",
