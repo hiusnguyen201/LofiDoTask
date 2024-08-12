@@ -133,6 +133,7 @@ export default function Login() {
                   mb: 2,
                 }}
                 fullWidth
+                autoFocus
                 {...getFieldProps("account")}
                 label="Account"
                 name="account"

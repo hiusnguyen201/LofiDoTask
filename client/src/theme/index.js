@@ -4,9 +4,11 @@ import {
   ThemeProvider,
   StyledEngineProvider,
   CssBaseline,
+  GlobalStyles,
 } from "@mui/material";
 import useTheme from "~/hooks/useTheme";
 import palette from "./palatte";
+import globalStyles from "./globalStyles";
 
 export default function ThemeConfig({ children }) {
   const themeMode = useTheme();
@@ -28,6 +30,7 @@ export default function ThemeConfig({ children }) {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme />
+        <GlobalStyles styles={globalStyles} />
         {children}
       </ThemeProvider>
     </StyledEngineProvider>

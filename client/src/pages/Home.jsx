@@ -1,10 +1,5 @@
-import { Link, Navigate } from "react-router-dom";
+import MainLayout from "~/layouts/MainLayout";
 
 export default function Home() {
-  return (
-    <div>
-      <Link to={"/auth/login"}>Trang login</Link>
-      Home
-    </div>
-  );
+  return <MainLayout></MainLayout>;
 }
