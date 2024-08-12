@@ -16,8 +16,6 @@ const app = express();
 const __dirname = process.cwd();
 app.use(cors());
 
-console.log(path.join(__dirname, "../public"));
-
 app.use((req, res, next) => {
   req.ipv4 = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   next();

@@ -11,7 +11,8 @@ class ResponseUtils {
   static sendJson(res, statusCode, message, data = null, extras = {}) {
     const responseData = {
       success:
-        statusCode >= httpStatus.OK && statusCode < httpStatus.MULTIPLE_CHOICES, // 200-299 Success response
+        statusCode >= httpStatus.OK &&
+        statusCode < httpStatus.MULTIPLE_CHOICES, // 200-299 Success response
       message,
     };
 
@@ -48,10 +49,15 @@ class ResponseUtils {
   /**
    * Send **400 Bad Request** response(validation Error Response)
    */
-  static status400(res, message = "Bad Request!", data = null, errors = []) {
+  static status400(
+    res,
+    message = "Bad Request!",
+    data = null,
+    errors = []
+  ) {
     this.sendJson(
       res,
-      httpStatus.NOT_FOUND,
+      httpStatus.BAD_REQUEST,
       message,
       data,
       errors.length && { errors }

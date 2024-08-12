@@ -25,7 +25,10 @@ export default {
  * @returns
  */
 async function authenticate(account, password, ipAddress) {
-  const user = await userService.getOne(account, "* password");
+  const user = await userService.getOne(
+    account,
+    "_id username email password"
+  );
 
   if (!user) {
     throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);

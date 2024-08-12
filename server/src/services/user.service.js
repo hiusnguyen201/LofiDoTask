@@ -47,10 +47,6 @@ async function getOne(identify, selectFields = null) {
     selectFields = SELECTED_FIELDS;
   }
 
-  if (selectFields.includes("*")) {
-    selectFields = selectFields.replace("*", SELECTED_FIELDS);
-  }
-
   if (StringUtils.isUUID(identify)) {
     filter._id = identify;
   } else if (StringUtils.isEmailAddress(identify)) {
