@@ -8,7 +8,22 @@ const API = axios.create({
 
 export const apiInstance = API;
 
+apiInstance.interceptors.request.use((req) => {
+  const accessToken = localStorage.getItem("accessToken");
+  if (accessToken) {
+    req.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return req;
+});
+
 // ----------------------Auth--------------------------------------
 export const register = (data) => API.post("/auth/register", data);
-export const login = (data) => API.post("/auth/login", data);
+export const login = (account, password) =>
+  API.post("/auth/login", {
+    account,
+    password,
+  });
 export const logout = (data) => API.post("/auth/logout", data);
+
+// ----------------------Account--------------------------------------
+export const getAccountInfo = () => API.get("/account/info");

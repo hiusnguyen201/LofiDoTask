@@ -1,23 +1,6 @@
-import { useState, useEffect, createContext, useContext } from "react";
+import { useContext } from "react";
+import { AuthContext } from "~/contexts/AuthContext";
 
-import * as httpRequest from "~/utils/httpRequest";
+const useAuth = () => useContext(AuthContext);
 
-export const AuthContext = createContext();
-
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-
-  useEffect(async () => {
-    const fetchData = async () => {
-      await httpRequest.get("/users");
-    };
-
-    fetchData();
-  }, []);
-
-  return;
-};
+export default useAuth;

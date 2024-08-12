@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
@@ -23,8 +24,7 @@ import {
   EyeFill,
   EyeOffFill,
 } from "~/assets/icons";
-import * as api from "~/api";
-import { useState } from "react";
+import useAuth from "~/hooks/useAuth";
 
 const loginSchema = Yup.object().shape({
   account: Yup.string("Account must be string").required(
@@ -38,6 +38,8 @@ const loginSchema = Yup.object().shape({
 export default function Login() {
   const themeStyle = useTheme();
   const [showPassword, setShowPassword] = useState(false);
+  const { login, isAuthenticated, errMessage } = useAuth();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -45,27 +47,27 @@ export default function Login() {
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: async (values, { resetForm, setErrors }) => {
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
       try {
-        const { data } = await api.login(values);
-        if (data.success) {
-          resetForm();
+        await login(values.account, values.password);
+        if (!isAuthenticated && errMessage) {
+          setSubmitting(false);
+          return;
         }
+
+        toast.success("Login success");
+        resetForm();
+        navigate("/");
       } catch (e) {
-        const response = e.response;
         let message = "";
-        switch (response.status) {
+
+        switch (e.response.status) {
           case 400:
-            const errors = {};
-            response?.data?.errors.map((err) => {
-              errors[err.field] = err.message;
-            });
-            setErrors(errors);
+            message = "Validation error";
             break;
           case 401:
           case 404:
             message = "Invalid account or password";
-
             break;
           default:
             message = "Server error";
