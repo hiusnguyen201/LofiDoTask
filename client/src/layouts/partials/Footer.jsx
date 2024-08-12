@@ -14,6 +14,33 @@ function Footer() {
   const [musicIndex, setMusicIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef();
+
+  const handleTogglePlay = () => {
+    if (audioRef.current.paused) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+
+    setPlaying(!playing);
+  };
+
+  const handleMinusMusicIndex = () => {
+    if (musicIndex == 0) {
+      setMusicIndex(musics.length - 1);
+    } else {
+      setMusicIndex(musicIndex - 1);
+    }
+  };
+
+  const handlePlusMusicIndex = () => {
+    if (musicIndex == musics.length - 1) {
+      setMusicIndex(0);
+    } else {
+      setMusicIndex(musicIndex + 1);
+    }
+  };
+
   return (
     <AppBar
       component={"footer"}
@@ -27,7 +54,7 @@ function Footer() {
       }}
       position="fixed"
     >
-      <audio ref={audioRef} loop src={musics[musicIndex].path} />
+      <audio ref={audioRef} autoPlay loop src={musics[musicIndex].path} />
       <Container maxWidth="xl">
         <Stack
           sx={{
@@ -57,9 +84,11 @@ function Footer() {
               sx={{ p: 0 }}
               disableRipple
               children={<PrevIcon width="48px" height="48px" />}
+              onClick={handleMinusMusicIndex}
             />
 
             <IconButton
+              onClick={handleTogglePlay}
               sx={{ p: 0 }}
               disableRipple
               children={
@@ -75,6 +104,7 @@ function Footer() {
               sx={{ p: 0 }}
               disableRipple
               children={<NextIcon width="48px" height="48px" />}
+              onClick={handlePlusMusicIndex}
             />
           </Stack>
 
@@ -93,7 +123,8 @@ function Footer() {
               sx={{
                 color: "inherit",
               }}
-              href="asc"
+              target={"_blank"}
+              href="https://github.com/hiusnguyen201"
             >
               Nguyen Minh Hieu
             </Link>

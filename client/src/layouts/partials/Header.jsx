@@ -11,13 +11,15 @@ import {
   Menu,
   Stack,
 } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import images from "~/assets/images";
-import { Link } from "react-router-dom";
-
-const settings = ["Profile", "Account", "Logout"];
+import useAuth from "~/hooks/useAuth";
 
 function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -26,6 +28,25 @@ function Header() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const settings = [
+    {
+      name: "Profile",
+      handleClick: () => {},
+    },
+    {
+      name: "Account",
+      handleClick: () => {},
+    },
+    {
+      name: "Logout",
+      handleClick: async () => {
+        await logout();
+        toast.success("Logout success");
+        navigate("/auth/login");
+      },
+    },
+  ];
 
   return (
     <AppBar
@@ -66,7 +87,7 @@ function Header() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{ mt: "45px", cursor: "pointer" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -81,9 +102,9 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map(({ name, handleClick }) => (
+                <MenuItem key={name} onClick={handleClick}>
+                  <Typography textAlign="center">{name}</Typography>
                 </MenuItem>
               ))}
             </Menu>

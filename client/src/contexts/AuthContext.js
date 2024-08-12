@@ -28,6 +28,7 @@ const handlers = {
   LOGIN: (state, action) => ({
     ...state,
     isAuthenticated: true,
+    isInitialized: true,
     user: action.payload.user,
   }),
   LOGOUT: (state) => ({
@@ -105,10 +106,10 @@ function AuthProvider({ children }) {
     });
   };
 
-  const handleRegister = async (data) => {
+  const handleRegister = async (payload) => {
     try {
       dispatch({ type: "CLEAR" });
-      const { data } = await api.register(data);
+      const { data } = await api.register(payload);
       const { accessToken, user } = data.data;
       setSession(accessToken);
       dispatch({ type: "REGISTER", payload: { user } });

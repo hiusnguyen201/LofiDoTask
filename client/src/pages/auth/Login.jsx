@@ -27,9 +27,7 @@ import {
 import useAuth from "~/hooks/useAuth";
 
 const loginSchema = Yup.object().shape({
-  account: Yup.string("Account must be string").required(
-    "Account is required"
-  ),
+  account: Yup.string("Account must be string").required("Account is required"),
   password: Yup.string("Password must be string").required(
     "Password is required"
   ),
@@ -83,14 +81,8 @@ export default function Login() {
     },
   });
 
-  const {
-    handleSubmit,
-    getFieldProps,
-    errors,
-    touched,
-    isSubmitting,
-    values,
-  } = formik;
+  const { handleSubmit, getFieldProps, errors, touched, isSubmitting, values } =
+    formik;
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -133,15 +125,12 @@ export default function Login() {
                   mb: 2,
                 }}
                 fullWidth
-                autoFocus
                 {...getFieldProps("account")}
                 label="Account"
                 name="account"
                 type="text"
                 error={Boolean(errors.account && touched.account)}
-                helperText={
-                  errors.account && touched.account && errors.account
-                }
+                helperText={errors.account && touched.account && errors.account}
               />
 
               <TextField
@@ -158,10 +147,7 @@ export default function Login() {
                   endAdornment: (
                     <InputAdornment position="end">
                       {values.password.length > 0 && (
-                        <IconButton
-                          onClick={handleShowPassword}
-                          edge="end"
-                        >
+                        <IconButton onClick={handleShowPassword} edge="end">
                           {showPassword ? <EyeFill /> : <EyeOffFill />}
                         </IconButton>
                       )}
@@ -193,15 +179,13 @@ export default function Login() {
             gap={3}
             sx={{ mb: 1 }}
           >
-            {[
-              FacebookNoColorIcon,
-              GoogleNoColorIcon,
-              GithubNoColorIcon,
-            ].map((Icon, index) => (
-              <Link key={index} to={"#"}>
-                <Icon />
-              </Link>
-            ))}
+            {[FacebookNoColorIcon, GoogleNoColorIcon, GithubNoColorIcon].map(
+              (Icon, index) => (
+                <Link key={index} to={"#"}>
+                  <Icon />
+                </Link>
+              )
+            )}
           </Stack>
 
           <Stack
