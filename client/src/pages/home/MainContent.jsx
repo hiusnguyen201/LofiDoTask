@@ -3,7 +3,6 @@ import { useState } from "react";
 import {
   Drawer as MuiDrawer,
   Avatar,
-  IconButton,
   Divider,
   List,
   ListItem,
@@ -69,13 +68,6 @@ const closedMixin = (theme) => ({
   backgroundColor: "#171a1e",
 });
 
-const DrawerHeader = styled("div")(({ theme, open }) => ({
-  display: "flex",
-  width: "100%",
-  alignSelf: "start",
-  alignItems: "center",
-}));
-
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -130,18 +122,8 @@ export default function MainContent() {
         open={open}
         badgeContent={
           !open && (
-            <Box
-              sx={{
-                backgroundColor: "#ffffff29",
-                height: 24,
-                width: 24,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "100%",
-              }}
-            >
-              <ChevronRightIcon sx={{ cursor: "pointer" }} />
+            <Box className="flex justify-center items-center rounded-full w-7 h-7 cursor-pointer bg-[#ffffff29]">
+              <ChevronRightIcon />
             </Box>
           )
         }
@@ -149,13 +131,16 @@ export default function MainContent() {
         <Drawer variant="permanent" open={open} onClick={handleDrawerOpen}>
           {open && (
             <>
-              <DrawerHeader open={open}>
+              <Box className="w-full flex items-center" open={open}>
                 <List>
                   <ListItem>
                     <ListItemAvatar
                       children={
                         <Avatar
-                          sx={{ width: 32, height: 32, bgcolor: "yellow" }}
+                          className="w-8 h-8"
+                          sx={{
+                            backgroundColor: "#ffffff29",
+                          }}
                           src="/static/images/avatar/1.jpg"
                           alt={user.username}
                         />
@@ -163,16 +148,13 @@ export default function MainContent() {
                     />
                     <ListItemText primary={user.username} />
                     <ListItemButton
-                      sx={{
-                        p: "8px !important",
-                        height: "32px !important",
-                      }}
+                      className="!p-2 !h-8"
                       onClick={handleDrawerClose}
                       children={<ChevronLeftIcon />}
                     />
                   </ListItem>
                 </List>
-              </DrawerHeader>
+              </Box>
               <Divider />
               <List>
                 <ListItemButton>
@@ -190,9 +172,8 @@ export default function MainContent() {
           )}
           {!open && (
             <Box
+              className="w-full h-full"
               sx={{
-                width: "100%",
-                height: "100%",
                 backgroundColor: "#ffffff29",
               }}
             ></Box>
@@ -200,7 +181,7 @@ export default function MainContent() {
         </Drawer>
       </BadgeDrawer>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}></Box>
+      <Box component="main" className="grow p-6"></Box>
     </>
   );
 }

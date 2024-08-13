@@ -7,14 +7,12 @@ import {
   Box,
   Typography,
   TextField,
-  Stack,
   Container,
   useTheme,
   IconButton,
   InputAdornment,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-
 import AuthLayout from "~/layouts/AuthLayout";
 import images from "~/assets/images";
 import {
@@ -100,38 +98,26 @@ export default function Login() {
     <AuthLayout>
       <Container component="main" maxWidth="xs">
         <Box
+          className="flex flex-col items-center rounded p-8 gap-y-3"
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
             backgroundColor: themeStyle.palette.backgroundColor[400_95],
-            borderRadius: 4,
-            padding: "36px",
           }}
         >
           <img width={100} src={images.logo} alt={"lofi-logo"} />
 
-          <Typography
-            sx={{
-              mb: 2,
-            }}
-            component="h1"
-            variant="h5"
-          >
+          <Typography component="h1" variant="h6">
             Log in to continue
           </Typography>
 
-          <FormikProvider value={formik} sx={{ mt: 1 }}>
+          <FormikProvider value={formik}>
             <Form
               noValidate
               autoComplete="off"
-              style={{ width: "100%" }}
+              className="w-full"
               onSubmit={handleSubmit}
             >
               <TextField
-                sx={{
-                  mb: 2,
-                }}
+                className="mb-4"
                 fullWidth
                 {...getFieldProps("account")}
                 label="Account"
@@ -144,6 +130,7 @@ export default function Login() {
               />
 
               <TextField
+                className="mb-4"
                 fullWidth
                 {...getFieldProps("password")}
                 label="Password"
@@ -178,24 +165,18 @@ export default function Login() {
                 fullWidth
                 variant="contained"
                 loading={isSubmitting}
-                sx={{ mt: 3, mb: 2, fontSize: "inherit" }}
+                className="text-base py-2"
               >
                 Sign In
               </LoadingButton>
             </Form>
           </FormikProvider>
 
-          <Typography component={"p"} textAlign={"center"} sx={{ mb: 2 }}>
+          <Typography component={"p"} className="text-center">
             Or continue with:
           </Typography>
 
-          <Stack
-            flexDirection={"row"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            gap={3}
-            sx={{ mb: 1 }}
-          >
+          <Box className="flex items-center justify-center gap-x-3">
             {[
               FacebookNoColorIcon,
               GoogleNoColorIcon,
@@ -205,18 +186,16 @@ export default function Login() {
                 <Icon />
               </Link>
             ))}
-          </Stack>
+          </Box>
 
-          <Stack
-            flexDirection={"row"}
-            alignItems={"center"}
-            justifyContent={"center"}
+          <Box
+            className="flex items-center justify-center gap-x-1"
             gap={1}
           >
             <Link to={"#"}>Can't log in?</Link>
             <span>•</span>
             <Link to={"#"}>Create an account</Link>
-          </Stack>
+          </Box>
         </Box>
       </Container>
     </AuthLayout>

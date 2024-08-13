@@ -4,15 +4,6 @@ import MainLayout from "~/layouts/MainLayout";
 import { MenuIcon as MenuIconModal } from "~/assets/icons";
 import MainContent from "./MainContent";
 
-const boxModalStyle = {
-  display: "flex",
-  position: "absolute",
-  width: "100%",
-  height: "100%",
-  backgroundColor: "#1d2125",
-  color: "#172b4d",
-};
-
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
@@ -20,32 +11,17 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "end",
-          position: "relative",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <IconButton
+      <Box className="flex items-center justify-end relative w-full h-full">
+        <Box
+          className="rounded-full mr-2"
           sx={{
-            padding: 2,
-            mr: 1,
-            mb: 1,
-            borderRadius: "100%",
-            backgroundColor: "#121212",
-            "&:hover": {
-              backgroundColor: "#121212",
-            },
-            zIndex: 5,
+            backgroundColor: "#1d2125",
           }}
-          onClick={handleOpenModal}
         >
-          <MenuIconModal />
-        </IconButton>
+          <IconButton className="z-10 p-4" onClick={handleOpenModal}>
+            <MenuIconModal />
+          </IconButton>
+        </Box>
 
         <Modal
           open={openModal}
@@ -59,7 +35,12 @@ export default function Home() {
           }}
         >
           <Fade in={openModal}>
-            <Box sx={boxModalStyle}>
+            <Box
+              className="flex absolute w-full h-full"
+              sx={{
+                backgroundColor: "#1d2125",
+              }}
+            >
               <MainContent />
             </Box>
           </Fade>

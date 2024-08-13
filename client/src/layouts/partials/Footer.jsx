@@ -3,7 +3,7 @@ import {
   AppBar,
   Typography,
   Container,
-  Stack,
+  Box,
   IconButton,
   Link,
 } from "@mui/material";
@@ -44,15 +44,11 @@ function Footer() {
   return (
     <AppBar
       component={"footer"}
+      className="fixed py-3 shadow-none top-auto bottom-0"
       sx={{
-        padding: "12px 0",
         backgroundColor: "transparent",
-        boxShadow: "none",
         backgroundImage: "none",
-        bottom: 0,
-        top: "auto",
       }}
-      position="fixed"
     >
       <audio
         ref={audioRef}
@@ -61,73 +57,43 @@ function Footer() {
         onEnded={handlePlusMusicIndex}
       />
       <Container maxWidth="xl">
-        <Stack
-          sx={{
-            display: {
-              xs: "block",
-              sm: "flex",
-            },
-          }}
-          flexDirection={"row"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
-          <Typography component={"p"} margin={"16px 0"}>
+        <Box className="block sm:flex items-center justify-between">
+          <Typography component={"p"} className="my-4">
             Song name: {musics[musicIndex].name}
           </Typography>
 
-          <Stack
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "row",
-              gap: 2,
-            }}
-          >
+          <Box className="flex items-center justify-center gap-4">
             <IconButton
-              sx={{ p: 0 }}
-              disableRipple
-              children={<PrevIcon sx={{ fontSize: "3.5rem" }} />}
+              className="p-0"
+              children={<PrevIcon className="text-5xl" />}
               onClick={handleMinusMusicIndex}
             />
 
             <IconButton
               onClick={handleTogglePlay}
-              sx={{ p: 0 }}
-              disableRipple
+              className="p-0"
               children={
                 playing ? (
-                  <PauseIcon sx={{ fontSize: "4.5rem" }} />
+                  <PauseIcon className="text-7xl" />
                 ) : (
-                  <PlayIcon sx={{ fontSize: "4.5rem" }} />
+                  <PlayIcon className="text-7xl" />
                 )
               }
             />
 
             <IconButton
-              sx={{ p: 0 }}
-              disableRipple
-              children={<NextIcon sx={{ fontSize: "3.5rem" }} />}
+              className="p-0"
+              children={<NextIcon className="text-5xl" />}
               onClick={handlePlusMusicIndex}
             />
-          </Stack>
+          </Box>
 
-          <Typography
-            sx={{
-              display: {
-                xs: "none",
-                sm: "block",
-              },
-            }}
-            component={"p"}
-          >
+          <Typography className="hidden sm:block" component={"p"}>
             <span>Made by:</span>
             <Link
+              className="no-underline ml-2"
               sx={{
-                ml: 1,
                 color: "#fff",
-                textDecoration: "none",
               }}
               target="_blank"
               href="https://github.com/hiusnguyen201"
@@ -135,7 +101,7 @@ function Footer() {
               Nguyen Minh Hieu
             </Link>
           </Typography>
-        </Stack>
+        </Box>
       </Container>
     </AppBar>
   );

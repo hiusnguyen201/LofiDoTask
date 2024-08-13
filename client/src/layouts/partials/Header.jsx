@@ -9,7 +9,6 @@ import {
   Tooltip,
   MenuItem,
   Menu,
-  Stack,
   Link,
 } from "@mui/material";
 import { Link as LinkRouter, useNavigate } from "react-router-dom";
@@ -48,49 +47,33 @@ function Header() {
 
   return (
     <AppBar
+      className="fixed py-3 shadow-none"
       sx={{
-        padding: "12px 0",
         backgroundColor: "transparent",
-        boxShadow: "none",
         backgroundImage:
           "linear-gradient(180deg, rgba(66, 65, 65, .8), transparent)",
       }}
-      position="fixed"
     >
       <Container maxWidth="xl">
-        <Stack
-          flexDirection={"row"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
+        <Box className="flex justify-between items-center">
           <LinkRouter
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyItems: "center",
-            }}
+            className="flex justify-between items-center"
             to={"/"}
           >
             <img width={70} src={images.logo} />
           </LinkRouter>
 
-          <Box display={"flex"} alignItems={"center"} gap={5}>
+          <Box className="flex items-center gap-5">
             <Link
-              target={"_blank"}
-              href={"https://github.com/hiusnguyen201"}
+              target="_blank"
+              href="https://github.com/hiusnguyen201"
+              className="flex items-center no-underline relative hover:no-underline"
               sx={{
-                display: "flex",
-                alignItems: "center",
-                textDecoration: "none",
-                position: "relative",
-                "&:hover": {
-                  textDecoration: "none",
-                },
                 "&::after": {
                   content: '""',
                   position: "absolute",
                   width: "0%",
-                  height: "2px",
+                  height: "1px",
                   backgroundColor: "#fff",
                   bottom: "-4px",
                   left: 0,
@@ -105,19 +88,12 @@ function Header() {
                 },
               }}
             >
-              <GithubNoColorIcon width={"36px"} height={"36px"} />
-              <Typography
-                sx={{
-                  ml: 1,
-                  color: "#fff",
-                }}
-              >
-                Github
-              </Typography>
+              <GithubNoColorIcon />
+              <Typography className="ml-1 text-white">Github</Typography>
             </Link>
 
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu} className="p-0">
                 <Avatar
                   sx={{ bgcolor: "#ffb05c" }}
                   alt="Remy Sharp"
@@ -125,8 +101,9 @@ function Header() {
                 />
               </IconButton>
             </Tooltip>
+
             <Menu
-              sx={{ mt: "45px", cursor: "pointer" }}
+              className="cursor-pointer mt-11"
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -143,16 +120,16 @@ function Header() {
             >
               {settings.map(({ name, handleClick }) => (
                 <MenuItem
-                  sx={{ minWidth: 150 }}
+                  className="min-w-40"
                   key={name}
                   onClick={handleClick}
                 >
-                  <Typography textAlign="center">{name}</Typography>
+                  <Typography>{name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-        </Stack>
+        </Box>
       </Container>
     </AppBar>
   );
