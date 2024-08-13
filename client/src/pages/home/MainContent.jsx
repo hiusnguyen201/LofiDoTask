@@ -12,6 +12,7 @@ import {
   ListItemButton,
   ListItemAvatar,
   Badge,
+  Typography,
 } from "@mui/material";
 import useAuth from "~/hooks/useAuth";
 import {
@@ -20,6 +21,12 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   GearIcon,
+  TableColumnIcon,
+  CalendarIcon,
+  ClipBoardIcon,
+  StarRegularIcon,
+  StarSolidIcon,
+  BoardIcon,
 } from "~/assets/icons";
 
 const drawerWidth = 240;
@@ -34,10 +41,10 @@ const openedMixin = (theme) => ({
   "& .MuiList-root": {
     width: "100%",
   },
-  "& .MuiButtonBase-root": {
+  "& .MuiButtonBase-root, & .MuiListItem-root": {
     flexGrow: 0,
-    height: 48,
-    padding: "8px 12px",
+    height: 40,
+    padding: "0px 4px 0 12px",
     ">.MuiButtonBase-root": {
       padding: 8,
       height: 32,
@@ -45,10 +52,10 @@ const openedMixin = (theme) => ({
   },
   "& .MuiListItemIcon-root, & .MuiListItemAvatar-root": {
     minWidth: "auto",
+    marginRight: 8,
   },
   "& .MuiTypography-root": {
     fontSize: 14,
-    marginLeft: 8,
   },
   backgroundColor: "#171a1e",
 });
@@ -122,7 +129,12 @@ export default function MainContent() {
         open={open}
         badgeContent={
           !open && (
-            <Box className="flex justify-center items-center rounded-full w-7 h-7 cursor-pointer bg-[#ffffff29]">
+            <Box
+              className="flex justify-center items-center rounded-full w-7 h-7 cursor-pointer"
+              sx={{
+                backgroundColor: "#ffffff29",
+              }}
+            >
               <ChevronRightIcon />
             </Box>
           )
@@ -131,6 +143,7 @@ export default function MainContent() {
         <Drawer variant="permanent" open={open} onClick={handleDrawerOpen}>
           {open && (
             <>
+              {/* Header Drawer */}
               <Box className="w-full flex items-center" open={open}>
                 <List>
                   <ListItem>
@@ -155,8 +168,15 @@ export default function MainContent() {
                   </ListItem>
                 </List>
               </Box>
+
               <Divider />
-              <List>
+
+              <List className="">
+                <ListItemButton>
+                  <ListItemIcon children={<ClipBoardIcon />} />
+                  <ListItemText primary={"Boards"} />
+                </ListItemButton>
+
                 <ListItemButton>
                   <ListItemIcon children={<UserIcon />} />
                   <ListItemText primary={"Members"} />
@@ -166,6 +186,37 @@ export default function MainContent() {
                 <ListItemButton>
                   <ListItemIcon children={<GearIcon />} />
                   <ListItemText primary={"Settings"} />
+                </ListItemButton>
+
+                <ListItem className="mt-3">
+                  <ListItemText primary={"Workspace views"} />
+                </ListItem>
+
+                <ListItemButton>
+                  <ListItemIcon children={<TableColumnIcon />} />
+                  <ListItemText primary={"Table"} />
+                </ListItemButton>
+
+                <ListItemButton>
+                  <ListItemIcon children={<CalendarIcon />} />
+                  <ListItemText primary={"Calendar"} />
+                </ListItemButton>
+
+                <ListItem className="mt-3">
+                  <ListItemText primary={"Your boards"} />
+                  <ListItemButton children={<PlusIcon />} />
+                </ListItem>
+
+                <ListItemButton>
+                  <ListItemIcon children={<BoardIcon />} />
+                  <ListItemText primary={"Board 1"} />
+                  <ListItemButton children={<StarRegularIcon />} />
+                </ListItemButton>
+
+                <ListItemButton>
+                  <ListItemIcon children={<BoardIcon />} />
+                  <ListItemText primary={"Board 2"} />
+                  <ListItemButton children={<StarSolidIcon />} />
                 </ListItemButton>
               </List>
             </>
