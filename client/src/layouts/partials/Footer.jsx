@@ -57,22 +57,22 @@ function Footer() {
       <audio
         ref={audioRef}
         autoPlay={playing}
-        loop
         src={musics[musicIndex].path}
+        onEnded={handlePlusMusicIndex}
       />
       <Container maxWidth="xl">
         <Stack
           sx={{
             display: {
               xs: "block",
-              md: "flex",
+              sm: "flex",
             },
           }}
           flexDirection={"row"}
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <Typography component={"p"} margin={"12px 0"}>
+          <Typography component={"p"} margin={"16px 0"}>
             Song name: {musics[musicIndex].name}
           </Typography>
 
@@ -88,7 +88,7 @@ function Footer() {
             <IconButton
               sx={{ p: 0 }}
               disableRipple
-              children={<PrevIcon width="48px" height="48px" />}
+              children={<PrevIcon sx={{ fontSize: "3.5rem" }} />}
               onClick={handleMinusMusicIndex}
             />
 
@@ -98,9 +98,9 @@ function Footer() {
               disableRipple
               children={
                 playing ? (
-                  <PauseIcon width="72px" height="72px" />
+                  <PauseIcon sx={{ fontSize: "4.5rem" }} />
                 ) : (
-                  <PlayIcon width="72px" height="72px" />
+                  <PlayIcon sx={{ fontSize: "4.5rem" }} />
                 )
               }
             />
@@ -108,7 +108,7 @@ function Footer() {
             <IconButton
               sx={{ p: 0 }}
               disableRipple
-              children={<NextIcon width="48px" height="48px" />}
+              children={<NextIcon sx={{ fontSize: "3.5rem" }} />}
               onClick={handlePlusMusicIndex}
             />
           </Stack>
@@ -117,18 +117,19 @@ function Footer() {
             sx={{
               display: {
                 xs: "none",
-                md: "block",
+                sm: "block",
               },
             }}
             component={"p"}
-            margin={"12px 0"}
           >
-            <span>Made by: </span>
+            <span>Made by:</span>
             <Link
               sx={{
-                color: "inherit",
+                ml: 1,
+                color: "#fff",
+                textDecoration: "none",
               }}
-              target={"_blank"}
+              target="_blank"
               href="https://github.com/hiusnguyen201"
             >
               Nguyen Minh Hieu

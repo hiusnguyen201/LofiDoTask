@@ -71,11 +71,13 @@ function Header() {
             }}
             to={"/"}
           >
-            <img width={60} src={images.logo} />
+            <img width={70} src={images.logo} />
           </LinkRouter>
 
           <Box display={"flex"} alignItems={"center"} gap={5}>
             <Link
+              target={"_blank"}
+              href={"https://github.com/hiusnguyen201"}
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -102,7 +104,6 @@ function Header() {
                   transition: "width .3s",
                 },
               }}
-              href={"https://github.com/hiusnguyen201"}
             >
               <GithubNoColorIcon width={"36px"} height={"36px"} />
               <Typography

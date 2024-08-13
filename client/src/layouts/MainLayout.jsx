@@ -19,7 +19,7 @@ const Player = styled("video")({
 export default function MainLayout({ children }) {
   return (
     <Box position={"relative"} width={"100%"} height={"100vh"}>
-      <Player loop autoPlay muted src={videos.daySunny} />
+      <Player loop autoPlay muted src={videos.nightClear} />
       <Header />
       {children}
       <Footer />

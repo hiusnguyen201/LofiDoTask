@@ -4,7 +4,7 @@ import GuestGuard from "~/guards/GuestGuard";
 import AuthGuard from "~/guards/AuthGuard";
 import Login from "~/pages/auth/Login";
 import Register from "~/pages/auth/Register";
-import Home from "~/pages/Home";
+import Home from "~/pages/home/Home";
 
 export default function Router() {
   return useRoutes([
