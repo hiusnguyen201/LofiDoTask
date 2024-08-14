@@ -1,5 +1,5 @@
 import { Box, IconButton } from "@mui/material";
-import HomeLayout from "~/layouts/HomeLayout";
+import HomeLayout from "~/layouts/home/HomeLayout";
 import { MenuIcon as MenuIconModal } from "~/assets/icons";
 import { Link } from "react-router-dom";
 

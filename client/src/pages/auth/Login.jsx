@@ -13,7 +13,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import AuthLayout from "~/layouts/AuthLayout";
+import AuthLayout from "~/layouts/auth/AuthLayout";
 import images from "~/assets/images";
 import {
   FacebookNoColorIcon,
@@ -117,8 +117,7 @@ export default function Login() {
               onSubmit={handleSubmit}
             >
               <TextField
-                className="mb-4"
-                fullWidth
+                className="mb-4 w-full"
                 {...getFieldProps("account")}
                 label="Account"
                 name="account"
@@ -131,7 +130,6 @@ export default function Login() {
 
               <TextField
                 className="mb-4"
-                fullWidth
                 {...getFieldProps("password")}
                 label="Password"
                 name="password"
@@ -162,10 +160,9 @@ export default function Login() {
 
               <LoadingButton
                 type="submit"
-                fullWidth
                 variant="contained"
                 loading={isSubmitting}
-                className="text-base py-2"
+                className="text-base py-2 w-full normal-case"
               >
                 Sign In
               </LoadingButton>
