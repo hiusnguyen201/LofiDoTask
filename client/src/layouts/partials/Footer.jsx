@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import {
   AppBar,
   Typography,
@@ -9,38 +8,11 @@ import {
 } from "@mui/material";
 import musics from "~/assets/musics";
 import { PauseIcon, PrevIcon, PlayIcon, NextIcon } from "~/assets/icons";
+import useAudio from "~/hooks/useAudio";
 
 function Footer() {
-  const [musicIndex, setMusicIndex] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  const audioRef = useRef();
-
-  const handleTogglePlay = () => {
-    if (audioRef.current.paused) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-    }
-
-    setPlaying(!playing);
-  };
-
-  const handleMinusMusicIndex = () => {
-    if (musicIndex == 0) {
-      setMusicIndex(musics.length - 1);
-    } else {
-      setMusicIndex(musicIndex - 1);
-    }
-  };
-
-  const handlePlusMusicIndex = () => {
-    if (musicIndex == musics.length - 1) {
-      setMusicIndex(0);
-    } else {
-      setMusicIndex(musicIndex + 1);
-    }
-  };
-
+  const { musicIndex, playing, togglePlay, prevAudio, nextAudio } =
+    useAudio();
   return (
     <AppBar
       component={"footer"}
@@ -50,12 +22,6 @@ function Footer() {
         backgroundImage: "none",
       }}
     >
-      <audio
-        ref={audioRef}
-        autoPlay={playing}
-        src={musics[musicIndex].path}
-        onEnded={handlePlusMusicIndex}
-      />
       <Container maxWidth="xl">
         <Box className="block sm:flex items-center justify-between">
           <Typography component={"p"} className="my-4">
@@ -66,11 +32,11 @@ function Footer() {
             <IconButton
               className="p-0"
               children={<PrevIcon className="text-5xl" />}
-              onClick={handleMinusMusicIndex}
+              onClick={prevAudio}
             />
 
             <IconButton
-              onClick={handleTogglePlay}
+              onClick={togglePlay}
               className="p-0"
               children={
                 playing ? (
@@ -84,7 +50,7 @@ function Footer() {
             <IconButton
               className="p-0"
               children={<NextIcon className="text-5xl" />}
-              onClick={handlePlusMusicIndex}
+              onClick={nextAudio}
             />
           </Box>
 

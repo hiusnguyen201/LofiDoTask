@@ -4,7 +4,8 @@ import GuestGuard from "~/guards/GuestGuard";
 import AuthGuard from "~/guards/AuthGuard";
 import Login from "~/pages/auth/Login";
 import Register from "~/pages/auth/Register";
-import Home from "~/pages/home/Home";
+import Home from "~/pages/main/Home";
+import Boards from "~/pages/main/Boards";
 
 export default function Router() {
   return useRoutes([
@@ -34,6 +35,14 @@ export default function Router() {
       element: (
         <AuthGuard>
           <Home />
+        </AuthGuard>
+      ),
+    },
+    {
+      path: "/workspace",
+      element: (
+        <AuthGuard>
+          <Boards />
         </AuthGuard>
       ),
     },

@@ -3,7 +3,7 @@ import videos from "~/assets/videos";
 import Header from "./partials/Header";
 import Footer from "./partials/Footer";
 
-export default function MainLayout({ children }) {
+export default function HomeLayout({ children }) {
   return (
     <Box className="relative w-full h-screen">
       <video

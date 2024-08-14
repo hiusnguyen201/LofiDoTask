@@ -5,7 +5,7 @@ import ThemeConfig from "./theme";
 import useAuth from "./hooks/useAuth";
 
 export default function App() {
-  const { isInitialized, isAuthenticated } = useAuth();
+  const { isInitialized } = useAuth();
 
   return (
     <ThemeConfig>

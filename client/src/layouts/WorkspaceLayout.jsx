@@ -12,7 +12,6 @@ import {
   ListItemButton,
   ListItemAvatar,
   Badge,
-  Typography,
 } from "@mui/material";
 import useAuth from "~/hooks/useAuth";
 import {
@@ -110,9 +109,10 @@ const BadgeDrawer = styled(Badge)(({ open }) => ({
   },
 }));
 
-export default function MainContent() {
+export default function WorkspaceLayout({ children }) {
   const { user } = useAuth();
   const [open, setOpen] = useState(true);
+
   const handleDrawerOpen = () => {
     if (open) return;
     setOpen(true);
@@ -123,8 +123,9 @@ export default function MainContent() {
   };
 
   return (
-    <>
+    <Box className="w-full h-screen flex">
       <BadgeDrawer
+        className="h-full"
         onClick={handleDrawerOpen}
         open={open}
         badgeContent={
@@ -159,7 +160,9 @@ export default function MainContent() {
                         />
                       }
                     />
-                    <ListItemText primary={user.username} />
+                    <ListItemText
+                      primary={`${user.username}'s workspace`}
+                    />
                     <ListItemButton
                       className="!p-2 !h-8"
                       onClick={handleDrawerClose}
@@ -232,7 +235,9 @@ export default function MainContent() {
         </Drawer>
       </BadgeDrawer>
 
-      <Box component="main" className="grow p-6"></Box>
-    </>
+      <Box component={"main"} className="grow">
+        {children}
+      </Box>
+    </Box>
   );
 }
