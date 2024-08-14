@@ -27,3 +27,6 @@ export const logout = (data) => API.post("/auth/logout", data);
 
 // ----------------------Account--------------------------------------
 export const getAccountInfo = () => API.get("/account/info");
+
+// ----------------------Board--------------------------------------
+export const getBoards = () => API.get("/boards");

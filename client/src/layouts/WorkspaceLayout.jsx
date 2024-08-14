@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import {
   Drawer as MuiDrawer,
   Avatar,
@@ -23,10 +24,10 @@ import {
   TableColumnIcon,
   CalendarIcon,
   ClipBoardIcon,
-  StarRegularIcon,
-  StarSolidIcon,
-  BoardIcon,
 } from "~/assets/icons";
+import OverlayLoading from "~/components/OverlayLoading";
+import BoardListDrawer from "~/components/board/BoardListDrawer";
+import ListItemLink from "~/components/ListItemLink";
 
 const drawerWidth = 240;
 
@@ -112,6 +113,7 @@ const BadgeDrawer = styled(Badge)(({ open }) => ({
 export default function WorkspaceLayout({ children }) {
   const { user } = useAuth();
   const [open, setOpen] = useState(true);
+  const [isGettingData, setIsGettingData] = useState(true);
 
   const handleDrawerOpen = () => {
     if (open) return;
@@ -155,7 +157,6 @@ export default function WorkspaceLayout({ children }) {
                           sx={{
                             backgroundColor: "#ffffff29",
                           }}
-                          src="/static/images/avatar/1.jpg"
                           alt={user.username}
                         />
                       }
@@ -174,54 +175,52 @@ export default function WorkspaceLayout({ children }) {
 
               <Divider />
 
-              <List className="">
-                <ListItemButton>
-                  <ListItemIcon children={<ClipBoardIcon />} />
-                  <ListItemText primary={"Boards"} />
-                </ListItemButton>
+              <Box className="relative h-full">
+                <OverlayLoading open={isGettingData} />
 
-                <ListItemButton>
-                  <ListItemIcon children={<UserIcon />} />
-                  <ListItemText primary={"Members"} />
-                  <ListItemButton children={<PlusIcon />} />
-                </ListItemButton>
+                <Box className={isGettingData ? "hidden" : "block"}>
+                  <List className="pb-0">
+                    <ListItemLink
+                      to={"/workspace/boards"}
+                      icon={<ClipBoardIcon />}
+                      primary={"Boards"}
+                    />
 
-                <ListItemButton>
-                  <ListItemIcon children={<GearIcon />} />
-                  <ListItemText primary={"Settings"} />
-                </ListItemButton>
+                    <ListItemLink
+                      to={"/workspace/members"}
+                      icon={<UserIcon />}
+                      primary={"Members"}
+                      lastIcon={<PlusIcon />}
+                    />
 
-                <ListItem className="mt-3">
-                  <ListItemText primary={"Workspace views"} />
-                </ListItem>
+                    <ListItemLink
+                      to={"/workspace/settings"}
+                      icon={<GearIcon />}
+                      primary={"Settings"}
+                    />
+                  </List>
 
-                <ListItemButton>
-                  <ListItemIcon children={<TableColumnIcon />} />
-                  <ListItemText primary={"Table"} />
-                </ListItemButton>
+                  <List className="pb-0">
+                    <ListItem>
+                      <ListItemText primary={"Workspace views"} />
+                    </ListItem>
 
-                <ListItemButton>
-                  <ListItemIcon children={<CalendarIcon />} />
-                  <ListItemText primary={"Calendar"} />
-                </ListItemButton>
+                    <ListItemLink
+                      to={"/workspace/views/table"}
+                      icon={<TableColumnIcon />}
+                      primary={"Table"}
+                    />
 
-                <ListItem className="mt-3">
-                  <ListItemText primary={"Your boards"} />
-                  <ListItemButton children={<PlusIcon />} />
-                </ListItem>
+                    <ListItemLink
+                      to={"/workspace/views/calendar"}
+                      icon={<CalendarIcon />}
+                      primary={"Calendar"}
+                    />
+                  </List>
 
-                <ListItemButton>
-                  <ListItemIcon children={<BoardIcon />} />
-                  <ListItemText primary={"Board 1"} />
-                  <ListItemButton children={<StarRegularIcon />} />
-                </ListItemButton>
-
-                <ListItemButton>
-                  <ListItemIcon children={<BoardIcon />} />
-                  <ListItemText primary={"Board 2"} />
-                  <ListItemButton children={<StarSolidIcon />} />
-                </ListItemButton>
-              </List>
+                  <BoardListDrawer setIsGettingData={setIsGettingData} />
+                </Box>
+              </Box>
             </>
           )}
           {!open && (

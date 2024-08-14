@@ -13,7 +13,7 @@ export default function Home() {
             backgroundColor: "#1d2125",
           }}
         >
-          <Link to={"/workspace"}>
+          <Link to={"/workspace/boards"}>
             <IconButton className="z-10 p-4">
               <MenuIconModal />
             </IconButton>

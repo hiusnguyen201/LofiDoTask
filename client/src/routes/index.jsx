@@ -40,11 +40,16 @@ export default function Router() {
     },
     {
       path: "/workspace",
-      element: (
-        <AuthGuard>
-          <Boards />
-        </AuthGuard>
-      ),
+      children: [
+        {
+          path: "boards",
+          element: (
+            <AuthGuard>
+              <Boards />
+            </AuthGuard>
+          ),
+        },
+      ],
     },
   ]);
 }
