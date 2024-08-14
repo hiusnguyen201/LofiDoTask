@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useState, memo, useEffect } from "react";
 import {
   Drawer as MuiDrawer,
   Avatar,
@@ -8,7 +7,6 @@ import {
   List,
   ListItem,
   Box,
-  ListItemIcon,
   ListItemText,
   ListItemButton,
   ListItemAvatar,
@@ -24,10 +22,13 @@ import {
   TableColumnIcon,
   CalendarIcon,
   ClipBoardIcon,
+  StarRegularIcon,
+  StarSolidIcon,
+  BoardIcon,
 } from "~/assets/icons";
 import OverlayLoading from "~/components/OverlayLoading";
-import BoardListDrawer from "~/components/board/BoardListDrawer";
 import ListItemLink from "~/components/ListItemLink";
+import * as api from "~/api";
 
 const drawerWidth = 240;
 
@@ -110,10 +111,29 @@ const BadgeDrawer = styled(Badge)(({ open }) => ({
   },
 }));
 
-export default function WorkspaceLayout({ children }) {
+function WorkspaceLayout({ children }) {
   const { user } = useAuth();
   const [open, setOpen] = useState(true);
   const [isGettingData, setIsGettingData] = useState(true);
+  const [boards, setBoards] = useState([]);
+
+  useEffect(() => {
+    async function fetchApi() {
+      setIsGettingData(true);
+      try {
+        const { data } = await api.getBoards();
+        setBoards(data.data.boards);
+      } catch (e) {
+        switch (e.status) {
+          case 500:
+            break;
+        }
+      }
+      setIsGettingData(false);
+    }
+
+    fetchApi();
+  }, []);
 
   const handleDrawerOpen = () => {
     if (open) return;
@@ -218,7 +238,33 @@ export default function WorkspaceLayout({ children }) {
                     />
                   </List>
 
-                  <BoardListDrawer setIsGettingData={setIsGettingData} />
+                  <List>
+                    <ListItem>
+                      <ListItemText primary={"Your boards"} />
+                      <ListItemButton children={<PlusIcon />} />
+                    </ListItem>
+
+                    {boards &&
+                      boards.length > 0 &&
+                      boards.map((b) => {
+                        const words = b.name.split(" ");
+                        return (
+                          <ListItemLink
+                            key={b._id}
+                            to={`/boards/${b.code}/${words.join("-")}`}
+                            icon={<BoardIcon />}
+                            primary={b.name}
+                            lastIcon={
+                              b.starredAt ? (
+                                <StarSolidIcon />
+                              ) : (
+                                <StarRegularIcon />
+                              )
+                            }
+                          />
+                        );
+                      })}
+                  </List>
                 </Box>
               </Box>
             </>
@@ -240,3 +286,5 @@ export default function WorkspaceLayout({ children }) {
     </Box>
   );
 }
+
+export default memo(WorkspaceLayout);
