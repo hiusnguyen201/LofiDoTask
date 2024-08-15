@@ -23,6 +23,7 @@ import {
   EyeOffFillIcon,
 } from "~/assets/icons";
 import useAuth from "~/hooks/useAuth";
+import { createMessage } from "~/utils/toast";
 
 const loginSchema = Yup.object().shape({
   account: Yup.string("Account must be string").required(
@@ -47,36 +48,18 @@ export default function Login() {
     validationSchema: loginSchema,
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       try {
-        await login(values.account, values.password);
+        const { data } = await login(values.account, values.password);
         if (!isAuthenticated && errMessage) {
           setSubmitting(false);
           return;
         }
 
-        toast.success("Login success");
+        createMessage(data.message, "success");
         resetForm();
         navigate("/");
       } catch (e) {
-        let message = "";
-
-        switch (e.response.status) {
-          case 400:
-            message = "Validation error";
-            break;
-          case 401:
-          case 404:
-            message = "Invalid account or password";
-            break;
-          default:
-            message = "Server error";
-            break;
-        }
-
-        if (message) {
-          toast.error(message, {
-            position: "top-center",
-          });
-        }
+        const { data } = e.response;
+        createMessage(data.message, "error");
       }
     },
   });

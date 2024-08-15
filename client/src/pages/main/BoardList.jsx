@@ -1,4 +1,4 @@
 import WorkspaceLayout from "~/layouts/workspace/WorkspaceLayout";
-export default function Boards() {
+export default function BoardList() {
   return <WorkspaceLayout>ascasc</WorkspaceLayout>;
 }

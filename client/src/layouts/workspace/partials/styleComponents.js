@@ -9,22 +9,12 @@ const openedMixin = (theme) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: "hidden",
-  "& .MuiList-root": {
-    width: "100%",
-  },
-  "& .MuiButtonBase-root, & .MuiListItem-root": {
-    flexGrow: 0,
-    height: 40,
-    padding: "0px 4px 0 12px",
+  overflow: "unset",
+  "& .MuiButtonBase-root": {
+    padding: "4px 4px 4px 12px",
     ">.MuiButtonBase-root": {
       padding: 8,
-      height: 32,
     },
-  },
-  "& .MuiListItemIcon-root, & .MuiListItemAvatar-root": {
-    minWidth: "auto",
-    marginRight: 8,
   },
   "& .MuiTypography-root": {
     fontSize: 14,
@@ -38,7 +28,6 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   cursor: "pointer",
-  overflowX: "hidden",
   width: `16px`,
   [theme.breakpoints.up("sm")]: {
     width: `16px`,

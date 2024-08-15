@@ -125,6 +125,7 @@ function AuthProvider({ children }) {
       const { accessToken, refreshToken, user } = data.data;
       setSession(accessToken, refreshToken);
       dispatch({ type: "LOGIN", payload: { user } });
+      return data;
     } catch (e) {
       handleError(e);
     }

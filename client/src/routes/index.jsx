@@ -5,7 +5,9 @@ import AuthGuard from "~/guards/AuthGuard";
 import Login from "~/pages/auth/Login";
 import Register from "~/pages/auth/Register";
 import Home from "~/pages/main/Home";
-import Boards from "~/pages/main/Boards";
+import BoardList from "~/pages/main/BoardList";
+import Board from "~/pages/main/Board";
+import NotFound from "~/pages/errors/NotFound";
 
 export default function Router() {
   return useRoutes([
@@ -45,11 +47,28 @@ export default function Router() {
           path: "boards",
           element: (
             <AuthGuard>
-              <Boards />
+              <BoardList />
             </AuthGuard>
           ),
         },
       ],
+    },
+    {
+      path: "/boards",
+      children: [
+        {
+          path: ":id",
+          element: (
+            <AuthGuard>
+              <Board />
+            </AuthGuard>
+          ),
+        },
+      ],
+    },
+    {
+      path: "*",
+      element: <NotFound />,
     },
   ]);
 }

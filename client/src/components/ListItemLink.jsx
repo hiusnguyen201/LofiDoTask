@@ -1,18 +1,30 @@
 import { NavLink } from "react-router-dom";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 
-export default function ListItemLink({ to, primary, icon, lastIcon }) {
+const handleClick = () => {};
+
+export default function ListItemLink({
+  to,
+  primary,
+  icon,
+  lastIcon,
+  onLastIconClick = handleClick,
+}) {
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        isActive ? "active hover:no-underline" : "hover:no-underline"
+        isActive
+          ? "nav-link active hover:no-underline"
+          : "hover:no-underline"
       }
     >
       <ListItemButton>
         {icon && <ListItemIcon children={icon} />}
         <ListItemText primary={primary} />
-        {lastIcon && <ListItemButton children={lastIcon} />}
+        {lastIcon && (
+          <ListItemButton onClick={onLastIconClick} children={lastIcon} />
+        )}
       </ListItemButton>
     </NavLink>
   );

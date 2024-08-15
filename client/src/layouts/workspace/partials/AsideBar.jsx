@@ -1,6 +1,4 @@
 import { useState, memo, useEffect } from "react";
-import * as Yup from "yup";
-import { useFormik, Form, FormikProvider } from "formik";
 import {
   Avatar,
   Divider,
@@ -10,12 +8,7 @@ import {
   ListItemText,
   ListItemButton,
   ListItemAvatar,
-  Popper,
-  IconButton,
-  useMediaQuery,
-  TextField,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import useAuth from "~/hooks/useAuth";
 import {
   PlusIcon,
@@ -29,16 +22,14 @@ import {
   StarRegularIcon,
   StarSolidIcon,
   BoardIcon,
-  CloseIcon,
 } from "~/assets/icons";
 import OverlayLoading from "~/components/OverlayLoading";
 import ListItemLink from "~/components/ListItemLink";
 import * as api from "~/api";
 import { Drawer, BadgeDrawer } from "./styleComponents";
-
-const createBoardSchema = Yup.object().shape({
-  name: Yup.string("Title must be string").required("Title is required"),
-});
+import BoardPopper from "~/components/board/BoardPopper";
+import { createMessage } from "~/utils/toast";
+import { useLocation } from "react-router-dom";
 
 const navList = [
   {
@@ -85,37 +76,42 @@ function AsideBar() {
   const [isGettingData, setIsGettingData] = useState(true);
   const [boards, setBoards] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const isMdUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+  const location = useLocation();
+
+  useEffect(() => {
+    setAnchorEl(null);
+  }, [location]);
 
   const handleOpenPopperBoard = (e) => {
     setAnchorEl(anchorEl ? null : e.currentTarget);
   };
 
-  const formikBoard = useFormik({
-    initialValues: {
-      name: "",
-    },
-    validationSchema: createBoardSchema,
-    onSubmit: async (values, { resetForm, setSubmitting }) => {},
-  });
-
   useEffect(() => {
-    async function fetchApi() {
-      setIsGettingData(true);
-      try {
-        const { data } = await api.getBoards();
-        setBoards(data.data.boards);
-      } catch (e) {
-        switch (e.status) {
-          case 500:
-            break;
-        }
-      }
-      setIsGettingData(false);
-    }
-
-    fetchApi();
+    fetchApiBoardList();
   }, []);
+
+  async function fetchApiBoardList() {
+    setIsGettingData(true);
+    try {
+      const { data } = await api.getBoards();
+      setBoards(data.data.boards);
+    } catch (e) {
+      const { data } = e.response;
+      createMessage(data.message, "error");
+    }
+    setIsGettingData(false);
+  }
+
+  async function handleLastIconClick(id) {
+    try {
+      await api.toggleStarBoard(id);
+      fetchApiBoardList();
+    } catch (e) {
+      const { data } = e.response;
+      createMessage(data.message, "error");
+    }
+    return;
+  }
 
   const handleDrawerOpen = () => {
     if (open) return;
@@ -125,9 +121,6 @@ function AsideBar() {
     if (!open) return;
     setOpen(false);
   };
-
-  const { handleSubmit, isSubmitting, getFieldProps, errors, touched } =
-    formikBoard;
 
   return (
     <BadgeDrawer
@@ -152,7 +145,7 @@ function AsideBar() {
           <>
             {/* Header Drawer */}
             <Box className="w-full flex items-center" open={open}>
-              <List>
+              <List className="w-full">
                 <ListItem>
                   <ListItemAvatar
                     children={
@@ -177,13 +170,22 @@ function AsideBar() {
 
             <Divider />
 
-            <Box className="relative h-full">
+            <Box className="relative h-full w-full">
               <OverlayLoading open={isGettingData} />
 
-              <Box className={isGettingData ? "hidden" : "block"}>
+              <Box
+                className={
+                  isGettingData
+                    ? "hidden"
+                    : "overflow-y-auto scrollbar-thin"
+                }
+                sx={{
+                  maxHeight: "calc(100% - 128px)",
+                }}
+              >
                 {navList.length > 0 &&
                   navList.map((item, i) => (
-                    <List key={i} className="pb-0">
+                    <List key={i} className="w-full">
                       {item.title && (
                         <ListItem>
                           <ListItemText primary={item.title} />
@@ -203,7 +205,7 @@ function AsideBar() {
                     </List>
                   ))}
 
-                <List>
+                <List className="w-full">
                   <ListItem>
                     <ListItemText primary={"Your boards"} />
                     <ListItemButton
@@ -215,11 +217,10 @@ function AsideBar() {
                   {boards &&
                     boards.length > 0 &&
                     boards.map((b) => {
-                      const words = b.name.split(" ");
                       return (
                         <ListItemLink
                           key={b._id}
-                          to={`/boards/${b.code}/${words.join("-")}`}
+                          to={`/boards/${b._id}`}
                           icon={<BoardIcon />}
                           primary={b.name}
                           lastIcon={
@@ -229,80 +230,21 @@ function AsideBar() {
                               <StarRegularIcon />
                             )
                           }
+                          onLastIconClick={() =>
+                            handleLastIconClick(b._id)
+                          }
                         />
                       );
                     })}
                 </List>
 
-                <Popper
-                  placement={isMdUp ? "right" : "bottom"}
-                  open={Boolean(anchorEl)}
-                  anchorEl={anchorEl}
-                  sx={{
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                <BoardPopper
+                  asideBarData={{
+                    handleOpenPopperBoard,
+                    fetchApiBoardList,
+                    anchorEl,
                   }}
-                >
-                  <Box
-                    className="p-4 rounded-lg"
-                    sx={{
-                      bgcolor: "#282E33",
-                    }}
-                  >
-                    <Box
-                      className="flex items-center justify-center relative text-sm"
-                      sx={{
-                        width: 304,
-                      }}
-                    >
-                      <span>Create board</span>
-                      <IconButton
-                        className="absolute right-0"
-                        onClick={handleOpenPopperBoard}
-                        children={<CloseIcon className="text-base" />}
-                      />
-                    </Box>
-
-                    <Box
-                      sx={{
-                        maxHeight: 483,
-                      }}
-                      className="overflow-y-auto"
-                    >
-                      <Divider className="my-4" />
-
-                      <FormikProvider value={formikBoard}>
-                        <Form
-                          noValidate
-                          autoComplete="off"
-                          className="w-full"
-                          onSubmit={handleSubmit}
-                        >
-                          <TextField
-                            {...getFieldProps("name")}
-                            name="name"
-                            type="text"
-                            error={Boolean(errors.name && touched.name)}
-                            helperText={
-                              errors.name && touched.name && errors.name
-                            }
-                            className="mb-4 w-full"
-                            label="Board title"
-                            variant="outlined"
-                          />
-
-                          <LoadingButton
-                            type="submit"
-                            variant="contained"
-                            loading={isSubmitting}
-                            className="text-base py-2 w-full text-sm normal-case"
-                          >
-                            Create
-                          </LoadingButton>
-                        </Form>
-                      </FormikProvider>
-                    </Box>
-                  </Box>
-                </Popper>
+                />
               </Box>
             </Box>
           </>
