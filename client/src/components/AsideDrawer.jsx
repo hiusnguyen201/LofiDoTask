@@ -1,5 +1,7 @@
+import { memo } from "react";
 import styled from "@emotion/styled";
-import { Drawer as MuiDrawer, Badge } from "@mui/material";
+import { Box, Drawer as MuiDrawer, Badge } from "@mui/material";
+import { ChevronRightIcon } from "~/assets/icons";
 
 const drawerWidth = 240;
 
@@ -10,7 +12,7 @@ const openedMixin = (theme) => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflow: "unset",
-  "& .MuiButtonBase-root": {
+  "& .MuiButtonBase-root, & .MuiListItem-root": {
     padding: "4px 4px 4px 12px",
     ">.MuiButtonBase-root": {
       padding: 8,
@@ -72,4 +74,40 @@ const BadgeDrawer = styled(Badge)(({ open }) => ({
   },
 }));
 
-export { Drawer, BadgeDrawer };
+function AsideDrawer({ children, open, onDrawerOpen }) {
+  return (
+    <BadgeDrawer
+      component="div"
+      className="h-full"
+      onClick={onDrawerOpen}
+      open={open}
+      badgeContent={
+        !open && (
+          <Box
+            className="flex justify-center items-center rounded-full w-7 h-7 cursor-pointer"
+            sx={{
+              backgroundColor: "#ffffff29",
+            }}
+          >
+            <ChevronRightIcon />
+          </Box>
+        )
+      }
+    >
+      <Drawer variant="permanent" open={open} onClick={onDrawerOpen}>
+        {open ? (
+          <Box className="flex flex-col item-center">{children}</Box>
+        ) : (
+          <Box
+            className="w-full h-full"
+            sx={{
+              backgroundColor: "#ffffff29",
+            }}
+          ></Box>
+        )}
+      </Drawer>
+    </BadgeDrawer>
+  );
+}
+
+export default memo(AsideDrawer);
