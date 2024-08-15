@@ -1,4 +1,4 @@
-import { useState, memo, useEffect } from "react";
+import { useState, memo } from "react";
 import { Link } from "react-router-dom";
 import {
   List,
@@ -20,7 +20,6 @@ import {
   StarSolidIcon,
   ChevronLeftIcon,
 } from "~/assets/icons";
-import OverlayLoading from "~/components/OverlayLoading";
 import ListItemLink from "~/components/ListItemLink";
 import useAuth from "~/hooks/useAuth";
 import AsideDrawer from "~/components/AsideDrawer";
@@ -73,6 +72,7 @@ function AsideBar() {
     if (open) return;
     setOpen(true);
   };
+
   const handleDrawerClose = () => {
     if (!open) return;
     setOpen(false);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useLocation } from "react-router-dom";
 import {
   List,
@@ -101,4 +101,4 @@ function AsideBoardList() {
   );
 }
 
-export default AsideBoardList;
+export default memo(AsideBoardList);

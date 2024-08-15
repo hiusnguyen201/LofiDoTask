@@ -2,6 +2,7 @@ import { SvgIcon } from "@mui/material";
 
 export const FacebookNoColorIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     viewBox="0 0 48 48"
     fill="none"
@@ -23,6 +24,7 @@ export const FacebookNoColorIcon = ({ ...props }) => (
 
 export const GithubNoColorIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     viewBox="0 0 48 48"
     fill="none"
@@ -46,6 +48,7 @@ export const GithubNoColorIcon = ({ ...props }) => (
 
 export const GoogleNoColorIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     viewBox="0 0 48 48"
     fill="none"
@@ -79,6 +82,7 @@ export const GoogleNoColorIcon = ({ ...props }) => (
 
 export const EyeFillIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     viewBox="0 0 16 16"
     xmlns="http://www.w3.org/2000/svg"
@@ -92,6 +96,7 @@ export const EyeFillIcon = ({ ...props }) => (
 
 export const EyeOffFillIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     fill="currentColor"
     viewBox="0 0 24 24"
@@ -103,6 +108,7 @@ export const EyeOffFillIcon = ({ ...props }) => (
 
 export const PrevIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     fill="currentColor"
     viewBox="0 0 37 35"
@@ -117,6 +123,7 @@ export const PrevIcon = ({ ...props }) => (
 
 export const NextIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     fill="currentColor"
     viewBox="0 0 36 34"
@@ -131,6 +138,7 @@ export const NextIcon = ({ ...props }) => (
 
 export const PlayIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     fill="currentColor"
     viewBox="0 0 72 68"
@@ -152,6 +160,7 @@ export const PlayIcon = ({ ...props }) => (
 
 export const PauseIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     fill="currentColor"
     viewBox="0 0 72 68"
@@ -191,6 +200,7 @@ export const PauseIcon = ({ ...props }) => (
 
 export const MenuIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 576 512"
@@ -204,6 +214,7 @@ export const MenuIcon = ({ ...props }) => (
 
 export const ClipBoardIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 448 512"
@@ -214,6 +225,7 @@ export const ClipBoardIcon = ({ ...props }) => (
 
 export const BoardIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 384 512"
@@ -224,6 +236,7 @@ export const BoardIcon = ({ ...props }) => (
 
 export const UserIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 448 512"
@@ -234,6 +247,7 @@ export const UserIcon = ({ ...props }) => (
 
 export const PlusIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 448 512"
@@ -244,6 +258,7 @@ export const PlusIcon = ({ ...props }) => (
 
 export const ChevronRightIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 320 512"
@@ -254,6 +269,7 @@ export const ChevronRightIcon = ({ ...props }) => (
 
 export const ChevronLeftIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 320 512"
@@ -264,6 +280,7 @@ export const ChevronLeftIcon = ({ ...props }) => (
 
 export const GearIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -274,6 +291,7 @@ export const GearIcon = ({ ...props }) => (
 
 export const TableColumnIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -284,6 +302,7 @@ export const TableColumnIcon = ({ ...props }) => (
 
 export const CalendarIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 448 512"
@@ -294,6 +313,7 @@ export const CalendarIcon = ({ ...props }) => (
 
 export const StarRegularIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 576 512"
@@ -304,6 +324,7 @@ export const StarRegularIcon = ({ ...props }) => (
 
 export const StarSolidIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 576 512"
@@ -314,10 +335,33 @@ export const StarSolidIcon = ({ ...props }) => (
 
 export const CloseIcon = ({ ...props }) => (
   <SvgIcon
+    fontSize="inherit"
     {...props}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 384 512"
   >
     <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+  </SvgIcon>
+);
+
+export const UserGroupIcon = ({ ...props }) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 640 512"
+  >
+    <path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM609.3 512l-137.8 0c5.4-9.4 8.6-20.3 8.6-32l0-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2l61.4 0C567.8 320 640 392.2 640 481.3c0 17-13.8 30.7-30.7 30.7zM432 256c-31 0-59-12.6-79.3-32.9C372.4 196.5 384 163.6 384 128c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112z" />
+  </SvgIcon>
+);
+
+export const UserPlusIcon = ({ ...props }) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 640 512"
+  >
+    <path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM504 312l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
   </SvgIcon>
 );

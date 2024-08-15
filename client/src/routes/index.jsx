@@ -2,12 +2,14 @@ import { useRoutes } from "react-router-dom";
 
 import GuestGuard from "~/guards/GuestGuard";
 import AuthGuard from "~/guards/AuthGuard";
-import Login from "~/pages/auth/Login";
-import Register from "~/pages/auth/Register";
-import Home from "~/pages/main/Home";
-import BoardList from "~/pages/main/BoardList";
-import Board from "~/pages/main/Board";
-import NotFound from "~/pages/errors/NotFound";
+import {
+  LoginPage,
+  RegisterPage,
+  BoardListPage,
+  BoardDetailPage,
+  NotFound,
+  HomePage,
+} from "~/pages";
 
 export default function Router() {
   return useRoutes([
@@ -18,7 +20,7 @@ export default function Router() {
           path: "login",
           element: (
             <GuestGuard>
-              <Login />
+              <LoginPage />
             </GuestGuard>
           ),
         },
@@ -26,7 +28,7 @@ export default function Router() {
           path: "register",
           element: (
             <GuestGuard>
-              <Register />
+              <RegisterPage />
             </GuestGuard>
           ),
         },
@@ -36,7 +38,7 @@ export default function Router() {
       path: "/",
       element: (
         <AuthGuard>
-          <Home />
+          <HomePage />
         </AuthGuard>
       ),
     },
@@ -47,7 +49,7 @@ export default function Router() {
           path: "boards",
           element: (
             <AuthGuard>
-              <BoardList />
+              <BoardListPage />
             </AuthGuard>
           ),
         },
@@ -60,7 +62,7 @@ export default function Router() {
           path: ":id",
           element: (
             <AuthGuard>
-              <Board />
+              <BoardDetailPage />
             </AuthGuard>
           ),
         },

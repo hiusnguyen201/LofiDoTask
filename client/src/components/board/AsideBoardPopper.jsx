@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useFormik, Form, FormikProvider } from "formik";
 import { LoadingButton } from "@mui/lab";
 import * as Yup from "yup";
@@ -11,9 +12,8 @@ import {
 } from "@mui/material";
 import { CloseIcon } from "~/assets/icons";
 import { createMessage } from "~/utils/toast";
-import * as api from "~/api";
 import { useNavigate } from "react-router-dom";
-import { memo } from "react";
+import * as api from "~/api";
 
 const createBoardSchema = Yup.object().shape({
   name: Yup.string("Title must be string").required("Title is required"),
@@ -50,7 +50,7 @@ function BoardPopper({ asideBarData }) {
 
   return (
     <Popper
-      placement={isMdUp ? "right" : "bottom"}
+      placement={isMdUp ? "right" : "top"}
       open={Boolean(asideBarData.anchorEl)}
       anchorEl={asideBarData.anchorEl}
       sx={{
@@ -58,17 +58,12 @@ function BoardPopper({ asideBarData }) {
       }}
     >
       <Box
-        className="p-4 rounded-lg"
+        className="p-4 rounded-lg mx-2"
         sx={{
           bgcolor: "#282E33",
         }}
       >
-        <Box
-          className="flex items-center justify-center relative text-sm"
-          sx={{
-            width: 304,
-          }}
-        >
+        <Box className="flex items-center justify-center relative text-sm">
           <span>Create board</span>
           <IconButton
             className="absolute right-0"

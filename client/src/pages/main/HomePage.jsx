@@ -3,7 +3,7 @@ import HomeLayout from "~/layouts/home/HomeLayout";
 import { MenuIcon as MenuIconModal } from "~/assets/icons";
 import { Link } from "react-router-dom";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <HomeLayout>
       <Box className="flex items-center justify-end relative w-full h-full">

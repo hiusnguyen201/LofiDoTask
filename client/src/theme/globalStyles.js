@@ -16,11 +16,10 @@ const globalStyles = {
     backgroundColor: "#252b30",
   },
   ".MuiButtonBase-root, .MuiListItem-root": {
+    textTransform: "none",
     flexGrow: 0,
-    ">.MuiButtonBase-root": {
-      padding: 8,
-      height: 32,
-    },
+    padding: 8,
+    height: 32,
   },
   ".MuiListItemIcon-root, .MuiListItemAvatar-root": {
     minWidth: "auto",

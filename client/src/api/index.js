@@ -30,7 +30,9 @@ export const getAccountInfo = () => API.get("/account/info");
 
 // ----------------------Board--------------------------------------
 export const getBoards = () => API.get("/boards?sortBy=starred");
-export const getBoard = (identify) => API.get(`/boards/${identify}`);
 export const createBoard = (data) => API.post("/boards", data);
+export const getBoard = (identify) => API.get(`/boards/${identify}`);
+export const updateBoard = (identify, data) =>
+  API.patch(`/boards/${identify}`, data);
 export const toggleStarBoard = (identify) =>
   API.patch(`/boards/${identify}/star`);

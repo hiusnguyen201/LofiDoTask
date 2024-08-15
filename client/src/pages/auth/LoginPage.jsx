@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
 import {
@@ -34,7 +33,7 @@ const loginSchema = Yup.object().shape({
   ),
 });
 
-export default function Login() {
+export default function LoginPage() {
   const themeStyle = useTheme();
   const [showPassword, setShowPassword] = useState(false);
   const { login, isAuthenticated, errMessage } = useAuth();
