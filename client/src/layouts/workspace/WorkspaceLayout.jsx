@@ -6,7 +6,7 @@ function WorkspaceLayout({ children }) {
     <Box className="w-full h-screen flex">
       <AsideBar />
 
-      <Box component={"main"} className="grow">
+      <Box component={"main"} className="grow flex flex-col">
         {children}
       </Box>
     </Box>
