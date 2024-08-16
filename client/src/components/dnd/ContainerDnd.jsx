@@ -13,14 +13,16 @@ function ContainerDnd({
       <Droppable droppableId="droppable" type={type} direction={direction}>
         {(provided) => (
           <Box
-            className="h-full w-full"
+            className="w-full h-full"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            <Box {...props}>{children}</Box>
+            <Box {...props}>
+              {children}
+              {provided.placeholder}
+            </Box>
 
             {/* Hold the height Box */}
-            {provided.placeholder}
           </Box>
         )}
       </Droppable>

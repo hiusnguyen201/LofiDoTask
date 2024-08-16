@@ -6,6 +6,8 @@ import {
   ListItemText,
   ListItemButton,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBoard } from "~/redux/slices/boardSlice";
 import ListItemLink from "~/components/ListItemLink";
 import {
   PlusIcon,
@@ -20,29 +22,17 @@ import * as api from "~/api";
 
 function AsideBoardList() {
   const location = useLocation();
-  const [loading, setLoading] = useState(true);
-  const [boards, setBoards] = useState([]);
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { list: boards, isLoading } = useSelector((state) => state.board);
 
   const handleOpenPopperBoard = (e) => {
     setAnchorEl(anchorEl ? null : e.currentTarget);
   };
 
-  async function fetchApiBoardList() {
-    setLoading(true);
-    try {
-      const { data } = await api.getBoards();
-      setBoards(data.data.boards);
-    } catch (e) {
-      const { data } = e.response;
-      createMessage(data.message, "error");
-    }
-    setLoading(false);
-  }
-
   useEffect(() => {
-    fetchApiBoardList();
-  }, []);
+    dispatch(getAllBoard());
+  }, [dispatch]);
 
   useEffect(() => {
     setAnchorEl(null);
@@ -51,7 +41,6 @@ function AsideBoardList() {
   async function handleLastIconClick(id) {
     try {
       await api.toggleStarBoard(id);
-      fetchApiBoardList();
     } catch (e) {
       const { data } = e.response;
       createMessage(data.message, "error");
@@ -61,7 +50,7 @@ function AsideBoardList() {
 
   return (
     <>
-      <OverlayLoading open={loading} />
+      <OverlayLoading open={isLoading} />
 
       <List className="w-full">
         <ListItem>
@@ -74,25 +63,22 @@ function AsideBoardList() {
 
         {boards &&
           boards.length > 0 &&
-          boards.map((b) => {
-            return (
-              <ListItemLink
-                key={b._id}
-                to={`/boards/${b._id}`}
-                icon={<BoardIcon />}
-                primary={b.name}
-                lastIcon={
-                  b.starredAt ? <StarSolidIcon /> : <StarRegularIcon />
-                }
-                onLastIconClick={() => handleLastIconClick(b._id)}
-              />
-            );
-          })}
+          boards.map((b) => (
+            <ListItemLink
+              key={b._id}
+              to={`/boards/${b._id}`}
+              icon={<BoardIcon />}
+              primary={b.name}
+              lastIcon={
+                b.starredAt ? <StarSolidIcon /> : <StarRegularIcon />
+              }
+              onLastIconClick={() => handleLastIconClick(b._id)}
+            />
+          ))}
 
         <AsideBoardPopper
           asideBarData={{
             handleOpenPopperBoard,
-            fetchApiBoardList,
             anchorEl,
           }}
         />

@@ -173,7 +173,7 @@ export default function LoginPage() {
           >
             <Link to={"#"}>Can't log in?</Link>
             <span>•</span>
-            <Link to={"#"}>Create an account</Link>
+            <Link to={"/auth/register"}>Create an account</Link>
           </Box>
         </Box>
       </Container>

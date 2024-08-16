@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { useFormik, Form, FormikProvider } from "formik";
 import { LoadingButton } from "@mui/lab";
 import * as Yup from "yup";
@@ -10,10 +10,11 @@ import {
   Box,
   Divider,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { createBoard } from "~/redux/slices/boardSlice";
 import { CloseIcon } from "~/assets/icons";
 import { createMessage } from "~/utils/toast";
 import { useNavigate } from "react-router-dom";
-import * as api from "~/api";
 
 const createBoardSchema = Yup.object().shape({
   name: Yup.string("Title must be string").required("Title is required"),
@@ -21,7 +22,17 @@ const createBoardSchema = Yup.object().shape({
 
 function BoardPopper({ asideBarData }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isMdUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+  const { list: boards } = useSelector((state) => state.board);
+  const [prevBoardsLength, setPrevBoardsLength] = useState(boards.length);
+
+  useEffect(() => {
+    if (boards.length > prevBoardsLength) {
+      const newBoard = boards[boards.length - 1];
+      navigate(`/boards/${newBoard._id}`);
+    }
+  }, [boards, prevBoardsLength, navigate]);
 
   const formikBoard = useFormik({
     initialValues: {
@@ -30,14 +41,9 @@ function BoardPopper({ asideBarData }) {
     validationSchema: createBoardSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        const { data } = await api.createBoard({
-          name: values.name,
-        });
-        const { board } = data.data;
+        dispatch(createBoard(values.name));
         resetForm();
-        navigate(`/boards/${board._id}`);
-        asideBarData.fetchApiBoardList();
-        createMessage(data.message, "success");
+        setPrevBoardsLength(boards.length);
       } catch (e) {
         const { data } = e.response;
         createMessage(data.message, "error");

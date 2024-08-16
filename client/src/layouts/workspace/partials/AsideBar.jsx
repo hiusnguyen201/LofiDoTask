@@ -142,37 +142,6 @@ function AsideBar() {
 
         <AsideBoardList />
       </Box>
-
-      <Divider
-        sx={{
-          height: "1px",
-        }}
-      />
-
-      {/* Footer Drawer */}
-      <Box className="w-full" open={open}>
-        <List className="w-full">
-          <ListItem
-            className="!p-0"
-            sx={{
-              height: 40,
-            }}
-          >
-            <ListItemText
-              children={
-                <Link
-                  target="_blank"
-                  to={"https://github.com/hiusnguyen201/LofiDoTask"}
-                  className="flex items-center justify-center gap-x-1"
-                >
-                  <StarSolidIcon />
-                  <span>Star for me</span>
-                </Link>
-              }
-            />
-          </ListItem>
-        </List>
-      </Box>
     </AsideDrawer>
   );
 }

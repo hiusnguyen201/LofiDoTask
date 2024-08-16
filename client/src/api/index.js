@@ -29,10 +29,20 @@ export const logout = (data) => API.post("/auth/logout", data);
 export const getAccountInfo = () => API.get("/account/info");
 
 // ----------------------Board--------------------------------------
-export const getBoards = () => API.get("/boards?sortBy=starred");
+export const getAllBoard = () => API.get("/boards?sortBy=starred");
 export const createBoard = (data) => API.post("/boards", data);
 export const getBoard = (identify) => API.get(`/boards/${identify}`);
 export const updateBoard = (identify, data) =>
   API.patch(`/boards/${identify}`, data);
+export const deleteBoard = (identify) => API.delete(`/boards/${identify}`);
+
 export const toggleStarBoard = (identify) =>
   API.patch(`/boards/${identify}/star`);
+
+//  List
+export const getAllListInBoard = (identify) =>
+  API.get(`/boards/${identify}/lists`);
+export const createList = (data) => API.post("/lists", data);
+export const updateList = (identify, data) =>
+  API.post(`/lists/${identify}`, data);
+export const deleteList = (identify) => API.delete(`/lists/${identify}`);

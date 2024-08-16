@@ -19,7 +19,6 @@ const globalStyles = {
     textTransform: "none",
     flexGrow: 0,
     padding: 8,
-    height: 32,
   },
   ".MuiListItemIcon-root, .MuiListItemAvatar-root": {
     minWidth: "auto",
@@ -27,6 +26,9 @@ const globalStyles = {
   },
   ".nav-link.active .MuiButtonBase-root": {
     backgroundColor: "#5d5f61",
+  },
+  ".MuiFormControl-root": {
+    width: "100%",
   },
 };
 

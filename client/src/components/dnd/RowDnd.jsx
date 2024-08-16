@@ -1,7 +1,11 @@
 import { Box } from "@mui/material";
 import { Draggable } from "react-beautiful-dnd";
+import { useState } from "react";
 
 function RowDnd({ item, index, ...props }) {
+  const [edit, setEdit] = useState(false);
+  const [newTitle, setNewTitle] = useState(item.title);
+
   return (
     <Draggable key={item.id} draggableId={item.id} index={index}>
       {(provided) => (
@@ -12,9 +16,9 @@ function RowDnd({ item, index, ...props }) {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            {item.title}
+            {newTitle}
+            {provided.placeholder}
           </Box>
-          {provided.placeholder}
         </Box>
       )}
     </Draggable>

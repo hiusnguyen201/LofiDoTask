@@ -1,27 +1,41 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Box, Divider } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllListInBoard } from "~/redux/slices/listSlice";
 import { NotFound } from "~/pages";
 import WorkspaceLayout from "~/layouts/workspace/WorkspaceLayout";
 import HeaderBoardDetail from "~/components/board/HeaderBoardDetail";
 import * as api from "~/api";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-} from "react-beautiful-dnd";
 import ContainerDnd from "~/components/dnd/ContainerDnd";
 import ColumnDnd from "~/components/dnd/ColumnDnd";
 import RowDnd from "~/components/dnd/RowDnd";
 
 export default function BoardDetailPage() {
+  const initialValues = [
+    {
+      _id: "1",
+      name: "asccas",
+      children: [],
+    },
+  ];
+
   const { id } = useParams();
+  // const dispatch = useDispatch();
   const [board, setBoard] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [stores, setStores] = useState(initialValues);
+  // const { list: lists } = useSelector((state) => state.list);
+  // console.log(lists);
 
   useEffect(() => {
     fetchBoard();
   }, []);
+
+  // useEffect(() => {
+  //   if (board) {
+  //     dispatch(getAllListInBoard(board._id));
+  //   }
+  // }, [dispatch]);
 
   async function fetchBoard() {
     try {
@@ -34,56 +48,6 @@ export default function BoardDetailPage() {
     }
   }
 
-  const initialTasks = [
-    {
-      id: "1",
-      title: "List 1",
-      children: [
-        {
-          id: "4",
-          title: "Card 7",
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "List 2",
-      children: [
-        {
-          id: "5",
-          title: "Card 23",
-        },
-        {
-          id: "6",
-          title: "Card 33",
-        },
-        {
-          id: "7",
-          title: "Card 34",
-        },
-        {
-          id: "8",
-          title: "Card 31",
-        },
-      ],
-    },
-    {
-      id: "3",
-      title: "List 3",
-      children: [
-        {
-          id: "9",
-          title: "Card 35",
-        },
-        {
-          id: "10",
-          title: "Card 37",
-        },
-      ],
-    },
-  ];
-
-  const [stores, setStores] = useState(initialTasks);
   const handleDragDrop = (results) => {
     const { source, destination, type } = results;
     if (
@@ -138,32 +102,34 @@ export default function BoardDetailPage() {
             <HeaderBoardDetail board={board} />
             <ContainerDnd
               type="COLUMN"
-              className="flex h-full bg-[#07326e] py-3 px-1.5"
+              className="flex h-full bg-[#07326e] py-3 px-1.5 items-start"
               direction="horizontal"
               onDragDrop={handleDragDrop}
             >
-              {stores.map((store, index) => (
-                <ColumnDnd
-                  sx={{
-                    width: 272,
-                  }}
-                  className="p-2 bg-[#101204] rounded-lg text-sm"
-                  key={store.id}
-                  item={store}
-                  index={index}
-                  title={store.title}
-                  type="ROW"
-                >
-                  {store.children.map((child, index) => [
-                    <RowDnd
-                      className="p-2 rounded-lg bg-[#22272B] "
-                      key={child.id}
-                      item={child}
-                      index={index}
-                    />,
-                  ])}
-                </ColumnDnd>
-              ))}
+              {stores &&
+                stores.length > 0 &&
+                stores.map((store, index) => (
+                  <ColumnDnd
+                    sx={{
+                      width: 272,
+                    }}
+                    className="p-2 bg-[#101204] rounded-lg text-sm"
+                    key={store._id}
+                    item={store}
+                    index={index}
+                    type="ROW"
+                  >
+                    {store.children.length > 0 &&
+                      store.children.map((child, index) => [
+                        <RowDnd
+                          className="p-2 rounded-lg bg-[#22272B] "
+                          key={child._id}
+                          item={child}
+                          index={index}
+                        />,
+                      ])}
+                  </ColumnDnd>
+                ))}
             </ContainerDnd>
           </WorkspaceLayout>
         ))}
