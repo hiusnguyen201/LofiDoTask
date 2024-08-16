@@ -27,6 +27,7 @@ const boardSchema = new mongoose.Schema(
     },
     starredAt: {
       type: Date,
+      default: null,
     },
   },
   { versionKey: false, timestamps: true, _id: true, id: false }

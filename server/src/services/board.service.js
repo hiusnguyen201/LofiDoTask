@@ -15,7 +15,7 @@ export default {
 };
 
 const SELECTED_FIELDS =
-  "_id name code isClosed visibilityStatus starredAt createdAt updatedAt";
+  "_id name sku isClosed visibilityStatus starredAt createdAt updatedAt";
 
 /**
  * Get all boards
@@ -162,7 +162,7 @@ async function toggleStar(userId, identify) {
   return Board.findByIdAndUpdate(
     board._id,
     {
-      isStarred: board.isStarred ? null : Date.now(),
+      starredAt: board.starredAt ? null : Date.now(),
     },
     { new: true }
   );
