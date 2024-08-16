@@ -21,18 +21,18 @@ const createBoardSchema = Yup.object().shape({
 });
 
 function BoardPopper({ asideBarData }) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const isMdUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const { list: boards } = useSelector((state) => state.board);
   const [prevBoardsLength, setPrevBoardsLength] = useState(boards.length);
 
-  useEffect(() => {
-    if (boards.length > prevBoardsLength) {
-      const newBoard = boards[boards.length - 1];
-      navigate(`/boards/${newBoard._id}`);
-    }
-  }, [boards, prevBoardsLength, navigate]);
+  // useEffect(() => {
+  //   if (boards.length > prevBoardsLength) {
+  //     const newBoard = boards[boards.length - 1];
+  //     navigate(`/boards/${newBoard._id}`);
+  //   }
+  // }, [boards, prevBoardsLength, navigate]);
 
   const formikBoard = useFormik({
     initialValues: {

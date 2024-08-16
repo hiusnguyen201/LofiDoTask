@@ -1,80 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useFormik, Form, FormikProvider } from "formik";
-import * as Yup from "yup";
-import {
-  Box,
-  Typography,
-  TextField,
-  Container,
-  useTheme,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import { Link } from "react-router-dom";
+import { Box, Typography, Container, useTheme } from "@mui/material";
 import AuthLayout from "~/layouts/auth/AuthLayout";
 import images from "~/assets/images";
 import {
   FacebookNoColorIcon,
   GithubNoColorIcon,
   GoogleNoColorIcon,
-  EyeFillIcon,
-  EyeOffFillIcon,
 } from "~/assets/icons";
-import useAuth from "~/hooks/useAuth";
-import { createMessage } from "~/utils/toast";
-
-const loginSchema = Yup.object().shape({
-  account: Yup.string("Account must be string").required(
-    "Account is required"
-  ),
-  password: Yup.string("Password must be string").required(
-    "Password is required"
-  ),
-});
+import LoginForm from "~/components/auth/LoginForm";
 
 export default function LoginPage() {
   const themeStyle = useTheme();
-  const [showPassword, setShowPassword] = useState(false);
-  const { login, isAuthenticated, errMessage } = useAuth();
-  const navigate = useNavigate();
-
-  const formik = useFormik({
-    initialValues: {
-      account: "",
-      password: "",
-    },
-    validationSchema: loginSchema,
-    onSubmit: async (values, { resetForm, setSubmitting }) => {
-      try {
-        const { data } = await login(values.account, values.password);
-        if (!isAuthenticated && errMessage) {
-          setSubmitting(false);
-          return;
-        }
-
-        createMessage(data.message, "success");
-        resetForm();
-        navigate("/");
-      } catch (e) {
-        const { data } = e.response;
-        createMessage(data.message, "error");
-      }
-    },
-  });
-
-  const {
-    handleSubmit,
-    getFieldProps,
-    errors,
-    touched,
-    isSubmitting,
-    values,
-  } = formik;
-
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
 
   return (
     <AuthLayout>
@@ -91,65 +27,7 @@ export default function LoginPage() {
             Log in to continue
           </Typography>
 
-          <FormikProvider value={formik}>
-            <Form
-              noValidate
-              autoComplete="off"
-              className="w-full"
-              onSubmit={handleSubmit}
-            >
-              <TextField
-                className="mb-4 w-full"
-                {...getFieldProps("account")}
-                label="Account"
-                name="account"
-                type="text"
-                error={Boolean(errors.account && touched.account)}
-                helperText={
-                  errors.account && touched.account && errors.account
-                }
-              />
-
-              <TextField
-                className="mb-4"
-                {...getFieldProps("password")}
-                label="Password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                error={Boolean(errors.password && touched.password)}
-                helperText={
-                  errors.password && touched.password && errors.password
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      {values.password.length > 0 && (
-                        <IconButton
-                          onClick={handleShowPassword}
-                          edge="end"
-                        >
-                          {showPassword ? (
-                            <EyeFillIcon />
-                          ) : (
-                            <EyeOffFillIcon />
-                          )}
-                        </IconButton>
-                      )}
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                loading={isSubmitting}
-                className="text-base py-2 w-full normal-case"
-              >
-                Sign In
-              </LoadingButton>
-            </Form>
-          </FormikProvider>
+          <LoginForm />
 
           <Typography component={"p"} className="text-center">
             Or continue with:
@@ -161,7 +39,7 @@ export default function LoginPage() {
               GoogleNoColorIcon,
               GithubNoColorIcon,
             ].map((Icon, index) => (
-              <Link key={index} to={"#"}>
+              <Link className="text-2xl" key={index} to={"#"}>
                 <Icon />
               </Link>
             ))}

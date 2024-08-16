@@ -11,8 +11,7 @@ import {
   Menu,
   Link,
 } from "@mui/material";
-import { Link as LinkRouter, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link as LinkRouter } from "react-router-dom";
 import images from "~/assets/images";
 import useAuth from "~/hooks/useAuth";
 import { GithubNoColorIcon } from "~/assets/icons";
@@ -20,7 +19,6 @@ import { GithubNoColorIcon } from "~/assets/icons";
 function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { logout } = useAuth();
-  const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -39,8 +37,6 @@ function Header() {
       name: "Logout",
       handleClick: async () => {
         await logout();
-        toast.success("Logout success");
-        navigate("/auth/login");
       },
     },
   ];

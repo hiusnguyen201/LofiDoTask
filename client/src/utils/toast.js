@@ -1,8 +1,12 @@
 import { toast } from "react-toastify";
 
-const createMessage = (message, type = "success") => {
+const createMessage = (
+  message,
+  type = "success",
+  position = "top-center"
+) => {
   toast[type](message, {
-    position: "top-center",
+    position,
     autoClose: 2000,
   });
 };

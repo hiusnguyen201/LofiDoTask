@@ -1,5 +1,4 @@
 import { useState, memo } from "react";
-import { Link } from "react-router-dom";
 import {
   List,
   ListItem,
@@ -19,6 +18,7 @@ import {
   ClipBoardIcon,
   StarSolidIcon,
   ChevronLeftIcon,
+  HomeIcon,
 } from "~/assets/icons";
 import ListItemLink from "~/components/ListItemLink";
 import useAuth from "~/hooks/useAuth";
@@ -29,6 +29,11 @@ const navList = [
   {
     title: "",
     children: [
+      {
+        to: "/",
+        icon: <HomeIcon />,
+        primary: "Home",
+      },
       {
         to: "/workspace/boards",
         icon: <ClipBoardIcon />,

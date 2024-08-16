@@ -55,19 +55,19 @@ export default function Router() {
         },
       ],
     },
-    {
-      path: "/boards",
-      children: [
-        {
-          path: ":id",
-          element: (
-            <AuthGuard>
-              <BoardDetailPage />
-            </AuthGuard>
-          ),
-        },
-      ],
-    },
+    // {
+    //   path: "/boards",
+    //   children: [
+    //     {
+    //       path: ":id",
+    //       element: (
+    //         <AuthGuard>
+    //           <BoardDetailPage />
+    //         </AuthGuard>
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       path: "*",
       element: <NotFound />,

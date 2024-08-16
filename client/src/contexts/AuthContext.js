@@ -49,13 +49,8 @@ const handlers = {
   }),
 };
 
-const reducer = (state, action) => {
-  if (handlers[action.type]) {
-    return handlers[action.type](state, action);
-  } else {
-    return state;
-  }
-};
+const reducer = (state, action) =>
+  handlers[action.type] ? handlers[action.type](state, action) : state;
 
 const AuthContext = createContext({
   isAuthenticated: false,
@@ -115,6 +110,7 @@ function AuthProvider({ children }) {
       dispatch({ type: "REGISTER", payload: { user } });
     } catch (e) {
       handleError(e);
+      throw e;
     }
   };
 
@@ -122,24 +118,20 @@ function AuthProvider({ children }) {
     try {
       dispatch({ type: "CLEAR" });
       const { data } = await api.login(account, password);
+
       const { accessToken, refreshToken, user } = data.data;
       setSession(accessToken, refreshToken);
+
       dispatch({ type: "LOGIN", payload: { user } });
-      return data;
     } catch (e) {
       handleError(e);
+      throw e;
     }
   };
 
   const handleLogout = async () => {
-    try {
-      const refreshToken = localStorage.getItem("refreshToken");
-      await api.logout({ refreshToken });
-      setSession(null);
-      dispatch({ type: "LOGOUT" });
-    } catch (e) {
-      handleError(e);
-    }
+    setSession(null);
+    dispatch({ type: "LOGOUT" });
   };
 
   return (

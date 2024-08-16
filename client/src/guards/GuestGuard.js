@@ -1,11 +1,12 @@
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAuth from "~/hooks/useAuth";
 
 export default function GuestGuard({ children }) {
   const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   if (isAuthenticated) {
-    return <Navigate to={"/"} />;
+    return navigate("/");
   }
 
   return <>{children}</>;
