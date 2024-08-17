@@ -20,7 +20,7 @@ const responseCode = {
     },
     BEARER_TOKEN_IS_EMPTY: {
       status: httpStatus.UNAUTHORIZED,
-      mesage: "No token provided",
+      message: "No token provided",
     },
     INVALID_FORMAT_BEARER_TOKEN: {
       status: httpStatus.BAD_REQUEST,

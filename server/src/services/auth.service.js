@@ -31,7 +31,7 @@ async function authenticate(account, password, ipAddress) {
   );
 
   if (!user) {
-    throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);
+    throw ApiErrorUtils.simple(responseCode.AUTH.INVALID_PASSWORD);
   }
 
   const isMatch = BcryptUtils.compareHash(password, user.password);
