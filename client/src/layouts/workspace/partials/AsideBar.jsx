@@ -21,7 +21,6 @@ import {
   HomeIcon,
 } from "~/assets/icons";
 import ListItemLink from "~/components/ListItemLink";
-import useAuth from "~/hooks/useAuth";
 import AsideDrawer from "~/components/AsideDrawer";
 import AsideBoardList from "~/components/board/AsideBoardList";
 
@@ -70,7 +69,6 @@ const navList = [
 ];
 
 function AsideBar() {
-  const { user } = useAuth();
   const [open, setOpen] = useState(true);
 
   const handleDrawerOpen = () => {
@@ -96,11 +94,11 @@ function AsideBar() {
                   sx={{
                     backgroundColor: "#ffffff29",
                   }}
-                  alt={user.username}
+                  alt={"cas"}
                 />
               }
             />
-            <ListItemText primary={`${user.username}'s workspace`} />
+            <ListItemText primary={`${"cas"}'s workspace`} />
             <ListItemButton
               className="!p-2 !h-8"
               onClick={handleDrawerClose}

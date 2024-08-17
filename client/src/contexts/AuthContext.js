@@ -24,22 +24,28 @@ const handlers = {
     isAuthenticated: false,
     isInitialized: false,
     user: null,
+    errMessage: null,
   }),
-  LOGIN: (state, action) => ({
-    ...state,
-    isAuthenticated: true,
-    isInitialized: true,
-    user: action.payload.user,
-  }),
+  LOGIN: (state, action) => {
+    return {
+      ...state,
+      isAuthenticated: true,
+      isInitialized: true,
+      user: action.payload.user,
+      errMessage: null,
+    };
+  },
   LOGOUT: (state) => ({
     ...state,
     isAuthenticated: false,
     user: null,
+    errMessage: null,
   }),
   REGISTER: (state, action) => ({
     ...state,
     isAuthenticated: true,
     user: action.payload.user,
+    errMessage: null,
   }),
   ERROR: (state, action) => ({
     ...state,
@@ -49,8 +55,11 @@ const handlers = {
   }),
 };
 
-const reducer = (state, action) =>
-  handlers[action.type] ? handlers[action.type](state, action) : state;
+const reducer = (state, action) => {
+  const data = handlers[action.type](state, action);
+
+  return handlers[action.type] ? { ...state, ...data } : state;
+};
 
 const AuthContext = createContext({
   isAuthenticated: false,
@@ -65,34 +74,34 @@ const AuthContext = createContext({
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  async function initialize() {
-    try {
-      const accessToken = localStorage.getItem("accessToken");
+  // async function initialize() {
+  //   try {
+  //     const accessToken = localStorage.getItem("accessToken");
 
-      if (accessToken && isValidToken(accessToken)) {
-        const { data } = await api.getAccountInfo();
-        dispatch({
-          type: "INITIALIZE",
-          payload: { isAuthenticated: true, user: data.data?.user },
-        });
-      } else {
-        dispatch({
-          type: "INITIALIZE",
-          payload: { isAuthenticated: false, user: null },
-        });
-      }
-    } catch (err) {
-      console.log(err);
-      dispatch({
-        type: "INITIALIZE",
-        payload: { isAuthenticated: false, user: null },
-      });
-    }
-  }
+  //     if (accessToken && isValidToken(accessToken)) {
+  //       const { data } = await api.getAccountInfo();
+  //       dispatch({
+  //         type: "INITIALIZE",
+  //         payload: { isAuthenticated: true, user: data.data?.user },
+  //       });
+  //     } else {
+  //       dispatch({
+  //         type: "INITIALIZE",
+  //         payload: { isAuthenticated: false, user: null },
+  //       });
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     dispatch({
+  //       type: "INITIALIZE",
+  //       payload: { isAuthenticated: false, user: null },
+  //     });
+  //   }
+  // }
 
-  useEffect(() => {
-    initialize();
-  }, []);
+  // useEffect(() => {
+  //   initialize();
+  // }, []);
 
   const handleError = (e) => {
     dispatch({
@@ -110,7 +119,6 @@ function AuthProvider({ children }) {
       dispatch({ type: "REGISTER", payload: { user } });
     } catch (e) {
       handleError(e);
-      throw e;
     }
   };
 
@@ -123,9 +131,9 @@ function AuthProvider({ children }) {
       setSession(accessToken, refreshToken);
 
       dispatch({ type: "LOGIN", payload: { user } });
+      console.log(state.isAuthenticated);
     } catch (e) {
       handleError(e);
-      throw e;
     }
   };
 
@@ -141,7 +149,7 @@ function AuthProvider({ children }) {
         login: handleLogin,
         register: handleRegister,
         logout: handleLogout,
-        reInitialize: initialize,
+        // reInitialize: initialize,
       }}
     >
       {children}

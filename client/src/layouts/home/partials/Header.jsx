@@ -12,16 +12,18 @@ import {
   Link,
 } from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "~/redux/slices/authSlice";
 import images from "~/assets/images";
-import useAuth from "~/hooks/useAuth";
 import { GithubNoColorIcon } from "~/assets/icons";
 
 function Header() {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { logout } = useAuth();
 
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+  const handleOpenUserMenu = (e) => {
+    setAnchorElUser(e.currentTarget);
   };
 
   const handleCloseUserMenu = () => {
@@ -35,8 +37,8 @@ function Header() {
     },
     {
       name: "Logout",
-      handleClick: async () => {
-        await logout();
+      handleClick: () => {
+        dispatch(logout());
       },
     },
   ];
@@ -63,41 +65,23 @@ function Header() {
             <Link
               target="_blank"
               href="https://github.com/hiusnguyen201"
-              className="flex items-center no-underline relative hover:no-underline"
-              sx={{
-                "&::after": {
-                  content: '""',
-                  position: "absolute",
-                  width: "0%",
-                  height: "1px",
-                  backgroundColor: "#fff",
-                  bottom: "-4px",
-                  left: 0,
-                },
-                "&:hover::after": {
-                  width: "100%",
-                  transition: "width .3s",
-                },
-                "&:not(:hover)::after": {
-                  width: "0%",
-                  transition: "width .3s",
-                },
-              }}
+              className="flex items-center smooth-underline"
             >
-              <GithubNoColorIcon />
+              <GithubNoColorIcon className="text-xl" />
               <Typography className="ml-1 text-white">Github</Typography>
             </Link>
-
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} className="p-0">
                 <Avatar
-                  sx={{ bgcolor: "#ffb05c" }}
-                  alt="Remy Sharp"
-                  src="/static/images/avatar/2.jpg"
+                  className="font-bold text-white"
+                  sx={{
+                    background: "linear-gradient(#403294, #0747a6)",
+                  }}
+                  alt={user.username.toUpperCase()}
+                  src="none"
                 />
               </IconButton>
             </Tooltip>
-
             <Menu
               className="cursor-pointer mt-11"
               id="menu-appbar"

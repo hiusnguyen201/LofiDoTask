@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as api from "~/api";
+import { displayOverlayError } from "~/utils/toast";
 
 const initialState = {
   isLoading: true,
@@ -64,6 +65,7 @@ export const getAllBoard = () => async (dispatch) => {
     dispatch(actions.getAll(data.data.boards));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
+    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };
 
@@ -74,6 +76,7 @@ export const createBoard = (name) => async (dispatch) => {
     dispatch(actions.create(data.data.board));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
+    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };
 
@@ -84,6 +87,7 @@ export const updateBoard = (id, name) => async (dispatch) => {
     dispatch(actions.update(data.data.board));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
+    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };
 
@@ -94,5 +98,6 @@ export const deleteBoard = (id) => async (dispatch) => {
     dispatch(actions.delete({ _id: id }));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
+    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };

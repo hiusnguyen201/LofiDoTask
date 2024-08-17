@@ -1,30 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
+import { useDispatch } from "react-redux";
+import { login } from "~/redux/slices/authSlice";
 import { TextField, IconButton, InputAdornment } from "@mui/material";
 import { EyeFillIcon, EyeOffFillIcon } from "~/assets/icons";
-import useAuth from "~/hooks/useAuth";
-import { createMessage } from "~/utils/toast";
+
+// Schema
+const loginSchema = Yup.object().shape({
+  account: Yup.string("Account must be string").required(
+    "Account is required"
+  ),
+  password: Yup.string("Password must be string").required(
+    "Password is required"
+  ),
+});
 
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const { login, isAuthenticated, errMessage } = useAuth();
-
-  useEffect(() => {
-    if (errMessage) {
-      createMessage(errMessage, "error");
-    }
-  }, [errMessage]);
-
-  const loginSchema = Yup.object().shape({
-    account: Yup.string("Account must be string").required(
-      "Account is required"
-    ),
-    password: Yup.string("Password must be string").required(
-      "Password is required"
-    ),
-  });
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -34,13 +29,8 @@ function LoginForm() {
     enableReinitialize: true,
     validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      await login(values.account, values.password);
-
-      if (isAuthenticated && !errMessage) {
-        createMessage("Login success", "success");
-      } else {
-        setSubmitting(false);
-      }
+      dispatch(login(values.account, values.password));
+      setSubmitting(false);
     },
   });
 

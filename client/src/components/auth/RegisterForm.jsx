@@ -3,29 +3,29 @@ import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
 import { TextField, IconButton, InputAdornment } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { useDispatch } from "react-redux";
+import { register } from "~/redux/slices/authSlice";
 import { EyeFillIcon, EyeOffFillIcon } from "~/assets/icons";
-import useAuth from "~/hooks/useAuth";
-import { createMessage } from "~/utils/toast";
+
+const registerSchema = Yup.object().shape({
+  username: Yup.string("Username must be string").required(
+    "Username is required"
+  ),
+  email: Yup.string("Email must be string")
+    .required("Email is required")
+    .email("Email is not right format"),
+  password: Yup.string("Password must be string").required(
+    "Password is required"
+  ),
+  confirmPassword: Yup.string("Confirm password must be string")
+    .required("Confirm password is required")
+    .oneOf([Yup.ref("password"), null], "Confirm password must match"),
+});
 
 function RegisterForm() {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { register, isAuthenticated, errMessage } = useAuth();
-
-  const loginSchema = Yup.object().shape({
-    username: Yup.string("Username must be string").required(
-      "Username is required"
-    ),
-    email: Yup.string("Email must be string")
-      .required("Email is required")
-      .email("Email is not right format"),
-    password: Yup.string("Password must be string").required(
-      "Password is required"
-    ),
-    confirmPassword: Yup.string("Confirm password must be string")
-      .required("Confirm password is required")
-      .oneOf([Yup.ref("password"), null], "Confirm password must match"),
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -34,25 +34,11 @@ function RegisterForm() {
       password: "",
       confirmPassword: "",
     },
-    validationSchema: loginSchema,
+    validationSchema: registerSchema,
     enableReinitialize: true,
     onSubmit: async (values, { setSubmitting }) => {
-      try {
-        await register({
-          username: values.username,
-          email: values.email,
-          password: values.password,
-          confirmPassword: values.confirmPassword,
-        });
-
-        if (isAuthenticated && !errMessage) {
-          createMessage("Register success", "success");
-        }
-      } catch (e) {
-        createMessage("Register failed", "error");
-      } finally {
-        setSubmitting(false);
-      }
+      dispatch(register(values));
+      setSubmitting(false);
     },
   });
 

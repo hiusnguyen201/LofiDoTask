@@ -17,7 +17,6 @@ import {
 } from "~/assets/icons";
 import OverlayLoading from "~/components/OverlayLoading";
 import AsideBoardPopper from "~/components/board/AsideBoardPopper";
-import { createMessage } from "~/utils/toast";
 import * as api from "~/api";
 
 function AsideBoardList() {
@@ -43,46 +42,47 @@ function AsideBoardList() {
       await api.toggleStarBoard(id);
     } catch (e) {
       const { data } = e.response;
-      createMessage(data.message, "error");
     }
     return;
   }
 
   return (
     <>
-      <OverlayLoading open={isLoading} />
-
-      <List className="w-full">
-        <ListItem>
-          <ListItemText primary={"Your boards"} />
-          <ListItemButton
-            onClick={handleOpenPopperBoard}
-            children={<PlusIcon />}
-          />
-        </ListItem>
-
-        {boards &&
-          boards.length > 0 &&
-          boards.map((b) => (
-            <ListItemLink
-              key={b._id}
-              to={`/boards/${b._id}`}
-              icon={<BoardIcon />}
-              primary={b.name}
-              lastIcon={
-                b.starredAt ? <StarSolidIcon /> : <StarRegularIcon />
-              }
-              onLastIconClick={() => handleLastIconClick(b._id)}
+      {isLoading ? (
+        <OverlayLoading />
+      ) : (
+        <List className="w-full">
+          <ListItem>
+            <ListItemText primary={"Your boards"} />
+            <ListItemButton
+              onClick={handleOpenPopperBoard}
+              children={<PlusIcon />}
             />
-          ))}
+          </ListItem>
 
-        <AsideBoardPopper
-          asideBarData={{
-            handleOpenPopperBoard,
-            anchorEl,
-          }}
-        />
-      </List>
+          {boards &&
+            boards.length > 0 &&
+            boards.map((b) => (
+              <ListItemLink
+                key={b._id}
+                to={`/boards/${b._id}`}
+                icon={<BoardIcon />}
+                primary={b.name}
+                lastIcon={
+                  b.starredAt ? <StarSolidIcon /> : <StarRegularIcon />
+                }
+                onLastIconClick={() => handleLastIconClick(b._id)}
+              />
+            ))}
+
+          <AsideBoardPopper
+            asideBarData={{
+              handleOpenPopperBoard,
+              anchorEl,
+            }}
+          />
+        </List>
+      )}
     </>
   );
 }

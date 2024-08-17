@@ -13,6 +13,7 @@ import useAudio from "~/hooks/useAudio";
 function Footer() {
   const { musicIndex, playing, togglePlay, prevAudio, nextAudio } =
     useAudio();
+
   return (
     <AppBar
       component={"footer"}
@@ -24,7 +25,7 @@ function Footer() {
     >
       <Container maxWidth="xl">
         <Box className="block sm:flex items-center justify-between">
-          <Typography component={"p"} className="my-4">
+          <Typography component={"p"} className="my-4 w-44">
             Song name: {musics[musicIndex].name}
           </Typography>
 
@@ -36,8 +37,8 @@ function Footer() {
             />
 
             <IconButton
-              onClick={togglePlay}
               className="p-0"
+              onClick={togglePlay}
               children={
                 playing ? (
                   <PauseIcon className="text-7xl" />

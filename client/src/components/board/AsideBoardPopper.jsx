@@ -13,7 +13,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { createBoard } from "~/redux/slices/boardSlice";
 import { CloseIcon } from "~/assets/icons";
-import { createMessage } from "~/utils/toast";
 import { useNavigate } from "react-router-dom";
 
 const createBoardSchema = Yup.object().shape({
@@ -46,7 +45,6 @@ function BoardPopper({ asideBarData }) {
         setPrevBoardsLength(boards.length);
       } catch (e) {
         const { data } = e.response;
-        createMessage(data.message, "error");
       }
     },
   });

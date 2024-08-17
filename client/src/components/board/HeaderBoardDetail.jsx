@@ -7,7 +7,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { createMessage } from "~/utils/toast";
 import * as api from "~/api";
 import {
   StarRegularIcon,
@@ -30,7 +29,6 @@ function HeaderBoardDetail({ board }) {
         await api.updateBoard(board._id, { name: boardName });
       } catch (e) {
         const { data } = e.response;
-        createMessage(data.message);
       }
     };
 

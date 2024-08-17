@@ -1,6 +1,17 @@
 import { toast } from "react-toastify";
 
-const createMessage = (
+const displayOverlayError = (
+  message,
+  type = "error",
+  position = "top-center"
+) => {
+  toast[type](message, {
+    position,
+    autoClose: 2000,
+  });
+};
+
+const displayOverlaySuccess = (
   message,
   type = "success",
   position = "top-center"
@@ -11,4 +22,4 @@ const createMessage = (
   });
 };
 
-export { createMessage };
+export { displayOverlayError, displayOverlaySuccess };

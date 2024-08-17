@@ -1,14 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import useAuth from "~/hooks/useAuth";
-import { setSession } from "~/utils/jwt";
+import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function AuthGuard({ children }) {
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   if (!isAuthenticated) {
-    setSession(null);
-    return navigate("/auth/login");
+    return <Navigate to={"/auth/login"} />;
   }
 
   return <>{children}</>;

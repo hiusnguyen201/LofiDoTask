@@ -6,29 +6,30 @@ const globalStyles = {
   "a:hover": {
     textDecoration: "underline",
   },
-  ".scrollbar-thin::-webkit-scrollbar": {
-    width: 8,
+
+  ".smooth-underline": {
+    position: "relative",
+    textDecoration: "none",
   },
-  ".scrollbar-thin::-webkit-scrollbar-thumb": {
-    backgroundColor: "#39434c",
+  ".smooth-underline:hover": {
+    textDecoration: "none",
   },
-  ".scrollbar-thin::-webkit-scrollbar-track": {
-    backgroundColor: "#252b30",
+  ".smooth-underline::after": {
+    content: '""',
+    position: "absolute",
+    width: "0%",
+    height: "1px",
+    backgroundColor: "#fff",
+    bottom: "-4px",
+    left: 0,
   },
-  ".MuiButtonBase-root, .MuiListItem-root": {
-    textTransform: "none",
-    flexGrow: 0,
-    padding: 8,
-  },
-  ".MuiListItemIcon-root, .MuiListItemAvatar-root": {
-    minWidth: "auto",
-    marginRight: 8,
-  },
-  ".nav-link.active .MuiButtonBase-root": {
-    backgroundColor: "#5d5f61",
-  },
-  ".MuiFormControl-root": {
+  ".smooth-underline:hover::after": {
     width: "100%",
+    transition: "width .3s",
+  },
+  ".smooth-underline:not(:hover)::after": {
+    width: "0%",
+    transition: "width .3s",
   },
 };
 
