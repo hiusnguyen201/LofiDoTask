@@ -14,13 +14,11 @@ export default function ListItemLink({
     <NavLink
       to={to}
       className={({ isActive }) =>
-        isActive
-          ? "nav-link active hover:no-underline"
-          : "hover:no-underline"
+        isActive ? "active hover:no-underline" : "hover:no-underline"
       }
     >
       <ListItemButton>
-        {icon && <ListItemIcon children={icon} />}
+        {icon && <ListItemIcon className="mr-2" children={icon} />}
         <ListItemText primary={primary} />
         {lastIcon && (
           <ListItemButton onClick={onLastIconClick} children={lastIcon} />
