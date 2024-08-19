@@ -76,7 +76,6 @@ export const login = (account, password) => async (dispatch) => {
     dispatch(actions.login(user));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
-    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };
 
@@ -92,7 +91,6 @@ export const register = (payload) => async (dispatch) => {
     dispatch(actions.register(user));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
-    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };
 
@@ -103,7 +101,6 @@ export const logout = () => async (dispatch) => {
     dispatch(actions.logout());
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
-    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };
 
@@ -138,6 +135,5 @@ export const initialize = () => async (dispatch) => {
         isInitialized: false,
       })
     );
-    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };

@@ -21,8 +21,6 @@ class JwtUtils {
   static async jwtMiddleware(req, res, next) {
     let token = req.headers["x-access-token"] || req.headers["authorization"];
 
-    console.log(token);
-
     if (!token) {
       return next(
         ApiErrorUtils.simple(responseCode.AUTH.BEARER_TOKEN_IS_EMPTY)

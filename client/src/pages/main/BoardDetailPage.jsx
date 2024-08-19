@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Box } from "@mui/material";
+import { getBoard } from "~/redux/slices/boardSlice";
 import { getAllListInBoard } from "~/redux/slices/listSlice";
 import { NotFound } from "~/pages";
-import WorkspaceLayout from "~/layouts/workspace/WorkspaceLayout";
 import HeaderBoardDetail from "~/components/board/HeaderBoardDetail";
 import * as api from "~/api";
 import ContainerDnd from "~/components/dnd/ContainerDnd";
@@ -20,33 +21,23 @@ export default function BoardDetailPage() {
   ];
 
   const { id } = useParams();
-  // const dispatch = useDispatch();
-  const [board, setBoard] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [stores, setStores] = useState(initialValues);
-  // const { list: lists } = useSelector((state) => state.list);
-  // console.log(lists);
+  const dispatch = useDispatch();
+  const { item: board, isLoading } = useSelector((state) => state.board);
+  const { list: lists } = useSelector((state) => state.list);
 
   useEffect(() => {
-    fetchBoard();
+    const fetchData = async () => {
+      const { data = null } = await dispatch(getBoard(id));
+
+      if (data && data.board) {
+        dispatch(getAllListInBoard(data.board._id));
+      }
+    };
+
+    fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   if (board) {
-  //     dispatch(getAllListInBoard(board._id));
-  //   }
-  // }, [dispatch]);
-
-  async function fetchBoard() {
-    try {
-      const { data } = await api.getBoard(id);
-      setBoard(data.data.board);
-    } catch (e) {
-      setBoard(null);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const [stores, setStores] = useState(lists);
 
   const handleDragDrop = (results) => {
     const { source, destination, type } = results;
@@ -94,11 +85,11 @@ export default function BoardDetailPage() {
 
   return (
     <>
-      {!loading &&
+      {!isLoading &&
         (!board ? (
           <NotFound />
         ) : (
-          <WorkspaceLayout>
+          <>
             <HeaderBoardDetail board={board} />
             <ContainerDnd
               type="COLUMN"
@@ -131,7 +122,7 @@ export default function BoardDetailPage() {
                   </ColumnDnd>
                 ))}
             </ContainerDnd>
-          </WorkspaceLayout>
+          </>
         ))}
     </>
   );

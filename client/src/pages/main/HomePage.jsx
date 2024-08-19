@@ -5,21 +5,19 @@ import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
-    <HomeLayout>
-      <Box className="flex items-center justify-end relative w-full h-full">
-        <Box
-          className="rounded-full mr-2"
-          sx={{
-            backgroundColor: "#1d2125",
-          }}
-        >
-          <Link to={"/workspace/boards"}>
-            <IconButton className="z-10 p-4">
-              <MenuIconModal />
-            </IconButton>
-          </Link>
-        </Box>
+    <Box className="flex items-center justify-end relative w-full h-full">
+      <Box
+        className="rounded-full mr-2"
+        sx={{
+          backgroundColor: "#1d2125",
+        }}
+      >
+        <Link to={"/workspace/boards"}>
+          <IconButton className="z-10 p-4">
+            <MenuIconModal />
+          </IconButton>
+        </Link>
       </Box>
-    </HomeLayout>
+    </Box>
   );
 }

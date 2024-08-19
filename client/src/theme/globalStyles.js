@@ -9,9 +9,7 @@ const globalStyles = {
   "a.active .MuiButtonBase-root": {
     backgroundColor: "#f0f0f04d",
   },
-  ".MuiInputBase-root": {
-    width: 250,
-  },
+
   ".MuiListItemAvatar-root, .MuiListItemIcon-root": {
     minWidth: "auto",
   },

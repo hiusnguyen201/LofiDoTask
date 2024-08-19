@@ -9,9 +9,7 @@ import { EyeFillIcon, EyeOffFillIcon } from "~/assets/icons";
 
 // Schema
 const loginSchema = Yup.object().shape({
-  account: Yup.string("Account must be string").required(
-    "Account is required"
-  ),
+  account: Yup.string("Account must be string").required("Account is required"),
   password: Yup.string("Password must be string").required(
     "Password is required"
   ),
@@ -28,20 +26,14 @@ function LoginForm() {
     },
     enableReinitialize: true,
     validationSchema: loginSchema,
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: (values, { setSubmitting }) => {
       dispatch(login(values.account, values.password));
       setSubmitting(false);
     },
   });
 
-  const {
-    handleSubmit,
-    getFieldProps,
-    errors,
-    touched,
-    isSubmitting,
-    values,
-  } = formik;
+  const { handleSubmit, getFieldProps, errors, touched, isSubmitting, values } =
+    formik;
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -61,20 +53,20 @@ function LoginForm() {
           label="Account"
           name="account"
           type="text"
+          value={values.account}
           error={Boolean(errors.account && touched.account)}
           helperText={errors.account && touched.account && errors.account}
         />
 
         <TextField
-          className="mb-4"
+          className="mb-4 w-full"
           {...getFieldProps("password")}
           label="Password"
           name="password"
           type={showPassword ? "text" : "password"}
+          value={values.password}
           error={Boolean(errors.password && touched.password)}
-          helperText={
-            errors.password && touched.password && errors.password
-          }
+          helperText={errors.password && touched.password && errors.password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

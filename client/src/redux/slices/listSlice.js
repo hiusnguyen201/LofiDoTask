@@ -44,9 +44,7 @@ const listSlice = createSlice({
       state.error = null;
     },
     delete(state, action) {
-      state.list = state.list.filter(
-        (item) => item._id !== action.payload._id
-      );
+      state.list = state.list.filter((item) => item._id !== action.payload._id);
       state.deletedIds.push(action.payload._id);
       state.isLoading = false;
       state.error = null;
@@ -65,7 +63,6 @@ export const getAllListInBoard = (id) => async (dispatch) => {
     dispatch(actions.getAll(data.data.lists));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
-    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };
 
@@ -76,7 +73,6 @@ export const createList = (boardId, name) => async (dispatch) => {
     dispatch(actions.create(data.data.list));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
-    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };
 
@@ -87,7 +83,6 @@ export const updateList = (id, name) => async (dispatch) => {
     dispatch(actions.update(data.data.list));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
-    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };
 
@@ -98,6 +93,5 @@ export const deleteList = (id) => async (dispatch) => {
     dispatch(actions.delete({ _id: id }));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
-    displayOverlayError(e?.response?.data?.message || "Error");
   }
 };

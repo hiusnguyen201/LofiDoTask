@@ -1,4 +1,7 @@
 import { useRoutes } from "react-router-dom";
+import WorkspaceLayout from "~/layouts/workspace/WorkspaceLayout";
+import HomeLayout from "~/layouts/home/HomeLayout";
+import AuthLayout from "~/layouts/auth/AuthLayout";
 
 import GuestGuard from "~/guards/GuestGuard";
 import AuthGuard from "~/guards/AuthGuard";
@@ -20,7 +23,9 @@ export default function Router() {
           path: "login",
           element: (
             <GuestGuard>
-              <LoginPage />
+              <AuthLayout>
+                <LoginPage />
+              </AuthLayout>
             </GuestGuard>
           ),
         },
@@ -28,7 +33,9 @@ export default function Router() {
           path: "register",
           element: (
             <GuestGuard>
-              <RegisterPage />
+              <AuthLayout>
+                <RegisterPage />
+              </AuthLayout>
             </GuestGuard>
           ),
         },
@@ -38,7 +45,9 @@ export default function Router() {
       path: "/",
       element: (
         <AuthGuard>
-          <HomePage />
+          <HomeLayout>
+            <HomePage />
+          </HomeLayout>
         </AuthGuard>
       ),
     },
@@ -49,25 +58,29 @@ export default function Router() {
           path: "boards",
           element: (
             <AuthGuard>
-              <BoardListPage />
+              <WorkspaceLayout>
+                <BoardListPage />
+              </WorkspaceLayout>
             </AuthGuard>
           ),
         },
       ],
     },
-    // {
-    //   path: "/boards",
-    //   children: [
-    //     {
-    //       path: ":id",
-    //       element: (
-    //         <AuthGuard>
-    //           <BoardDetailPage />
-    //         </AuthGuard>
-    //       ),
-    //     },
-    //   ],
-    // },
+    {
+      path: "/boards",
+      children: [
+        {
+          path: ":id",
+          element: (
+            <AuthGuard>
+              <WorkspaceLayout>
+                <BoardDetailPage />
+              </WorkspaceLayout>
+            </AuthGuard>
+          ),
+        },
+      ],
+    },
     {
       path: "*",
       element: <NotFound />,

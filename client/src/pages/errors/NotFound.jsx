@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-function NotFound({ backTo }) {
+function NotFound({ backTo = "/workspace/boards" }) {
   return (
     <Box
       sx={{
@@ -13,11 +13,11 @@ function NotFound({ backTo }) {
         Page not found.
       </Typography>
       <Typography className="text-xl mb-5" component={"p"}>
-        This page may be private. If someone gave you this link, you may
-        need to be a board or Workspace member to access it.
+        This page may be private. If someone gave you this link, you may need to
+        be a board or Workspace member to access it.
       </Typography>
 
-      <Link to={"/workspace/boards"} className="hover:no-underline">
+      <Link to={backTo} className="hover:no-underline">
         <Button
           sx={{
             width: 180,
