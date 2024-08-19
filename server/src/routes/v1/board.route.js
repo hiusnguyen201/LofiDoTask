@@ -1,7 +1,6 @@
 import express from "express";
 
 import {
-  getBoards,
   createBoard,
   getBoard,
   updateBoard,
@@ -15,10 +14,7 @@ import validateRequest from "#src/http/middlewares/validateRequest.js";
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(getBoards)
-  .post(validateRequest(CREATE_RULES), createBoard);
+router.route("/").post(validateRequest(CREATE_RULES), createBoard);
 
 router
   .route("/:identify")

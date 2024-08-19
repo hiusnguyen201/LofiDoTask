@@ -30,7 +30,11 @@ function AsideBoardList() {
   };
 
   useEffect(() => {
-    dispatch(getAllBoard());
+    dispatch(
+      getAllBoard({
+        sortBy: "+starred,+created",
+      })
+    );
   }, [dispatch]);
 
   useEffect(() => {

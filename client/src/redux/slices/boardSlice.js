@@ -58,10 +58,10 @@ const { actions, reducer } = boardSlice;
 
 export default reducer;
 
-export const getAllBoard = () => async (dispatch) => {
+export const getAllBoard = (filter) => async (dispatch) => {
   try {
     dispatch(actions.startLoading());
-    const { data } = await api.getAllBoard();
+    const { data } = await api.getAllBoard(filter);
     dispatch(actions.getAll(data.data.boards));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
@@ -96,6 +96,17 @@ export const deleteBoard = (id) => async (dispatch) => {
     dispatch(actions.startLoading());
     await api.deleteBoard(id);
     dispatch(actions.delete({ _id: id }));
+  } catch (e) {
+    dispatch(actions.hasError(e?.response?.data || e));
+    displayOverlayError(e?.response?.data?.message || "Error");
+  }
+};
+
+export const toggleStarBoard = (id) => async (dispatch) => {
+  try {
+    dispatch(actions.startLoading());
+    const { data } = await api.toggleStarBoard(id);
+    dispatch(actions.update(data.data.board));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));
     displayOverlayError(e?.response?.data?.message || "Error");

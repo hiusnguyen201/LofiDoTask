@@ -9,6 +9,7 @@ function authorized() {
     JwtUtils.jwtMiddleware,
     async (req, _, next) => {
       const user = await userService.getOne(req.user._id, "_id");
+
       if (!user) {
         return next(
           ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND)

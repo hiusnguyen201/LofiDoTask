@@ -27,15 +27,21 @@ export const logout = (data) => API.post("/auth/logout", data);
 
 // ----------------------Account--------------------------------------
 export const getAccountInfo = () => API.get("/account/info");
+export const getAllBoard = (filter) => {
+  let endpoint = `/account/boards`;
+  if (filter) {
+    endpoint += "?";
+    endpoint += new URLSearchParams(filter).toString();
+  }
+  return API.get(endpoint);
+};
 
 // ----------------------Board--------------------------------------
-export const getAllBoard = () => API.get("/boards?sortBy=starred");
 export const createBoard = (data) => API.post("/boards", data);
 export const getBoard = (identify) => API.get(`/boards/${identify}`);
 export const updateBoard = (identify, data) =>
   API.patch(`/boards/${identify}`, data);
 export const deleteBoard = (identify) => API.delete(`/boards/${identify}`);
-
 export const toggleStarBoard = (identify) =>
   API.patch(`/boards/${identify}/star`);
 

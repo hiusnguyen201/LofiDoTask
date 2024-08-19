@@ -38,6 +38,7 @@ export default function BoardListPage() {
             </FormControl>
           </Box>
         </Box>
+
         <BoardSectionList />
       </Box>
     </WorkspaceLayout>

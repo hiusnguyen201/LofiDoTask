@@ -1,8 +1,16 @@
-import { Box, List, ListItem } from "@mui/material";
-import { useEffect } from "react";
+import {
+  Box,
+  IconButton,
+  List,
+  ListItem,
+  Typography,
+} from "@mui/material";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBoard } from "~/redux/slices/boardSlice";
+import { getAllBoard, toggleStarBoard } from "~/redux/slices/boardSlice";
 import { Link } from "react-router-dom";
+import { StarRegularIcon } from "~/assets/icons";
 
 function BoardSectionList() {
   const dispatch = useDispatch();
@@ -26,15 +34,72 @@ function BoardSectionList() {
             key={item._id}
             className="sm:w-1/3 xl:w-1/4 p-0 px-2 pt-1 pb-5"
           >
-            <Link
-              to={`/boards/${item._id}`}
-              className="w-full p-2 rounded bg-[#07326e]"
-            >
-              <Box className="h-20">{item.name}</Box>
-            </Link>
+            <BoardItem board={item} />
           </ListItem>
         ))}
     </List>
+  );
+}
+
+function BoardItem({ board }) {
+  const dispatch = useDispatch();
+  const [opacity, setOpacity] = useState(0);
+  const [x, setX] = useState(16);
+
+  const handleStarBoard = (e) => {
+    e.preventDefault();
+    dispatch(toggleStarBoard(board._id));
+  };
+
+  return (
+    <Link to={`/boards/${board._id}`} className="w-full">
+      <Box
+        className="w-full h-full relative p-2 rounded overflow-hidden"
+        onMouseOver={() => {
+          setOpacity(1);
+          setX(0);
+        }}
+        onMouseOut={() => {
+          setOpacity(0);
+          setX(16);
+        }}
+        sx={{
+          backgroundColor: "#094dac",
+        }}
+      >
+        <Typography className="h-20">{board.name}</Typography>
+
+        <motion.div
+          initial={{ opacity }}
+          animate={{ opacity }}
+          className="box"
+        >
+          <Box
+            className="absolute rounded inset-x-0 inset-y-0 flex items-end justify-end"
+            sx={{
+              backgroundColor: "rgba(0, 0, 0, 0.15)",
+            }}
+          ></Box>
+        </motion.div>
+
+        <motion.div
+          initial={{ x, opacity: board.starredAt ? 1 : opacity }}
+          animate={{ x, opacity: board.starredAt ? 1 : opacity }}
+          className="box relative"
+        >
+          <IconButton
+            onClick={handleStarBoard}
+            className="absolute right-0 bottom-0 text-sm"
+            sx={{
+              marginBottom: "-4px",
+              marginRight: "-4px",
+            }}
+          >
+            <StarRegularIcon />
+          </IconButton>
+        </motion.div>
+      </Box>
+    </Link>
   );
 }
 

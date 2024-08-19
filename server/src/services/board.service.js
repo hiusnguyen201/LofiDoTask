@@ -1,10 +1,11 @@
+import userService from "./user.service.js";
 import responseCode from "#src/constants/responseCode.constant.js";
 import Board from "#src/models/board.model.js";
 import ApiErrorUtils from "#src/utils/ApiErrorUtils.js";
 import StringUtils from "#src/utils/StringUtils.js";
 
 export default {
-  getAllWithSort,
+  getAllWithSortInUser,
   getAll,
   getOne,
   create,
@@ -15,7 +16,7 @@ export default {
 };
 
 const SELECTED_FIELDS =
-  "_id name sku isClosed visibilityStatus starredAt createdAt updatedAt";
+  "_id name user sku isClosed visibilityStatus starredAt createdAt updatedAt";
 
 /**
  * Get all boards
@@ -26,6 +27,8 @@ async function getAll(filter, selectedFields = null) {
   if (!selectedFields) {
     selectedFields = SELECTED_FIELDS;
   }
+
+  filter.user = user;
 
   return Board.find(filter).select(selectedFields).exec();
 }
@@ -39,11 +42,17 @@ async function getAll(filter, selectedFields = null) {
  * @param {*} selectedFields
  * @returns
  */
-async function getAllWithSort(
+async function getAllWithSortInUser(
+  userId,
   sorts = {},
   filter = {},
   selectedFields = null
 ) {
+  const user = await userService.getOne(userId);
+  if (!user) {
+    throw ApiErrorUtils.simple(responseCode.AUTH.USER_NOT_FOUND);
+  }
+
   if (!selectedFields) {
     const fieldsArr = SELECTED_FIELDS.split(" ");
     selectedFields = fieldsArr.reduce((curr, field) => {
@@ -58,7 +67,10 @@ async function getAllWithSort(
 
   return Board.aggregate([
     {
-      $match: filter,
+      $match: {
+        ...filter,
+        user: user._id,
+      },
     },
     {
       $addFields: {
@@ -155,6 +167,7 @@ async function remove(userId, identify) {
  */
 async function toggleStar(userId, identify) {
   const board = await getOne(userId, identify);
+
   if (!board) {
     throw ApiErrorUtils.simple(responseCode.BOARD.BOARD_NOT_FOUND);
   }
