@@ -1,46 +1,47 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import { getBoard } from "~/redux/slices/boardSlice";
-import { getAllListInBoard } from "~/redux/slices/listSlice";
+import { getAllListAndCardInBoard } from "~/redux/slices/listSlice";
 import { NotFound } from "~/pages";
 import HeaderBoardDetail from "~/components/board/HeaderBoardDetail";
-import * as api from "~/api";
 import ContainerDnd from "~/components/dnd/ContainerDnd";
 import ColumnDnd from "~/components/dnd/ColumnDnd";
 import RowDnd from "~/components/dnd/RowDnd";
+import CreateListForm from "~/components/list/CreateListForm";
 
 export default function BoardDetailPage() {
-  const initialValues = [
-    {
-      _id: "1",
-      name: "asccas",
-      children: [],
-    },
-  ];
-
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { item: board, isLoading } = useSelector((state) => state.board);
-  const { list: lists } = useSelector((state) => state.list);
+  const { item: board, isLoading: isLoadingBoard } = useSelector(
+    (state) => state.board
+  );
+  const { list: lists, isLoading: isLoadingLists } = useSelector(
+    (state) => state.list
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       const { data = null } = await dispatch(getBoard(id));
-
       if (data && data.board) {
-        dispatch(getAllListInBoard(data.board._id));
+        dispatch(getAllListAndCardInBoard(data.board._id));
       }
     };
-
     fetchData();
   }, []);
 
-  const [stores, setStores] = useState(lists);
+  const [stores, setStores] = useState([]);
+
+  useEffect(() => {
+    if (!isLoadingLists) {
+      setStores(lists);
+    }
+  }, [isLoadingLists]);
 
   const handleDragDrop = (results) => {
     const { source, destination, type } = results;
+
     if (
       !destination ||
       (source.droppableId === destination.droppableId &&
@@ -85,7 +86,7 @@ export default function BoardDetailPage() {
 
   return (
     <>
-      {!isLoading &&
+      {!isLoadingBoard &&
         (!board ? (
           <NotFound />
         ) : (
@@ -93,7 +94,7 @@ export default function BoardDetailPage() {
             <HeaderBoardDetail board={board} />
             <ContainerDnd
               type="COLUMN"
-              className="flex h-full bg-[#07326e] py-3 px-1.5 items-start"
+              className="flex h-full bg-[#07326e] py-3 px-1.5 items-start overflow-x-auto"
               direction="horizontal"
               onDragDrop={handleDragDrop}
             >
@@ -110,17 +111,21 @@ export default function BoardDetailPage() {
                     index={index}
                     type="ROW"
                   >
-                    {store.children.length > 0 &&
+                    {/* {store.children.length > 0 &&
                       store.children.map((child, index) => [
                         <RowDnd
-                          className="p-2 rounded-lg bg-[#22272B] "
+                          className="p-2 rounded-lg bg-[#22272B]"
                           key={child._id}
                           item={child}
                           index={index}
                         />,
-                      ])}
+                      ])} */}
                   </ColumnDnd>
                 ))}
+
+              <Box className="px-1.5">
+                <CreateListForm board={board} />
+              </Box>
             </ContainerDnd>
           </>
         ))}

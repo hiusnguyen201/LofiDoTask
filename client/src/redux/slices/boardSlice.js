@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as api from "~/api";
-import { displayOverlayError } from "~/utils/toast";
 
 const initialState = {
   isLoading: true,
@@ -44,7 +43,9 @@ const boardSlice = createSlice({
       state.error = null;
     },
     delete(state, action) {
-      state.list = state.list.filter((item) => item._id !== action.payload._id);
+      state.list = state.list.filter(
+        (item) => item._id !== action.payload._id
+      );
       state.deletedIds.push(action.payload._id);
       state.isLoading = false;
       state.error = null;

@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setSession, isValidToken } from "~/utils/jwt";
 import * as api from "~/api";
-import { displayOverlayError } from "~/utils/toast";
 
 const initialState = {
   isLoading: true,

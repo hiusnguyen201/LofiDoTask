@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { Draggable } from "react-beautiful-dnd";
-import { useState } from "react";
+import { useState, memo } from "react";
 
 function RowDnd({ item, index, ...props }) {
   const [edit, setEdit] = useState(false);
@@ -25,4 +25,4 @@ function RowDnd({ item, index, ...props }) {
   );
 }
 
-export default RowDnd;
+export default memo(RowDnd);

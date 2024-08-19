@@ -1,11 +1,17 @@
 import { Box, ListItemButton, TextField } from "@mui/material";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { updateBoard } from "~/redux/slices/boardSlice";
 import { EllipsisIcon } from "~/assets/icons";
 
-function ColumnDnd({ children, item = {}, index, type, ...props }) {
+function ColumnDnd({
+  children,
+  item = {},
+  index,
+  type = "DEFAULT_TYPE",
+  ...props
+}) {
   const dispatch = useDispatch();
   const [edit, setEdit] = useState(false);
   const [newName, setNewName] = useState(item.name);
@@ -20,16 +26,14 @@ function ColumnDnd({ children, item = {}, index, type, ...props }) {
           {...provided.dragHandleProps}
         >
           <Box {...props}>
-            <Box className="px-2 py-1.5 flex items-center">
+            <Box className="flex items-center">
               <Box className="grow">
                 {!edit ? (
                   <ListItemButton
+                    className="py-1.5 px-.2"
                     onClick={(e) => {
-                      // e.preventDefault();
+                      e.preventDefault();
                       setEdit(true);
-                    }}
-                    sx={{
-                      fontSize: "inherit",
                     }}
                     children={newName}
                   />
@@ -53,10 +57,11 @@ function ColumnDnd({ children, item = {}, index, type, ...props }) {
               </Box>
 
               <ListItemButton
-                className="w-8 flex items-center justify-center"
+                className="flex items-center justify-center p-2"
                 children={<EllipsisIcon />}
               />
             </Box>
+
             <Droppable droppableId={item._id} type={type}>
               {(provided) => (
                 <Box {...provided.droppableProps} ref={provided.innerRef}>
@@ -72,4 +77,4 @@ function ColumnDnd({ children, item = {}, index, type, ...props }) {
   );
 }
 
-export default ColumnDnd;
+export default memo(ColumnDnd);

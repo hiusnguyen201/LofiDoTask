@@ -1,4 +1,5 @@
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { memo } from "react";
 import { Box } from "@mui/material";
 
 function ContainerDnd({
@@ -30,4 +31,4 @@ function ContainerDnd({
   );
 }
 
-export default ContainerDnd;
+export default memo(ContainerDnd);

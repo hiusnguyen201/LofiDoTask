@@ -1,14 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 
-const handleClick = () => {};
-
 export default function ListItemLink({
   to,
   primary,
   icon,
   lastIcon,
-  onLastIconClick = handleClick,
+  onLastIconClick = function () {},
 }) {
   return (
     <NavLink

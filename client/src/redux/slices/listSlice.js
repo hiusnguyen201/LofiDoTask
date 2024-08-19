@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as api from "~/api";
-import { displayOverlayError } from "~/utils/toast";
 
 const initialState = {
   isLoading: true,
@@ -44,7 +43,9 @@ const listSlice = createSlice({
       state.error = null;
     },
     delete(state, action) {
-      state.list = state.list.filter((item) => item._id !== action.payload._id);
+      state.list = state.list.filter(
+        (item) => item._id !== action.payload._id
+      );
       state.deletedIds.push(action.payload._id);
       state.isLoading = false;
       state.error = null;
@@ -56,7 +57,7 @@ const { actions, reducer } = listSlice;
 
 export default reducer;
 
-export const getAllListInBoard = (id) => async (dispatch) => {
+export const getAllListAndCardInBoard = (id) => async (dispatch) => {
   try {
     dispatch(actions.startLoading());
     const { data } = await api.getAllListInBoard(id);
@@ -69,7 +70,7 @@ export const getAllListInBoard = (id) => async (dispatch) => {
 export const createList = (boardId, name) => async (dispatch) => {
   try {
     dispatch(actions.startLoading());
-    const { data } = await api.createList({ name, board: boardId });
+    const { data } = await api.createList({ name, boardId });
     dispatch(actions.create(data.data.list));
   } catch (e) {
     dispatch(actions.hasError(e?.response?.data || e));

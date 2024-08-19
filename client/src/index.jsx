@@ -9,13 +9,11 @@ import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <ReduxProvider store={store}>
-      <BrowserRouter>
-        <AudioProvider>
-          <App />
-        </AudioProvider>
-      </BrowserRouter>
-    </ReduxProvider>
-  </React.StrictMode>
+  <ReduxProvider store={store}>
+    <BrowserRouter>
+      <AudioProvider>
+        <App />
+      </AudioProvider>
+    </BrowserRouter>
+  </ReduxProvider>
 );

@@ -6,7 +6,7 @@ const globalStyles = {
     WebkitBoxOrient: "vertical",
   },
 
-  "a.active .MuiButtonBase-root": {
+  "a.active > .MuiButtonBase-root": {
     backgroundColor: "#f0f0f04d",
   },
 
@@ -44,6 +44,7 @@ const globalStyles = {
 
   "::-webkit-scrollbar": {
     width: "5px",
+    height: "7px",
   },
   // ".MuiDrawer-root:hover ::-webkit-scrollbar-thumb": {
   //   backgroundColor: "#555",

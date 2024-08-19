@@ -67,7 +67,9 @@ function AsideBoardList() {
                 to={`/boards/${b._id}`}
                 icon={<BoardIcon />}
                 primary={b.name}
-                lastIcon={b.starredAt ? <StarSolidIcon /> : <StarRegularIcon />}
+                lastIcon={
+                  b.starredAt ? <StarSolidIcon /> : <StarRegularIcon />
+                }
                 // onLastIconClick={() => handleLastIconClick(b._id)}
               />
             ))}
