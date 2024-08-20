@@ -1,10 +1,17 @@
-import { Box, IconButton, List, ListItem, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  List,
+  ListItem,
+  Typography,
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBoard, toggleStarBoard } from "~/redux/slices/boardSlice";
 import { StarRegularIcon, StarSolidIcon } from "~/assets/icons";
+import CreateBoardPopperForm from "./CreateBoardPopperForm";
 
 function BoardSectionList() {
   const dispatch = useDispatch();
@@ -21,6 +28,25 @@ function BoardSectionList() {
       }}
       className="flex items-center flex-wrap pt-5"
     >
+      <CreateBoardPopperForm className="!left-2">
+        <ListItem className="md:w-1/3 xl:w-1/4 p-0 px-2 pt-1 pb-5">
+          <Box
+            className="w-full p-2 rounded relative cursor-pointer"
+            sx={{
+              backgroundColor: "#A1BDD914",
+              "&:hover": {
+                backgroundColor: "#A6C5E229",
+                transition: ".3s",
+              },
+            }}
+          >
+            <Typography className="h-20 w-full flex items-center justify-center">
+              Create new board
+            </Typography>
+          </Box>
+        </ListItem>
+      </CreateBoardPopperForm>
+
       {boards &&
         boards.length > 0 &&
         boards.map((item) => (
@@ -35,7 +61,7 @@ function BoardSectionList() {
   );
 }
 
-function BoardItem({ board }) {
+const BoardItem = memo(({ board }) => {
   const dispatch = useDispatch();
   const [opacity, setOpacity] = useState(0);
   const [x, setX] = useState(16);
@@ -63,7 +89,11 @@ function BoardItem({ board }) {
       >
         <Typography className="h-20">{board.name}</Typography>
 
-        <motion.div initial={{ opacity }} animate={{ opacity }} className="box">
+        <motion.div
+          initial={{ opacity }}
+          animate={{ opacity }}
+          className="box"
+        >
           <Box
             className="absolute rounded inset-x-0 inset-y-0 flex items-end justify-end"
             sx={{
@@ -97,6 +127,6 @@ function BoardItem({ board }) {
       </Box>
     </Link>
   );
-}
+});
 
 export default BoardSectionList;
