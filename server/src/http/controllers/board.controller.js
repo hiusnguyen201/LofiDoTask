@@ -6,8 +6,8 @@ export const getBoardsInUser = async (req, res, next) => {
   try {
     const { sortBy = "", status = "" } = req.query;
 
-    const dataFilter = getDataFilter({ status });
     const dataSort = getDataSort(sortBy);
+    const dataFilter = getDataFilter({ status });
 
     const boards = await boardService.getAllWithSortInUser(
       req.user._id,
@@ -47,14 +47,20 @@ function getDataFilter({ status = "" }) {
 }
 
 function getDataSort(sortStr) {
-  const types = sortStr.split(",");
   const sortBy = {};
+  if (!sortStr) return sortBy;
+  const types = sortStr.split(",");
 
-  if (types.includes("starred")) sortBy.isStarred = "desc";
+  if (sortStr.includes("starredAt")) sortBy.isStarred = "desc";
 
   types.map((type) => {
-    const [order = "asc", field] = type.split("");
-    sortBy[field] = order === "-" ? "desc" : "asc";
+    const asc = type.indexOf("+") === 0;
+    const desc = type.indexOf("-") === 0;
+    let field = (asc && type.slice(1)) || (desc && type.slice(1)) || type;
+
+    if (asc || desc) {
+      sortBy[field] = (asc && "asc") || (desc && "desc");
+    }
   });
 
   return sortBy;

@@ -1,53 +1,34 @@
-import { useEffect, useRef, memo } from "react";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemButton,
-} from "@mui/material";
+import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBoard } from "~/redux/slices/boardSlice";
-import ListItemLink from "~/components/ListItemLink";
-import {
-  PlusIcon,
-  StarRegularIcon,
-  StarSolidIcon,
-  BoardIcon,
-} from "~/assets/icons";
+import { Box } from "@mui/material";
+import { toggleStarBoard } from "~/redux/slices/boardSlice";
+import AsideItemBoard from "./AsideItemBoard";
+import { StarRegularIcon, StarSolidIcon, BoardIcon } from "~/assets/icons";
 import OverlayLoading from "~/components/OverlayLoading";
-import CreateBoardPopperForm from "./CreateBoardPopperForm";
 
 function AsideBoardList() {
   const dispatch = useDispatch();
   const { list: boards, isLoading } = useSelector((state) => state.board);
-  const popperRef = useRef();
+  const starredBoards = boards
+    .filter((item) => item.starredAt)
+    .sort((a, b) => new Date(a.starredAt) - new Date(b.starredAt));
+  const unstarredBoards = boards.filter((item) => !item.starredAt);
+  const sortedBoards = [...starredBoards, ...unstarredBoards];
 
-  useEffect(() => {
-    dispatch(
-      getAllBoard({
-        sortBy: "+starred,+created",
-      })
-    );
-  }, []);
+  const handleLastIconClick = async (id) => {
+    await dispatch(toggleStarBoard(id));
+  };
 
   return (
-    <>
+    <Box className="relative grow">
       {isLoading ? (
         <OverlayLoading />
       ) : (
-        <List className="w-full">
-          <ListItem>
-            <ListItemText primary={"Your boards"} />
-
-            <CreateBoardPopperForm>
-              <ListItemButton children={<PlusIcon />} />
-            </CreateBoardPopperForm>
-          </ListItem>
-
-          {boards &&
-            boards.length > 0 &&
-            boards.map((b) => (
-              <ListItemLink
+        <>
+          {sortedBoards &&
+            sortedBoards.length > 0 &&
+            sortedBoards.map((b) => (
+              <AsideItemBoard
                 key={b._id}
                 to={`/boards/${b._id}`}
                 icon={<BoardIcon />}
@@ -55,12 +36,15 @@ function AsideBoardList() {
                 lastIcon={
                   b.starredAt ? <StarSolidIcon /> : <StarRegularIcon />
                 }
-                // onLastIconClick={() => handleLastIconClick(b._id)}
+                onLastIconClick={(e) => {
+                  e.preventDefault();
+                  handleLastIconClick(b._id);
+                }}
               />
             ))}
-        </List>
+        </>
       )}
-    </>
+    </Box>
   );
 }
 

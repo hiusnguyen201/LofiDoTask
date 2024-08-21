@@ -7,6 +7,7 @@ const initialState = {
   deletedIds: [],
   item: null,
   list: [],
+  isUpdated: false,
 };
 
 const boardSlice = createSlice({
@@ -15,23 +16,28 @@ const boardSlice = createSlice({
   reducers: {
     startLoading(state) {
       state.isLoading = true;
+      state.isUpdated = false;
     },
     hasError(state, action) {
       state.error = action.payload;
       state.isLoading = false;
+      state.isUpdated = false;
     },
     getAll(state, action) {
       state.list = action.payload;
       state.isLoading = false;
       state.error = null;
+      state.isUpdated = false;
     },
     getOne(state, action) {
       state.item = action.payload;
       state.isLoading = false;
       state.error = null;
+      state.isUpdated = false;
     },
     create(state, action) {
       state.list.push(action.payload);
+      state.isUpdated = true;
       state.isLoading = false;
       state.error = null;
     },
@@ -39,6 +45,7 @@ const boardSlice = createSlice({
       state.list = state.list.map((item) =>
         item._id === action.payload._id ? action.payload : item
       );
+      state.isUpdated = true;
       state.isLoading = false;
       state.error = null;
     },
@@ -46,6 +53,7 @@ const boardSlice = createSlice({
       state.list = state.list.filter(
         (item) => item._id !== action.payload._id
       );
+      state.isUpdated = true;
       state.deletedIds.push(action.payload._id);
       state.isLoading = false;
       state.error = null;

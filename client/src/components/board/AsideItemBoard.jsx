@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 
-export default function ListItemLink({
+export default function AsideItemBoard({
   to,
   primary,
   icon,

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, memo, useState } from "react";
 import { Box } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getBoard } from "~/redux/slices/boardSlice";
 import { getAllListAndCardInBoard } from "~/redux/slices/listSlice";
 import { NotFound } from "~/pages";
@@ -10,34 +10,37 @@ import ContainerDnd from "~/components/dnd/ContainerDnd";
 import ColumnDnd from "~/components/dnd/ColumnDnd";
 import RowDnd from "~/components/dnd/RowDnd";
 import CreateListForm from "~/components/list/CreateListForm";
+import OverlayLoading from "~/components/OverlayLoading";
+import * as api from "~/api";
 
-export default function BoardDetailPage() {
+export default memo(BoardDetailPage);
+
+function BoardDetailPage() {
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const { item: board, isLoading: isLoadingBoard } = useSelector(
-    (state) => state.board
-  );
-  const { list: lists, isLoading: isLoadingLists } = useSelector(
-    (state) => state.list
-  );
+  const [board, setBoard] = useState(null);
+  const [isLoadingBoard, setIsLoadingBoard] = useState(true);
+  const { list: lists } = useSelector((state) => state.list);
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data = null } = await dispatch(getBoard(id));
-      if (data && data.board) {
-        dispatch(getAllListAndCardInBoard(data.board._id));
+      try {
+        setIsLoadingBoard(true);
+        const { data } = await api.getBoard(id);
+        setBoard(data.data.board);
+      } catch (e) {
+        setBoard(null);
+      } finally {
+        setIsLoadingBoard(false);
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   const [stores, setStores] = useState([]);
 
   useEffect(() => {
-    if (!isLoadingLists) {
-      setStores(lists);
-    }
-  }, [isLoadingLists]);
+    setStores(lists);
+  }, []);
 
   const handleDragDrop = (results) => {
     const { source, destination, type } = results;
@@ -85,33 +88,32 @@ export default function BoardDetailPage() {
   };
 
   return (
-    <>
-      {!isLoadingBoard &&
-        (!board ? (
-          <NotFound />
-        ) : (
-          <>
-            <HeaderBoardDetail board={board} />
-            <ContainerDnd
-              type="COLUMN"
-              className="flex h-full bg-[#07326e] py-3 px-1.5 items-start overflow-x-auto"
-              direction="horizontal"
-              onDragDrop={handleDragDrop}
-            >
-              {stores &&
-                stores.length > 0 &&
-                stores.map((store, index) => (
-                  <ColumnDnd
-                    sx={{
-                      width: 272,
-                    }}
-                    className="p-2 bg-[#101204] rounded-lg text-sm"
-                    key={store._id}
-                    item={store}
-                    index={index}
-                    type="ROW"
-                  >
-                    {/* {store.children.length > 0 &&
+    <Box className="relative h-full">
+      {isLoadingBoard && <OverlayLoading />}
+      {!isLoadingBoard && !board && <NotFound />}
+      {!isLoadingBoard && board && (
+        <>
+          <HeaderBoardDetail board={board} />
+          <ContainerDnd
+            type="COLUMN"
+            className="flex h-full bg-[#07326e] py-3 px-1.5 items-start overflow-x-auto"
+            direction="horizontal"
+            onDragDrop={handleDragDrop}
+          >
+            {stores &&
+              stores.length > 0 &&
+              stores.map((store, index) => (
+                <ColumnDnd
+                  sx={{
+                    width: 272,
+                  }}
+                  className="p-2 bg-[#101204] rounded-lg text-sm"
+                  key={store._id}
+                  item={store}
+                  index={index}
+                  type="ROW"
+                >
+                  {/* {store.children.length > 0 &&
                       store.children.map((child, index) => [
                         <RowDnd
                           className="p-2 rounded-lg bg-[#22272B]"
@@ -120,15 +122,15 @@ export default function BoardDetailPage() {
                           index={index}
                         />,
                       ])} */}
-                  </ColumnDnd>
-                ))}
+                </ColumnDnd>
+              ))}
 
-              <Box className="px-1.5">
-                <CreateListForm board={board} />
-              </Box>
-            </ContainerDnd>
-          </>
-        ))}
-    </>
+            <Box className="px-1.5">
+              <CreateListForm board={board} />
+            </Box>
+          </ContainerDnd>
+        </>
+      )}
+    </Box>
   );
 }

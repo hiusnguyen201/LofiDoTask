@@ -7,19 +7,14 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBoard, toggleStarBoard } from "~/redux/slices/boardSlice";
+import { toggleStarBoard } from "~/redux/slices/boardSlice";
 import { StarRegularIcon, StarSolidIcon } from "~/assets/icons";
 import CreateBoardPopperForm from "./CreateBoardPopperForm";
 
 function BoardSectionList() {
-  const dispatch = useDispatch();
   const { list: boards } = useSelector((state) => state.board);
-
-  useEffect(() => {
-    dispatch(getAllBoard());
-  }, []);
 
   return (
     <List
@@ -66,9 +61,9 @@ const BoardItem = memo(({ board }) => {
   const [opacity, setOpacity] = useState(0);
   const [x, setX] = useState(16);
 
-  const handleStarBoard = (e) => {
+  const handleStarBoard = async (e) => {
     e.preventDefault();
-    dispatch(toggleStarBoard(board._id));
+    await dispatch(toggleStarBoard(board._id));
   };
 
   return (

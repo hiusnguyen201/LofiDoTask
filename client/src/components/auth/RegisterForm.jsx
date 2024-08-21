@@ -36,14 +36,20 @@ function RegisterForm() {
     },
     validationSchema: registerSchema,
     enableReinitialize: true,
-    onSubmit: (values, { setSubmitting }) => {
-      dispatch(register(values));
+    onSubmit: async (values, { setSubmitting }) => {
+      await dispatch(register(values));
       setSubmitting(false);
     },
   });
 
-  const { handleSubmit, getFieldProps, errors, touched, isSubmitting, values } =
-    formik;
+  const {
+    handleSubmit,
+    getFieldProps,
+    errors,
+    touched,
+    isSubmitting,
+    values,
+  } = formik;
 
   const handleToggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -68,7 +74,9 @@ function RegisterForm() {
           value={values.username}
           type="text"
           error={Boolean(errors.username && touched.username)}
-          helperText={errors.username && touched.username && errors.username}
+          helperText={
+            errors.username && touched.username && errors.username
+          }
         />
 
         <TextField
@@ -90,12 +98,17 @@ function RegisterForm() {
           value={values.password}
           type={showPassword ? "text" : "password"}
           error={Boolean(errors.password && touched.password)}
-          helperText={errors.password && touched.password && errors.password}
+          helperText={
+            errors.password && touched.password && errors.password
+          }
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 {values.password.length > 0 && (
-                  <IconButton onClick={handleToggleShowPassword} edge="end">
+                  <IconButton
+                    onClick={handleToggleShowPassword}
+                    edge="end"
+                  >
                     {showPassword ? <EyeFillIcon /> : <EyeOffFillIcon />}
                   </IconButton>
                 )}
@@ -111,7 +124,9 @@ function RegisterForm() {
           name="confirmPassword"
           value={values.confirmPassword}
           type={showConfirmPassword ? "text" : "password"}
-          error={Boolean(errors.confirmPassword && touched.confirmPassword)}
+          error={Boolean(
+            errors.confirmPassword && touched.confirmPassword
+          )}
           helperText={
             errors.confirmPassword &&
             touched.confirmPassword &&
@@ -125,7 +140,11 @@ function RegisterForm() {
                     onClick={handleToggleShowConfirmPassword}
                     edge="end"
                   >
-                    {showConfirmPassword ? <EyeFillIcon /> : <EyeOffFillIcon />}
+                    {showConfirmPassword ? (
+                      <EyeFillIcon />
+                    ) : (
+                      <EyeOffFillIcon />
+                    )}
                   </IconButton>
                 )}
               </InputAdornment>

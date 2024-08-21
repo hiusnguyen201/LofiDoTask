@@ -61,7 +61,7 @@ async function getAllWithSortInUser(
     }, {});
   }
 
-  if (!Object.keys(sorts).length) {
+  if (!Object.keys(sorts).length === 0) {
     sorts.createdAt = "asc";
   }
 

@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import {
   PlusIcon,
-  UserIcon,
   GearIcon,
   TableColumnIcon,
   CalendarIcon,
@@ -24,8 +23,9 @@ import {
   HomeIcon,
   ChevronRightIcon,
 } from "~/assets/icons";
-import ListItemLink from "~/components/ListItemLink";
+import AsideItemBoard from "~/components/board/AsideItemBoard";
 import AsideBoardList from "~/components/board/AsideBoardList";
+import CreateBoardPopperForm from "~/components/board/CreateBoardPopperForm";
 
 const navList = [
   {
@@ -40,12 +40,6 @@ const navList = [
         to: "/workspace/boards",
         icon: <ClipBoardIcon />,
         primary: "Boards",
-      },
-      {
-        to: "/workspace/members",
-        icon: <UserIcon />,
-        primary: "Members",
-        lastIcon: <PlusIcon />,
       },
       {
         to: "/workspace/settings",
@@ -143,7 +137,7 @@ function AsideBar() {
 
   return (
     <Bar
-      className="min-h-screen"
+      className="min-h-screen h-full"
       open={open}
       variant="permanent"
       sx={{
@@ -154,7 +148,7 @@ function AsideBar() {
       onClick={handleDrawerOpen}
     >
       {open && (
-        <Box component={"nav"}>
+        <Box component={"nav"} className="h-full">
           {/* Header Drawer */}
           <Box className="w-full flex items-center">
             <List className="w-full">
@@ -181,7 +175,7 @@ function AsideBar() {
 
           {/* Nav List */}
           <Box
-            className="relative w-full overflow-y-auto scrollbar-thin"
+            className="relative w-full overflow-y-auto scrollbar-thin h-full flex flex-col"
             sx={{
               maxHeight: "calc(100vh - 114px)",
             }}
@@ -196,7 +190,7 @@ function AsideBar() {
                   )}
                   {item.children &&
                     item.children.map((child, j) => (
-                      <ListItemLink
+                      <AsideItemBoard
                         key={j}
                         to={child.to}
                         primary={child.primary}
@@ -207,7 +201,16 @@ function AsideBar() {
                 </List>
               ))}
 
-            <AsideBoardList />
+            <List className="grow flex flex-col">
+              <ListItem>
+                <ListItemText primary={"Your boards"} />
+                <CreateBoardPopperForm>
+                  <ListItemButton children={<PlusIcon />} />
+                </CreateBoardPopperForm>
+              </ListItem>
+
+              <AsideBoardList />
+            </List>
           </Box>
         </Box>
       )}

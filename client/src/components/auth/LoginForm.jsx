@@ -9,7 +9,9 @@ import { EyeFillIcon, EyeOffFillIcon } from "~/assets/icons";
 
 // Schema
 const loginSchema = Yup.object().shape({
-  account: Yup.string("Account must be string").required("Account is required"),
+  account: Yup.string("Account must be string").required(
+    "Account is required"
+  ),
   password: Yup.string("Password must be string").required(
     "Password is required"
   ),
@@ -26,14 +28,20 @@ function LoginForm() {
     },
     enableReinitialize: true,
     validationSchema: loginSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      dispatch(login(values.account, values.password));
+    onSubmit: async (values, { setSubmitting }) => {
+      await dispatch(login(values.account, values.password));
       setSubmitting(false);
     },
   });
 
-  const { handleSubmit, getFieldProps, errors, touched, isSubmitting, values } =
-    formik;
+  const {
+    handleSubmit,
+    getFieldProps,
+    errors,
+    touched,
+    isSubmitting,
+    values,
+  } = formik;
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -66,7 +74,9 @@ function LoginForm() {
           type={showPassword ? "text" : "password"}
           value={values.password}
           error={Boolean(errors.password && touched.password)}
-          helperText={errors.password && touched.password && errors.password}
+          helperText={
+            errors.password && touched.password && errors.password
+          }
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
